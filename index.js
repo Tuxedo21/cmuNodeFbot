@@ -68,6 +68,7 @@ function mapMessage(recipientId, text){
   //     //   mapURL= mapURL.replace(/ /g,"+");
   //     // }
   //     //print out search
+  
        sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " + mapURL});
        return false;
     }
