@@ -74,7 +74,7 @@ function mapMessage(recipientId, inputText){
         mapURL= mapURL.replace(/ /g,"+");
       }
       //print out search
-    //  sendMessage(recipientId, message);
+      sendMessage(recipientId, {text: "Echo: " + event.message.text + " address " +event.postback});
       return true;
     }
     return false;
