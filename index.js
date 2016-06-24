@@ -32,7 +32,7 @@ app.post('/webhook', function (req, res) {
                   var values = event.message.text.split(',');
                   for (var i = 0; i < values.length; i++) {
                     mapURL = mapURL + values[i];
-                    mapURL= mapURL.replace(/ /gl,"+");
+                    mapURL= mapURL.replace(/ /g,"+");
                   }
                   sendMessage(event.sender.id, {text: "Echo: " + event.message.text + "\n" + mapURL});
             //  }
