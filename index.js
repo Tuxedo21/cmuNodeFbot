@@ -61,20 +61,17 @@ function sendMessage(recipientId, message) {
 // send rich message with kitten
 function mapMessage(recipientId, inputText){
   inputText = inputText || "";
-  var values = text.split(',');
+  var values = text.split(' ');
     if(values[0].toLowerCase() === 'address'){
-      //find google map
       //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
       //https://www.google.com/maps/place/407+S+Craig+St,+Pittsburgh,+PA+15213/
-        //fill all spaces with '+'
-        //use ','
       var mapURL = "https://www.google.com/maps/place/"
       for (var i = 1; i < values.length; i++) {
         mapURL = mapURL + values[i];
         mapURL= mapURL.replace(/ /g,"+");
       }
       //print out search
-      sendMessage(recipientId, {text: "Echo: " + event.message.text + " address " +event.postback});
+      sendMessage(recipientId, {text: "Echo: " + event.message.text + " address: " + mapURL});
       return true;
     }
     return false;
@@ -82,15 +79,11 @@ function mapMessage(recipientId, inputText){
 
 // send rich message with kitten
 function kittenMessage(recipientId, text) {
-
     text = text || "";
     var values = text.split(' ');
-
     if (values.length === 3 && values[0] === 'kitten') {
         if (Number(values[1]) > 0 && Number(values[2]) > 0) {
-
             var imageUrl = "https://placekitten.com/" + Number(values[1]) + "/" + Number(values[2]);
-
             message = {
                 "attachment": {
                     "type": "template",
