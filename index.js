@@ -27,8 +27,8 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {
         var event = events[i];
         if (event.message && event.message.text) {
-            if (!kittenMessage(event.sender.id, event.message.text)) {
-                sendMessage(event.sender.id, {text: "Echo: " + event.message.text + event.postback});
+            if (!kittenMessage(event.sender.id, event.message.text) || !mapMessage(event.sender.id, event.message.text)) {
+                sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " +event.postback});
             }
         } else if (event.postback) {
             console.log("Postback received: " + JSON.stringify(event.postback));
@@ -54,6 +54,49 @@ function sendMessage(recipientId, message) {
             console.log('Error: ', response.body.error);
         }
     });
+};
+
+// send rich message with kitten
+function mapMessage(recipientId, inputText){
+  inputText = inputText || "";
+  var values = text.split(',');
+    if(values.length === 7 && values[0].toLowerCase() === 'address'){
+      //find google map
+      //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
+      //https://www.google.com/maps/place/407+S+Craig+St,+Pittsburgh,+PA+15213/
+        //fill all spaces with '+'
+        //use ','
+      var mapURL = "https://www.google.com/maps/place/"
+      for (var i = 1; i < values.length; i++) {
+        mapURL = mapURL + values[i];
+        mapURL= mapURL.replace(/ /g,"+");
+      }
+      //print out search
+      message = {
+          "attachment": {
+              "type": "template",
+              "payload": {
+                  "template_type": "generic",
+                  "elements": [{
+                      "title": "Place",
+                      "subtitle": "Event place"
+                      "buttons": [{
+                          "type": "web_url",
+                          "url": mapURL,
+                          "title": "Show kitten"
+                          }, {
+                          "type": "postback",
+                          "title": "I like this",
+                          "payload": "User " + recipientId + " likes kitten " + imageUrl,
+                      }]
+                  }]
+              }
+          }
+      };
+      sendMessage(recipientId, message);
+      return true;
+    }
+    return false;
 };
 
 // send rich message with kitten
