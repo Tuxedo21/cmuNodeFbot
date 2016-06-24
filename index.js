@@ -28,7 +28,8 @@ app.post('/webhook', function (req, res) {
         if (event.message && event.message.text) {
             if (!kittenMessage(event.sender.id, event.message.text)){
             //  if(!mapMessage(event.sender.id, event.message.text)) {
-                  sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " +event.postback});
+                  var mapURL = "https://www.google.com/maps/place/";
+                  sendMessage(event.sender.id, {text: "Echo: " + event.message.text + mapURL});
             //  }
             }
         } else if (event.postback) {
@@ -72,6 +73,7 @@ function mapMessage(recipientId, text){
        sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " + mapURL});
        return false;
     }
+      sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " + mapURL});
      return false;
 };
 
