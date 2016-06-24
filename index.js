@@ -29,10 +29,10 @@ app.post('/webhook', function (req, res) {
             if (!kittenMessage(event.sender.id, event.message.text)){
             //  if(!mapMessage(event.sender.id, event.message.text)) {
                   var mapURL = "https://www.google.com/maps/place/";
-                  var values = event.message.text.split(' ');
+                  var values = event.message.text.split(',');
                   for (var i = 0; i < values.length; i++) {
                     mapURL = mapURL + values[i];
-                    mapURL= mapURL.replace(/ /g,"+");
+                    mapURL= mapURL.replace(/ /gl,"+");
                   }
                   sendMessage(event.sender.id, {text: "Echo: " + event.message.text + "\n" + mapURL});
             //  }
