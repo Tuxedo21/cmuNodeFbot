@@ -27,10 +27,8 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {
         var event = events[i];
         if (event.message && event.message.text) {
-            if (!kittenMessage(event.sender.id, event.message.text)) {
-      // | !mapMessage(event.sender.id, event.message.text)
+            if (!mapMessage(event.sender.id, event.message.text)) {
                 sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " +event.postback});
-
             }
         } else if (event.postback) {
             console.log("Postback received: " + JSON.stringify(event.postback));
@@ -61,7 +59,7 @@ function sendMessage(recipientId, message) {
 // send rich message with kitten
 function mapMessage(recipientId, inputText){
   inputText = inputText || "";
-  var values = text.split(' ');
+  var values = inputText.split(' ');
     if(values[0].toLowerCase() === 'address'){
       //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
       //https://www.google.com/maps/place/407+S+Craig+St,+Pittsburgh,+PA+15213/
