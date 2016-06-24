@@ -72,7 +72,7 @@ function mapMessage(recipientId, text){
   //     //print out search
 
       sendMessage(recipientId, {text: "Echo: " + event.message.text + " address: " + mapURL});
-       return true;
+       return false;
 
     }
      return false;
