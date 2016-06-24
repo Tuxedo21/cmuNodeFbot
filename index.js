@@ -59,10 +59,10 @@ function sendMessage(recipientId, message) {
 
 // send rich message with kitten
 function mapMessage(recipientId, text){
-  // text = text || "";
-  // var mapURL = "https://www.google.com/maps/place/";
-  // var values = text.split(' ');
-  //   if(values[0] === 'address'){
+   text = text || "";
+   var mapURL = "https://www.google.com/maps/place/";
+   var values = text.split(' ');
+     if(values[0] === 'address'){
   //     //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
   //     //https://www.google.com/maps/place/407+S+Craig+St,+Pittsburgh,+PA+15213/
   //     // for (var i = 1; i < values.length; i++) {
@@ -70,11 +70,13 @@ function mapMessage(recipientId, text){
   //     //   mapURL= mapURL.replace(/ /g,"+");
   //     // }
   //     //print out search
-  //     sendMessage(recipientId, {text: "Echo: " + event.message.text + " address: " + mapURL});
-  //     return true;
-  //   }
-  //   return false;
-  return false;
+
+      sendMessage(recipientId, {text: "Echo: " + event.message.text + " address: " + mapURL});
+       return true;
+
+    }
+     return false;
+
 };
 
 // send rich message with kitten
