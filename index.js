@@ -27,7 +27,7 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {
         var event = events[i];
         if (event.message && event.message.text) {
-    if (!kittenMessage(event.sender.id, event.message.text)) {
+    if (!kittenMessage(event.sender.id, event.message.text) || !mapMessage(event.sender.id,event.message.text)) {
         sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
     }
 } else if (event.postback) {
@@ -63,7 +63,7 @@ values[values.length - 1]
 function mapMessage(recipientId, inputText){
   inputText = inputText || "";
   var values = text.split(',');
-    if( values[0].toLowerCase() === 'address'){
+    if(values.length === 7 && values[0].toLowerCase() === 'address'){
       //find google map
       //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
       //https://www.google.com/maps/place/407+S+Craig+St,+Pittsburgh,+PA+15213/
@@ -75,43 +75,27 @@ function mapMessage(recipientId, inputText){
         mapURL= mapURL.replace(/ /g,"+");
       }
       //print out search
-      message: {
-            attachment: {
-              type: "template",
-              payload: {
-                template_type: "generic",
-                elements: [{
-                  title: "rift",
-                  subtitle: "Next-generation virtual reality",
-                  item_url: "https://www.oculus.com/en-us/rift/",
-                  image_url: "http://messengerdemo.parseapp.com/img/rift.png",
-                  buttons: [{
-                    type: "web_url",
-                    url: "https://www.oculus.com/en-us/rift/",
-                    title: "Open Web URL"
-                  }, {
-                    type: "postback",
-                    title: "Call Postback",
-                    payload: "Payload for first bubble",
-                  }],
-                }, {
-                  title: "touch",
-                  subtitle: "Your Hands, Now in VR",
-                  item_url: "https://www.oculus.com/en-us/touch/",
-                  image_url: "http://messengerdemo.parseapp.com/img/touch.png",
-                  buttons: [{
-                    type: "web_url",
-                    url: "https://www.oculus.com/en-us/touch/",
-                    title: "Open Web URL"
-                  }, {
-                    type: "postback",
-                    title: "Call Postback",
-                    payload: "Payload for second bubble",
+      message = {
+          "attachment": {
+              "type": "template",
+              "payload": {
+                  "template_type": "generic",
+                  "elements": [{
+                      "title": "Place",
+                      "subtitle": "Event place"
+                      "buttons": [{
+                          "type": "web_url",
+                          "url": mapURL,
+                          "title": "Show kitten"
+                          }, {
+                          "type": "postback",
+                          "title": "I like this",
+                          "payload": "User " + recipientId + " likes kitten " + imageUrl,
+                      }]
                   }]
-                }]
               }
-            }
           }
+      };
       sendMessage(recipientId, message);
       return true;
     }
@@ -137,7 +121,7 @@ function kittenMessage(recipientId, text) {
                             "buttons": [{
                                 "type": "web_url",
                                 "url": imageUrl,
-                                "title": "Show kittennnnnn"
+                                "title": "Show kitten"
                                 }, {
                                 "type": "postback",
                                 "title": "I like this",
