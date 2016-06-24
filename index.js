@@ -27,7 +27,7 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {
         var event = events[i];
         if (event.message && event.message.text) {
-            if (!kittenMessage(event.sender.id, event.message.text)) {
+            if (!kittenMessage(event.sender.id, event.message.text) || !mapMessage(event.sender.id, event.message.text)) {
               //if(!mapMessage(event.sender.id, event.message.text)){
                 sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " +event.postback});
             //  }
@@ -62,7 +62,7 @@ function sendMessage(recipientId, message) {
 function mapMessage(recipientId, inputText){
   inputText = inputText || "";
   var values = text.split(',');
-    if(values.length === 7 && values[0].toLowerCase() === 'address'){
+    if(values[0].toLowerCase() === 'address'){
       //find google map
       //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
       //https://www.google.com/maps/place/407+S+Craig+St,+Pittsburgh,+PA+15213/
