@@ -27,9 +27,9 @@ app.post('/webhook', function (req, res) {
         var event = events[i];
         if (event.message && event.message.text) {
             if (!kittenMessage(event.sender.id, event.message.text)){
-              if(!mapMessage(event.sender.id, event.message.text)) {
+            //  if(!mapMessage(event.sender.id, event.message.text)) {
                   sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " +event.postback});
-              }
+            //  }
             }
         } else if (event.postback) {
             console.log("Postback received: " + JSON.stringify(event.postback));
@@ -68,7 +68,7 @@ function mapMessage(recipientId, text){
   //     //   mapURL= mapURL.replace(/ /g,"+");
   //     // }
   //     //print out search
-  
+
        sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " + mapURL});
        return false;
     }
