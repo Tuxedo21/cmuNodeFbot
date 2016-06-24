@@ -30,7 +30,7 @@ app.post('/webhook', function (req, res) {
             //  if(!mapMessage(event.sender.id, event.message.text)) {
                   var mapURL = "https://www.google.com/maps/place/";
                   var values = event.message.text.split(' ');
-                  for (var i = 1; i < values.length; i++) {
+                  for (var i = 0; i < values.length; i++) {
                     mapURL = mapURL + values[i];
                     mapURL= mapURL.replace(/ /g,"+");
                   }
