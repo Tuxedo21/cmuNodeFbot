@@ -112,7 +112,6 @@ function mapMessage(recipientId, inputText){
               }
             }
           }
-
       sendMessage(recipientId, message);
       return true;
     }
@@ -138,7 +137,7 @@ function kittenMessage(recipientId, text) {
                             "buttons": [{
                                 "type": "web_url",
                                 "url": imageUrl,
-                                "title": "Show kitten"
+                                "title": "Show kittennnnnn"
                                 }, {
                                 "type": "postback",
                                 "title": "I like this",
