@@ -58,16 +58,16 @@ function sendMessage(recipientId, message) {
 
 // send rich message with kitten
 function mapMessage(recipientId, inputText){
-  inputText = inputText || "";
+  inputText = inputText || " ";
+  var mapURL = "https://www.google.com/maps/place/";
   var values = inputText.split(' ');
-    if(values[0].toLowerCase() === 'address'){
+    if(values[0] === 'address'){
       //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
       //https://www.google.com/maps/place/407+S+Craig+St,+Pittsburgh,+PA+15213/
-      var mapURL = "https://www.google.com/maps/place/"
-      for (var i = 1; i < values.length; i++) {
-        mapURL = mapURL + values[i];
-        mapURL= mapURL.replace(/ /g,"+");
-      }
+      // for (var i = 1; i < values.length; i++) {
+      //   mapURL = mapURL + values[i];
+      //   mapURL= mapURL.replace(/ /g,"+");
+      // }
       //print out search
       sendMessage(recipientId, {text: "Echo: " + event.message.text + " address: " + mapURL});
       return true;
