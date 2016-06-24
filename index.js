@@ -74,28 +74,7 @@ function mapMessage(recipientId, inputText){
         mapURL= mapURL.replace(/ /g,"+");
       }
       //print out search
-      message = {
-          "attachment": {
-              "type": "template",
-              "payload": {
-                  "template_type": "generic",
-                  "elements": [{
-                      "title": "Place",
-                      "subtitle": "Event place"
-                      "buttons": [{
-                          "type": "web_url",
-                          "url": mapURL,
-                          "title": "Show kitten"
-                          }, {
-                          "type": "postback",
-                          "title": "I like this",
-                          "payload": "User " + recipientId + " likes kitten " + imageUrl,
-                      }]
-                  }]
-              }
-          }
-      };
-      sendMessage(recipientId, message);
+    //  sendMessage(recipientId, message);
       return true;
     }
     return false;
