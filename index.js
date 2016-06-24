@@ -63,7 +63,7 @@ values[values.length - 1]
 function mapMessage(recipientId, inputText){
   inputText = inputText || "";
   var values = text.split(',');
-    if(values.length === 7 && values[0].toLowerCase() === 'address'){
+    if( values[0].toLowerCase() === 'address'){
       //find google map
       //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
       //https://www.google.com/maps/place/407+S+Craig+St,+Pittsburgh,+PA+15213/
