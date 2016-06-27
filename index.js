@@ -24,10 +24,9 @@ app.post('/webhook', function (req, res) {
         var event = events[i];
         if (event.message && event.message.text) {
             if (!kittenMessage(event.sender.id, event.message.text)){
-            //  if(!mapMessage(event.sender.id, event.message.text)) {
-            if(!mapMessage(event.sender.id, event.message.text){
-              sendMessage(event.sender.id, {text: "Echo: " + event.message.text + "\n" + mapURL});
-                }
+                // if(!mapMessage(event.sender.id, event.message.text){
+                  sendMessage(event.sender.id, {text: "Echo: " + event.message.text + "\n" + mapURL});
+                //    }
             }
         } else if (event.postback) {
             console.log("Postback received: " + JSON.stringify(event.postback));
