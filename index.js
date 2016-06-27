@@ -25,15 +25,9 @@ app.post('/webhook', function (req, res) {
         if (event.message && event.message.text) {
             if (!kittenMessage(event.sender.id, event.message.text)){
             //  if(!mapMessage(event.sender.id, event.message.text)) {
-            mapMessage(event.sender.id, event.message.text);
-                  // var mapURL = "https://www.google.com/maps/place/";
-                  // var values = event.message.text.split(',');
-                  // for (var i = 0; i < values.length; i++) {
-                  //   mapURL = mapURL + values[i];
-                  //   mapURL= mapURL.replace(/ /g,"+");
-                  // }
-                  // sendMessage(event.sender.id, {text: "Echo: " + event.message.text + "\n" + mapURL});
-            //  }
+            if(!mapMessage(event.sender.id, event.message.text){
+              sendMessage(event.sender.id, {text: "Echo: " + event.message.text + "\n" + mapURL});
+                }
             }
         } else if (event.postback) {
             console.log("Postback received: " + JSON.stringify(event.postback));
@@ -61,29 +55,22 @@ function sendMessage(recipientId, message) {
 };
 // send rich message with kitten
 function mapMessage(recipientId, text){
+
   var mapURL = "https://www.google.com/maps/place/";
   var values = text.split(',');
-  for (var i = 0; i < values.length; i++) {
-    mapURL = mapURL + values[i];
-    mapURL= mapURL.replace(/ /g,"+");
-  }
-  sendMessage(recipientId, {text: "Echo: " + text + "\n" + mapURL});
   //    text = text || "";
-  //  var mapURL = "https://www.google.com/maps/place/";
-  //  var values = text.split(' ');
-  //    if(values[0] === 'address'){
-  // //     //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
-  //     //https://www.google.com/maps/place/407+S+Craig+St,+Pittsburgh,+PA+15213/
-      // for (var i = 1; i < values.length; i++) {
-      //   mapURL = mapURL + values[i];
-      //   mapURL= mapURL.replace(/ /g,"+");
-      // }
-    //  print out search
-    //    sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " + mapURL});
-    //    return false;
-    // }
-    //   sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " + mapURL});
-    //  return false;
+      if(values[0] === 'address'){
+    //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
+    //https://www.google.com/maps/place/407+S+Craig+St,+Pittsburgh,+PA+15213/
+          for (var i = 0; i < values.length; i++) {
+            mapURL = mapURL + values[i];
+            mapURL= mapURL.replace(/ /g,"+");
+          }
+            //  print out search
+          sendMessage(recipientId, {text: "Echo: " + text + "\n" + mapURL});
+          return true;
+       }
+     return false;
 };
 
 // send rich message with kitten
