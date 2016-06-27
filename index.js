@@ -104,7 +104,6 @@ function mapMessage(recipientId, text){
       }
     }
   };
-
             //  print out search
           sendMessage(recipientId, message);
           return true;
@@ -125,8 +124,8 @@ function kittenMessage(recipientId, text) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "Kitten",
-                            "subtitle": "Cute kitten picture",
+                            "title": "The Kitten",
+                            "subtitle": "Epic kitten picture",
                             "image_url": imageUrl ,
                             "buttons": [{
                                 "type": "web_url",
