@@ -71,13 +71,13 @@ function mapMessage(recipientId, text){
         "payload": {
           "template_type": "generic",
           "elements": [{
-            "title": "Is this tha place?" + mapURL,
-            "subtitle": "Next-generation virtual reality",
-            "item_url": "https://www.oculus.com/en-us/rift/",
-            "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+            "title": "Is this tha place?",
+            "subtitle": "Please let me know.",
+            "item_url": mapURL,
+            "image_url": "https://lh3.googleusercontent.com/MOf9Kxxkj7GvyZlTZOnUzuYv0JAweEhlxJX6gslQvbvlhLK5_bSTK6duxY2xfbBsj43H=w300",
             "buttons": [{
               "type": "web_url",
-              "url": "https://www.oculus.com/en-us/rift/",
+              "url": mapURL,
               "title": "Open Web URL"
             }, {
               "type": "postback",
