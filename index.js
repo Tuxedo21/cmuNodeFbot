@@ -81,7 +81,11 @@ function mapMessage(recipientId, text){
               "title": "Open Web URL"
             }, {
               "type": "postback",
-              "title": "Call Postback",
+              "title": "Yes",
+              "payload": "Payload for first bubble",
+            }, {
+              "type": "postback",
+              "title": "No",
               "payload": "Payload for first bubble",
             }],
           }, {
