@@ -54,7 +54,7 @@ function sendMessage(recipientId, message) {
 };
 // send rich message with kitten
 function mapMessage(recipientId, text){
-
+  text = text || "";
   var mapURL = "https://www.google.com/maps/place/";
   var values = text.split(',');
   //    text = text || "";
@@ -65,8 +65,48 @@ function mapMessage(recipientId, text){
             mapURL = mapURL + values[i];
             mapURL= mapURL.replace(/ /g,"+");
           }
+
+          message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: [{
+            title: "Is this tha place?" + mapURL,
+            subtitle: "Next-generation virtual reality",
+            item_url: "https://www.oculus.com/en-us/rift/",
+            image_url: "http://messengerdemo.parseapp.com/img/rift.png",
+            buttons: [{
+              type: "web_url",
+              url: "https://www.oculus.com/en-us/rift/",
+              title: "Open Web URL"
+            }, {
+              type: "postback",
+              title: "Call Postback",
+              payload: "Payload for first bubble",
+            }],
+          }, {
+            title: "touch",
+            subtitle: "Your Hands, Now in VR",
+            item_url: "https://www.oculus.com/en-us/touch/",
+            image_url: "http://messengerdemo.parseapp.com/img/touch.png",
+            buttons: [{
+              type: "web_url",
+              url: "https://www.oculus.com/en-us/touch/",
+              title: "Open Web URL"
+            }, {
+              type: "postback",
+              title: "Call Postback",
+              payload: "Payload for second bubble",
+            }]
+          }]
+        }
+      }
+    }
+  };
+
             //  print out search
-          sendMessage(recipientId, {text: "Echo: " + text + "\n" + mapURL});
+          sendMessage(recipientId, message);
           return true;
        }
      return false;
