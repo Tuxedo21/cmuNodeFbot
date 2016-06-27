@@ -2,16 +2,13 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
 var app = express();
-
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
-
 // Server frontpage
 app.get('/', function (req, res) {
     res.send('This is TestBot Server');
 });
-
 // Facebook Webhook
 app.get('/webhook', function (req, res) {
     if (req.query['hub.verify_token'] === 'testbot_verify_token') {
@@ -28,13 +25,14 @@ app.post('/webhook', function (req, res) {
         if (event.message && event.message.text) {
             if (!kittenMessage(event.sender.id, event.message.text)){
             //  if(!mapMessage(event.sender.id, event.message.text)) {
-                  var mapURL = "https://www.google.com/maps/place/";
-                  var values = event.message.text.split(',');
-                  for (var i = 0; i < values.length; i++) {
-                    mapURL = mapURL + values[i];
-                    mapURL= mapURL.replace(/ /g,"+");
-                  }
-                  sendMessage(event.sender.id, {text: "Echo: " + event.message.text + "\n" + mapURL});
+            mapMessage(event.sender.id, event.message.text);
+                  // var mapURL = "https://www.google.com/maps/place/";
+                  // var values = event.message.text.split(',');
+                  // for (var i = 0; i < values.length; i++) {
+                  //   mapURL = mapURL + values[i];
+                  //   mapURL= mapURL.replace(/ /g,"+");
+                  // }
+                  // sendMessage(event.sender.id, {text: "Echo: " + event.message.text + "\n" + mapURL});
             //  }
             }
         } else if (event.postback) {
@@ -63,23 +61,29 @@ function sendMessage(recipientId, message) {
 };
 // send rich message with kitten
 function mapMessage(recipientId, text){
-   text = text || "";
-   var mapURL = "https://www.google.com/maps/place/";
-   var values = text.split(' ');
-     if(values[0] === 'address'){
-  //     //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
+  var mapURL = "https://www.google.com/maps/place/";
+  var values = text.split(',');
+  for (var i = 0; i < values.length; i++) {
+    mapURL = mapURL + values[i];
+    mapURL= mapURL.replace(/ /g,"+");
+  }
+  sendMessage(recipientId, {text: "Echo: " + text + "\n" + mapURL});
+  //    text = text || "";
+  //  var mapURL = "https://www.google.com/maps/place/";
+  //  var values = text.split(' ');
+  //    if(values[0] === 'address'){
+  // //     //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
   //     //https://www.google.com/maps/place/407+S+Craig+St,+Pittsburgh,+PA+15213/
-      for (var i = 1; i < values.length; i++) {
-        mapURL = mapURL + values[i];
-        mapURL= mapURL.replace(/ /g,"+");
-      }
+      // for (var i = 1; i < values.length; i++) {
+      //   mapURL = mapURL + values[i];
+      //   mapURL= mapURL.replace(/ /g,"+");
+      // }
     //  print out search
-
-       sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " + mapURL});
-       return false;
-    }
-      sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " + mapURL});
-     return false;
+    //    sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " + mapURL});
+    //    return false;
+    // }
+    //   sendMessage(event.sender.id, {text: "Echo: " + event.message.text + " " + mapURL});
+    //  return false;
 };
 
 // send rich message with kitten
