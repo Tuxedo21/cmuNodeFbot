@@ -54,6 +54,7 @@ function sendMessage(recipientId, message) {
 // send rich message with kitten
 function mapMessage(recipientId, text){
   text = text || "";
+  text = text.toLowerCase();
   var mapURL = "https://www.google.com/maps/place/";
   var values = text.split(',');
   //    text = text || "";
@@ -78,7 +79,7 @@ function mapMessage(recipientId, text){
             "buttons": [{
               "type": "web_url",
               "url": mapURL,
-              "title": "Open Web URL"
+              "title": "Check Web URL"
             }, {
               "type": "postback",
               "title": "Yes",
