@@ -153,11 +153,20 @@ function volunteerMessage(recipientId, text) {
     text = text || "";
     var values = text.split(' ');
     if (values[0] === 'volunteer') {
-            var finalimageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13510876_1226719430681033_8972632654416934192_n.jpg?oh=4c1503e581e80d8d86e028536a608506&oe=57F87E3F";
-            var blueImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13533270_10154272438778535_6610747476267727156_n.jpg?oh=2e6fad4cc86cc96781636a1488847e7b&oe=57FCED30";
-            var redImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13510940_10154272438783535_3809594659337214943_n.jpg?oh=b5d74bbe3c4dcde1ec137bd9ad8bb702&oe=57F1DC9B";
-            var pinkImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13439091_10154272438828535_2387518102360378023_n.jpg?oh=70b18523768bbaaf8ca7b8aabada79a7&oe=58005170";
-            finalMessage = {
+      var finalimageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13510876_1226719430681033_8972632654416934192_n.jpg?oh=4c1503e581e80d8d86e028536a608506&oe=57F87E3F";
+      var blueImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13533270_10154272438778535_6610747476267727156_n.jpg?oh=2e6fad4cc86cc96781636a1488847e7b&oe=57FCED30";
+      var redImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13510940_10154272438783535_3809594659337214943_n.jpg?oh=b5d74bbe3c4dcde1ec137bd9ad8bb702&oe=57F1DC9B";
+      var pinkImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13439091_10154272438828535_2387518102360378023_n.jpg?oh=70b18523768bbaaf8ca7b8aabada79a7&oe=58005170";
+      if(values[1] === 'one'){
+        var imageUrl = pinkImageUrl;
+      }else if (values[1] === 'two') {
+          var imageUrl = blueImageUrl;
+      }else if (values[1] === 'three') {
+          var imageUrl = redImageUrl;
+      }else {
+        var imageUrl = finalimageUrl;
+      }
+            message = {
                 "attachment": {
                     "type": "template",
                     "payload": {
@@ -179,7 +188,7 @@ function volunteerMessage(recipientId, text) {
                     }
                 }
             };
-            message = finalMessage;
+
             sendMessage(recipientId, message);
             return true;
 
