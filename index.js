@@ -174,7 +174,7 @@ function volunteerMessage(recipientId, text) {
                         "elements": [{
                             "title": "Map",
                             "subtitle": "Epic kitten picture",
-                            "image_url": finalimageUrl ,
+                            "image_url": imageUrl ,
                             "buttons": [{
                                 "type": "web_url",
                                 "url": imageUrl,
