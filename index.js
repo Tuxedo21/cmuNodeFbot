@@ -153,7 +153,6 @@ function volunteerMessage(recipientId, text) {
     text = text || "";
     var values = text.split(' ');
     if (values[0] === 'volunteer') {
-        if (Number(values[1]) > 0 && Number(values[2]) > 0) {
             var imageUrl = "final.jpg";
             message = {
                 "attachment": {
@@ -179,7 +178,7 @@ function volunteerMessage(recipientId, text) {
             };
             sendMessage(recipientId, message);
             return true;
-        }
+
     }
     return false;
 };
