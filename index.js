@@ -26,6 +26,7 @@ app.post('/webhook', function (req, res) {
             if (!kittenMessage(event.sender.id, event.message.text)){
                 mapMessage(event.sender.id, event.message.text);
                 volunteerMessage(event.sender.id, event.message.text);
+                greetingsMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: "Echo: " + event.message.text });
             }
         } else if (event.postback) {
@@ -157,11 +158,12 @@ function volunteerMessage(recipientId, text) {
       var blueImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13533270_10154272438778535_6610747476267727156_n.jpg?oh=2e6fad4cc86cc96781636a1488847e7b&oe=57FCED30";
       var redImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13510940_10154272438783535_3809594659337214943_n.jpg?oh=b5d74bbe3c4dcde1ec137bd9ad8bb702&oe=57F1DC9B";
       var pinkImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13439091_10154272438828535_2387518102360378023_n.jpg?oh=70b18523768bbaaf8ca7b8aabada79a7&oe=58005170";
-      if(values[1] === 'one'){
+      if(values[1] === 'one' || values[1] === '1'){
         var imageUrl = pinkImageUrl;
-      }else if (values[1] === 'two') {
+        var
+      }else if (values[1] === 'two' || values[1] === '2') {
           var imageUrl = blueImageUrl;
-      }else if (values[1] === 'three') {
+      }else if (values[1] === 'three' || values[1] === '3') {
           var imageUrl = redImageUrl;
       }else {
         var imageUrl = finalimageUrl;
@@ -173,7 +175,7 @@ function volunteerMessage(recipientId, text) {
                         "template_type": "generic",
                         "elements": [{
                             "title": "Map",
-                            "subtitle": "Epic kitten picture",
+                            "subtitle": "You are the volunteer number" + values[1] + ", your task today is to place beacons in the area show on the map. Remember the rules: bla bla ",
                             "image_url": imageUrl ,
                             "buttons": [{
                                 "type": "web_url",
@@ -188,10 +190,19 @@ function volunteerMessage(recipientId, text) {
                     }
                 }
             };
-
             sendMessage(recipientId, message);
             return true;
+    }
+    return false;
+};
 
+function greetingsMessage(recipientId, text) {
+    text = text || "";
+    var values = text.split(' ');
+    if (values[0] === 'hello' || values[0] === 'hi' values[0] === 'hey') {
+            var message = "Greetings human, I am the luzDeploy bot.  I was created by CMU's HCI team at the biglab! My job is to help you make the world a better place for the handicap. Please tell me witch volunteer are you? By writing 'volunteer <number>' ";
+            sendMessage(recipientId, message);
+            return true;
     }
     return false;
 };
