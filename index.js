@@ -160,8 +160,8 @@ function volunteerMessage(recipientId, text) {
       var pinkImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13439091_10154272438828535_2387518102360378023_n.jpg?oh=70b18523768bbaaf8ca7b8aabada79a7&oe=58005170";
       if(values[1] === 'one' || values[1] === '1'){
         var imageUrl = pinkImageUrl;
-        var
-      }else if (values[1] === 'two' || values[1] === '2') {
+        
+      }else if (values[1] === 'two' || values[1] === '2'){
           var imageUrl = blueImageUrl;
       }else if (values[1] === 'three' || values[1] === '3') {
           var imageUrl = redImageUrl;
