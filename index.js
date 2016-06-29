@@ -200,7 +200,7 @@ function greetingsMessage(recipientId, text) {
     text = text || "";
     var values = text.split(' ');
     if (values[0] === 'hello' || values[0] === 'hi' || values[0] === 'hey') {
-            sendMessage(recipientId, {text: "Greetings human, I am the luzDeploy bot.  I was created by CMU's HCI team at the biglab! My job is to help you make the world a better place for the handicap. Please tell me witch volunteer are you? By writing volunteer <number> "});
+            sendMessage(recipientId, {text: "Greetings human, I am the luzDeploy bot.  I was created by CMU's HCI team at the biglab! My job is to help you make the world a better place for the handicap. Please tell me witch volunteer are you? By writing 'volunteer <number>' "});
             return true;
     }
     return false;
