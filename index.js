@@ -153,7 +153,7 @@ function volunteerMessage(recipientId, text) {
     text = text || "";
     var values = text.split(' ');
     if (values[0] === 'volunteer') {
-            var imageUrl = "https://infinite-hamlet-59231.herokuapp.com/final.jpg";
+            var imageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13510876_1226719430681033_8972632654416934192_n.jpg?oh=4c1503e581e80d8d86e028536a608506&oe=57F87E3F";
             message = {
                 "attachment": {
                     "type": "template",
