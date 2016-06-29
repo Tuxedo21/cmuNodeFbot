@@ -27,7 +27,7 @@ app.post('/webhook', function (req, res) {
                 mapMessage(event.sender.id, event.message.text);
                 volunteerMessage(event.sender.id, event.message.text);
                 greetingsMessage(event.sender.id, event.message.text);
-                sendMessage(event.sender.id, {text: "Echo: " + event.message.text });
+                sendMessage(event.sender.id, {text: "For debbuggin echo: " + event.message.text });
             }
         } else if (event.postback) {
             console.log("Postback received: " + JSON.stringify(event.postback));
@@ -200,8 +200,7 @@ function greetingsMessage(recipientId, text) {
     text = text || "";
     var values = text.split(' ');
     if (values[0] === 'hello' || values[0] === 'hi' || values[0] === 'hey') {
-            var message = "Greetings human, I am the luzDeploy bot.  I was created by CMU's HCI team at the biglab! My job is to help you make the world a better place for the handicap. Please tell me witch volunteer are you? By writing 'volunteer <number>' ";
-            sendMessage(recipientId, message);
+            sendMessage(recipientId, "Greetings human, I am the luzDeploy bot.  I was created by CMU's HCI team at the biglab! My job is to help you make the world a better place for the handicap. Please tell me witch volunteer are you? By writing volunteer <number> ");
             return true;
     }
     return false;
