@@ -27,7 +27,8 @@ app.post('/webhook', function (req, res) {
                 mapMessage(event.sender.id, event.message.text);
                 volunteerMessage(event.sender.id, event.message.text);
                 greetingsMessage(event.sender.id, event.message.text);
-                sendMessage(event.sender.id, {text: "For debbuggin echo: " + event.message.text });
+                instructionsMessage(event.sender.id, event.message.text);
+                sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text });
             }
         } else if (event.postback) {
             console.log("Postback received: " + JSON.stringify(event.postback));
@@ -154,7 +155,7 @@ function volunteerMessage(recipientId, text) {
     text = text || "";
     var values = text.split(' ');
     if (values[0] === 'volunteer') {
-      var youAre = "You are the volunteer number ";
+      var youAre = "You are volunteer ";
       var finalimageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13510876_1226719430681033_8972632654416934192_n.jpg?oh=4c1503e581e80d8d86e028536a608506&oe=57F87E3F";
       var blueImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13533270_10154272438778535_6610747476267727156_n.jpg?oh=2e6fad4cc86cc96781636a1488847e7b&oe=57FCED30";
       var redImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13510940_10154272438783535_3809594659337214943_n.jpg?oh=b5d74bbe3c4dcde1ec137bd9ad8bb702&oe=57F1DC9B";
@@ -176,7 +177,7 @@ function volunteerMessage(recipientId, text) {
                         "template_type": "generic",
                         "elements": [{
                             "title": "Work Map",
-                            "subtitle": youAre + values[1] + ", your task today is to be a part of beacon deployment.",
+                            "subtitle": youAre + values[1] + ", your tasks today are part of beacon deployment.",
                             //"text":youAre + values[1] + ", your task today is to place beacons in the area show on the map. Remember the rules: bla bla ",
                             "image_url": imageUrl ,
                             "buttons": [{
@@ -203,7 +204,7 @@ function greetingsMessage(recipientId, text) {
     text = text || "";
     var values = text.split(' ');
     if (values[0] === 'hello' || values[0] === 'hi' || values[0] === 'hey') {
-            sendMessage(recipientId, {text: "Greetings human, I am the luzDeploy bot. I was created by CMU's HCI team at the biglab! My job is to help you make the world a better place for the handicap. Please tell me which volunteer are you? By writing 'volunteer <number>'(for todays deployment there are only volunteers one two and three)"});
+            sendMessage(recipientId, {text: "Greetings human, I am the luzDeploy bot. I was created by CMU's HCI team at the biglab! My job is to help you make the world a better place for the handicap. Please tell me which volunteer are you? By writing 'volunteer <number>' (for todays deployment there are only volunteers one two and three)"});
             return true;
     }
     return false;
@@ -211,9 +212,7 @@ function greetingsMessage(recipientId, text) {
 
 
 function instructionsMessage(recipientId, text) {
-    text = text || "";
-    var values = text.split(' ');
-    if (values[0] === 'one' || values[0] === 'two' || values[0] === 'three' || values[0] === '1' || values[0] === '2' || values[0] === '3') {
+    if (text === 'one' || text === 'two' || text === 'three' || text === '1' || text === '2' || text === '3') {
             sendMessage(recipientId, {text: "Your Instruccions"});
             return true;
     }
