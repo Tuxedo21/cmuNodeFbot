@@ -184,7 +184,7 @@ function volunteerMessage(recipientId, text) {
                                 "title": "Show Image"
                                 }, {
                                 "type": "postback",
-                                "title": "I'm done :)",
+                                "title": "Don't click please write: I'm done :)",
                                 "payload": "User " + recipientId + " likes kitten " + imageUrl,
                             }]
                         }]
@@ -231,7 +231,7 @@ function DoneMessage(recipientId, text) {
     text = text || "";
     var values = text.split(' ');
     if (values[0] === "I'm" || values[1] === 'done' || values[2] === ':)') {
-            sendMessage(recipientId, {text: "Thank you very much!\n You just helped out to give light to the visually impaired.\n I am still in reasurch phase, please awnser this survey so i can become better at helping."+ "https://docs.google.com/forms/d/1hcwB18hnyniWFUQAQDm2MSMdlQQL4QYOG_Md9eFsQnE/viewform"});
+            sendMessage(recipientId, {text: "Thank you very much!\nYou just helped by giving light to the visually impaired.\n\nI am still in research phase, please answer this survey so i can become better at helping.\n\n"+ "https://docs.google.com/forms/d/1hcwB18hnyniWFUQAQDm2MSMdlQQL4QYOG_Md9eFsQnE/viewform"});
             return true;
     }
     return false;
