@@ -156,19 +156,16 @@ function volunteerMessage(recipientId, text) {
     var values = text.split(' ');
     if (values[0] === 'volunteer') {
       var youAre = "You are volunteer ";
-      var finalimageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13510876_1226719430681033_8972632654416934192_n.jpg?oh=4c1503e581e80d8d86e028536a608506&oe=57F87E3F";
+      //var finalimageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13510876_1226719430681033_8972632654416934192_n.jpg?oh=4c1503e581e80d8d86e028536a608506&oe=57F87E3F";
       var blueImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13533270_10154272438778535_6610747476267727156_n.jpg?oh=2e6fad4cc86cc96781636a1488847e7b&oe=57FCED30";
       var redImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13510940_10154272438783535_3809594659337214943_n.jpg?oh=b5d74bbe3c4dcde1ec137bd9ad8bb702&oe=57F1DC9B";
       var pinkImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13439091_10154272438828535_2387518102360378023_n.jpg?oh=70b18523768bbaaf8ca7b8aabada79a7&oe=58005170";
       if(values[1] === 'one' || values[1] === '1'){
         var imageUrl = pinkImageUrl;
-
       }else if (values[1] === 'two' || values[1] === '2'){
           var imageUrl = blueImageUrl;
       }else if (values[1] === 'three' || values[1] === '3') {
           var imageUrl = redImageUrl;
-      }else {
-        var imageUrl = finalimageUrl;
       }
             message = {
                 "attachment": {
@@ -213,7 +210,20 @@ function greetingsMessage(recipientId, text) {
 
 function instructionsMessage(recipientId, text) {
     if (text === 'one' || text === 'two' || text === 'three' || text === '1' || text === '2' || text === '3') {
-            sendMessage(recipientId, {text: "Your Instruccions"});
+      var message = "";
+            if(text === 'three' || text === '3'){
+              //three red
+              var message = "You will be placing beacons.\n Place a beacon where you see a red square on your map as high as you can and always on the wall.";
+            }
+            else if(text === 'two' || text === '2'){
+              //two blue
+              var message = "You will be placing beacons.\n Place a beacon where you see a blue square on your map as high as you can and always on the wall.";
+            }
+            else if(text === 'one' || text === '1'){
+            //one pink
+            var message = "You will be placing tape on the floor.\n Place a small peace of tape from the the first beacon in a hallway every meter. Please repeat this for each hallway. For today there are four in total. At the end it should look a little like the map given to you.";
+            }
+            sendMessage(recipientId, {text: "Your Instruccions:" + message});
             return true;
     }
     return false;
