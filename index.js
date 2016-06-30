@@ -187,11 +187,12 @@ function volunteerMessage(recipientId, text) {
                                 "type": "postback",
                                 "title": "I got it",
                                 "payload": "User " + recipientId + " likes kitten " + imageUrl,
-                                "text":youAre + values[1] + ", your task today is to place beacons in the area show on the map. Remember the rules: bla bla "
                             }]
                         }]
                     }
-                }
+                },
+                  {"text":youAre + values[1] + ", your task today is to place beacons in the area show on the map. Remember the rules: bla bla "}
+
             };
             sendMessage(recipientId, message);
             return true;
