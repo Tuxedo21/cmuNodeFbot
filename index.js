@@ -62,7 +62,7 @@ function mapMessage(recipientId, text){
   var mapURL = "https://www.google.com/maps/place/";
   var values = text.split(',');
   //    text = text || "";
-      if(values[0] === 'address'){
+      if(values[0].toLowerCase() === 'address'){
     //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
     //https://www.google.com/maps/place/407+S+Craig+St,+Pittsburgh,+PA+15213/
           for (var i = 1; i < values.length; i++) {
