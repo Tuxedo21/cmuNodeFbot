@@ -28,6 +28,7 @@ app.post('/webhook', function (req, res) {
                 volunteerMessage(event.sender.id, event.message.text);
                 greetingsMessage(event.sender.id, event.message.text);
                 instructionsMessage(event.sender.id, event.message.text);
+                DoneMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text });
             }
         } else if (event.postback) {
@@ -206,8 +207,6 @@ function greetingsMessage(recipientId, text) {
     }
     return false;
 };
-
-
 function instructionsMessage(recipientId, text) {
     if (text === 'one' || text === 'two' || text === 'three' || text === '1' || text === '2' || text === '3') {
       var message = "";
@@ -221,9 +220,18 @@ function instructionsMessage(recipientId, text) {
             }
             else if(text === 'one' || text === '1'){
             //one pink
-            var message = "You will be placing tape on the floor.\n Place a small peace of tape from the the first beacon in a hallway every meter. Please repeat this for each hallway. For today there are four in total. At the end it should look a little like the map given to you.";
+            var message = "You will be placing tape on the floor.\nPlace a small peace of tape from the the first beacon in a hallway every meter. Please repeat this for each hallway. For today there are four in total. At the end it should look a little like the map given to you.";
             }
-            sendMessage(recipientId, {text: "Your Instruccions:" + message});
+            sendMessage(recipientId, {text: "Your Instruccions:\n" + message});
+            return true;
+    }
+    return false;
+};
+function DoneMessage(recipientId, text) {
+    text = text || "";
+    var values = text.split(' ');
+    if (values[0] === "I'm" || values[1] === 'done' || values[2] === ':)') {
+            sendMessage(recipientId, {text: "https://docs.google.com/forms/d/1hcwB18hnyniWFUQAQDm2MSMdlQQL4QYOG_Md9eFsQnE/viewform"});
             return true;
     }
     return false;
