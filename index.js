@@ -175,8 +175,8 @@ function volunteerMessage(recipientId, text) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": youAre + values[1] + ", your task today is to place beacons in the area show on the map. Remember the rules: bla bla ",
-                            "subtitle": youAre + values[1] + ", your task today is to place beacons in the area show on the map. Remember the rules: bla bla ",
+                            "title": "Work Map",
+                            "subtitle": youAre + values[1] + ", your task today is to be a part of beacon deployment.",
                             //"text":youAre + values[1] + ", your task today is to place beacons in the area show on the map. Remember the rules: bla bla ",
                             "image_url": imageUrl ,
                             "buttons": [{
@@ -190,11 +190,10 @@ function volunteerMessage(recipientId, text) {
                             }]
                         }]
                     }
-                },
-                  {"text":youAre + values[1] + ", your task today is to place beacons in the area show on the map. Remember the rules: bla bla "}
-
+                }
             };
             sendMessage(recipientId, message);
+            instructionsMessage(recipientId,values[1]);
             return true;
     }
     return false;
@@ -205,6 +204,17 @@ function greetingsMessage(recipientId, text) {
     var values = text.split(' ');
     if (values[0] === 'hello' || values[0] === 'hi' || values[0] === 'hey') {
             sendMessage(recipientId, {text: "Greetings human, I am the luzDeploy bot. I was created by CMU's HCI team at the biglab! My job is to help you make the world a better place for the handicap. Please tell me which volunteer are you? By writing 'volunteer <number>'(for todays deployment there are only volunteers one two and three)"});
+            return true;
+    }
+    return false;
+};
+
+
+function instructionsMessage(recipientId, text) {
+    text = text || "";
+    var values = text.split(' ');
+    if (values[0] === 'one' || values[0] === 'two' || values[0] === 'three' || values[0] === '1' || values[0] === '2' || values[0] === '3') {
+            sendMessage(recipientId, {text: "Your Instruccions"});
             return true;
     }
     return false;
