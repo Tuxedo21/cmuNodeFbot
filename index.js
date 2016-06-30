@@ -177,7 +177,7 @@ function volunteerMessage(recipientId, text) {
                         "elements": [{
                             "title": youAre + values[1] + ", your task today is to place beacons in the area show on the map. Remember the rules: bla bla ",
                             "subtitle": youAre + values[1] + ", your task today is to place beacons in the area show on the map. Remember the rules: bla bla ",
-                            "text":youAre + values[1] + ", your task today is to place beacons in the area show on the map. Remember the rules: bla bla ",
+                            //"text":youAre + values[1] + ", your task today is to place beacons in the area show on the map. Remember the rules: bla bla ",
                             "image_url": imageUrl ,
                             "buttons": [{
                                 "type": "web_url",
