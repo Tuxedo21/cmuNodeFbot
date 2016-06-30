@@ -119,6 +119,7 @@ function mapMessage(recipientId, text){
 // send rich message with kitten
 function kittenMessage(recipientId, text) {
     text = text || "";
+    text = text.toLowerCase();
     var values = text.split(' ');
     if (values.length === 3 && values[0] === 'kitten') {
         if (Number(values[1]) > 0 && Number(values[2]) > 0) {
@@ -154,6 +155,7 @@ function kittenMessage(recipientId, text) {
 
 function volunteerMessage(recipientId, text) {
     text = text || "";
+    text = text.toLowerCase();
     var values = text.split(' ');
     if (values[0] === 'volunteer') {
       var youAre = "You are volunteer ";
@@ -200,6 +202,7 @@ function volunteerMessage(recipientId, text) {
 
 function greetingsMessage(recipientId, text) {
     text = text || "";
+    text = text.toLowerCase();
     var values = text.split(' ');
     if (values[0] === 'hello' || values[0] === 'hi' || values[0] === 'hey') {
             sendMessage(recipientId, {text: "Greetings human, I am the luzDeploy bot. I was created by CMU's HCI team at the biglab! My job is to help you make the world a better place for the handicap. Please tell me which volunteer are you? By writing 'volunteer <number>' (for todays deployment there are only volunteers one two and three)"});
@@ -229,8 +232,9 @@ function instructionsMessage(recipientId, text) {
 };
 function DoneMessage(recipientId, text) {
     text = text || "";
+    text = text.toLowerCase();
     var values = text.split(' ');
-    if (values[0] === "I'm" || values[1] === 'done' || values[2] === ':)') {
+    if (values[0] === "i'm" || values[1] === 'done' || values[2] === ':)') {
             sendMessage(recipientId, {text: "Thank you very much!\nYou just helped by giving light to the visually impaired.\n\nI am still in research phase, please answer this survey so i can become better at helping.\n\n"+ "https://docs.google.com/forms/d/1hcwB18hnyniWFUQAQDm2MSMdlQQL4QYOG_Md9eFsQnE/viewform"});
             return true;
     }
