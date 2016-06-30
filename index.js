@@ -186,7 +186,7 @@ function volunteerMessage(recipientId, text) {
                                 "title": "Show Image"
                                 }, {
                                 "type": "postback",
-                                "title": "I got it",
+                                "title": "I'm done :)",
                                 "payload": "User " + recipientId + " likes kitten " + imageUrl,
                             }]
                         }]
