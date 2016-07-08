@@ -299,8 +299,8 @@ function managerMessage(recipientId, text) {
                           type: "postback",
                           title: "Call Postback",
                           payload: "Payload for second bubble",
-                        }
-                      }           ]
+                        }]
+                      } ]
                     }
                 }
             };
