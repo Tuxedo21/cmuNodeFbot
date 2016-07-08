@@ -27,7 +27,7 @@ app.post('/webhook', function (req, res) {
                 mapMessage(event.sender.id, event.message.text);
                 volunteerMessage(event.sender.id, event.message.text);
                 greetingsMessage(event.sender.id, event.message.text);
-                //instructionsMessage(event.sender.id, event.message.text);
+                instructionsMessage(event.sender.id, event.message.text);
                 DoneMessage(event.sender.id, event.message.text);
                 managerMessage(event.sender.id, event.message.text);
                 //sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text });
@@ -320,8 +320,8 @@ function managerMessage(recipientId, text) {
                     }
                 }
             };
-            sendMessage(recipientId, message);
             instructionsMessage(recipientId,values[1]);
+            sendMessage(recipientId, message);
             return true;
     }
     return false;
