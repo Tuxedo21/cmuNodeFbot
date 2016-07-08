@@ -213,10 +213,10 @@ function greetingsMessage(recipientId, text) {
 function instructionsMessage(recipientId, text) {
     if (text === 'one' || text === 'two' || text === 'three'
     || text === '1' || text === '2' || text === '3' || text === '4' || text === '5' || text === 'five' || text === 'four') {
-      var message = "x";
-      var messagetwo = "y";
-      var messagethree = "z";
-      var messagefour = "w"
+      var message = "";
+      var messagetwo = "";
+      var messagethree = "";
+      var messagefour = ""
             if(text === 'three' || text === '3'){
               //three red
                message = "You will be placing beacons.\n Place a beacon where you see a red square on your map as high as you can and always on the wall.";
@@ -242,7 +242,7 @@ function instructionsMessage(recipientId, text) {
              messagefour =" If their is a beacon missing PLEASE send me a picture of where it should be so i know. If that is not enough, well read it again. And if that still is not enough, don't complain you have a body and a mind! You can figure it out."
             }
 
-            sendMessage(recipientId, {text: "Your Instruccions:\n" + message});
+            sendMessage(recipientId, {text: message});
             sendMessage(recipientId, {text: messagetwo});
             sendMessage(recipientId, {text: messagethree});
             sendMessage(recipientId, {text: messagefour});
