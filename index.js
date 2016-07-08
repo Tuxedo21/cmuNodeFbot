@@ -27,7 +27,7 @@ app.post('/webhook', function (req, res) {
                 mapMessage(event.sender.id, event.message.text);
                 volunteerMessage(event.sender.id, event.message.text);
                 greetingsMessage(event.sender.id, event.message.text);
-                instructionsMessage(event.sender.id, event.message.text);
+                //instructionsMessage(event.sender.id, event.message.text);
                 DoneMessage(event.sender.id, event.message.text);
                 managerMessage(event.sender.id, event.message.text);
                 //sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text });
@@ -243,13 +243,7 @@ function instructionsMessage(recipientId, text) {
             }
 
             sendMessage(recipientId, {text: message});
-            setTimeout(function() {
-  console.log('hello world!');
-}, 5000);
             sendMessage(recipientId, {text: messagetwo});
-            setTimeout(function() {
-  console.log('hello world!');
-}, 5000);
             sendMessage(recipientId, {text: messagethree});
             sendMessage(recipientId, {text: messagefour});
             return true;
