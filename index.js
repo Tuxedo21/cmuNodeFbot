@@ -214,7 +214,7 @@ function instructionsMessage(recipientId, text) {
     if (text === 'one' || text === 'two' || text === 'three'
     || text === '1' || text === '2' || text === '3' || text === '4' || text === '5' || text === 'five' || text === 'four') {
       var message = "x";
-      var messagetwo = "";
+      var messagetwo = "y";
       var messagethree = "z";
             if(text === 'three' || text === '3'){
               //three red
@@ -222,11 +222,7 @@ function instructionsMessage(recipientId, text) {
             }
             else if(text === 'two' || text === '2'){
             //two blue
-            //var message = "You will be placing beacons.\n Place a beacon where you see a blue square on your map as high as you can and always on the wall.";
-             message = "The visually impaired need your help. Your task will be of battery beacon maintenance. These beacons are their eyes. Sometimes the can go out. We need you to make sure they are not out."
-             //messagetwo =  "The instructions are simple. Use the map provided to find the beacons you will work with. Once you found a beacon please take the beacon down, open it and replace or place a battery in it."
-             //messagethree = "Then send me the four digit code on the back of the beacon please. If you need some more help on how to do this, please use the images provided. If their is a beacon missing PLEASE send me a picture of where it should be so i know. If that is not enough, well read it again. And if that still is not enough, don't complain you have a body and a mind! You can figure it out."
-
+           message = "You will be placing beacons.\n Place a beacon where you see a blue square on your map as high as you can and always on the wall.";
             }
             else if(text === 'one' || text === '1'){
             //one pink
@@ -244,7 +240,9 @@ function instructionsMessage(recipientId, text) {
 
             }
 
-            sendMessage(recipientId, {text: "Your Instruccions:\n" + message + messagetwo + messagethree});
+            sendMessage(recipientId, {text: "Your Instruccions:\n" + message});
+            sendMessage(recipientId, {text: messagetwo});
+            sendMessage(recipientId, {text: messagethree});
             return true;
     }
     return false;
