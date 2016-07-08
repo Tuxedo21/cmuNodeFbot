@@ -219,27 +219,27 @@ function instructionsMessage(recipientId, text) {
       var messagefour = ""
             if(text === 'three' || text === '3'){
               //three red
-               message = "You will be placing beacons.\n Place a beacon where you see a red square on your map as high as you can and always on the wall.";
+              var message = "You will be placing beacons.\n Place a beacon where you see a red square on your map as high as you can and always on the wall.";
             }
             else if(text === 'two' || text === '2'){
             //two blue
-           message = "You will be placing beacons.\n Place a beacon where you see a blue square on your map as high as you can and always on the wall.";
+          var message = "You will be placing beacons.\n Place a beacon where you see a blue square on your map as high as you can and always on the wall.";
             }
             else if(text === 'one' || text === '1'){
             //one pink
-             message = "You will be placing tape on the floor.\nPlace a small peace of tape from the the first beacon in a hallway every meter. Please repeat this for each hallway. For today there are four in total. At the end it should look a little like the map given to you.";
+            var message = "You will be placing tape on the floor.\nPlace a small pice of tape from the the first beacon in a hallway every meter. Please repeat this for each hallway. For today there are four in total. At the end it should look a little like the map given to you.";
             }
             else if(text === 'four' || text === '4'){
-               message = "The visually impaired need your help. Your task will be of battery beacon maintenance. These beacons are their eyes. Sometimes the can go out. We need you to make sure they are not out."
-               messagetwo =  "The instructions are simple. Use the map provided to find the beacons you will work with. Once you found a beacon please take the beacon down, open it and replace or place a battery in it."
-               messagethree = "Then send me the four digit code on the back of the beacon please. If you need some more help on how to do this, please use the images provided."
-               messagefour =" If their is a beacon missing PLEASE send me a picture of where it should be so i know. If that is not enough, well read it again. And if that still is not enough, don't complain you have a body and a mind! You can figure it out."
+              var message = "The visually impaired need your help. Your task will be of battery beacon maintenance. These beacons are their eyes. Sometimes the can go out. We need you to make sure they are not out."
+              var messagetwo =  "The instructions are simple. Use the map provided to find the beacons you will work with. Once you found a beacon please take the beacon down, open it and replace or place a battery in it."
+              var messagethree = "Then send me the four digit code on the back of the beacon please. If you need some more help on how to do this, please use the images provided."
+              var messagefour =" If their is a beacon missing PLEASE send me a picture of where it should be so i know. If that is not enough, well read it again. And if that still is not enough, don't complain you have a body and a mind! You can figure it out."
             }
             else if(text === 'five' || text === '5'){
-             message = "The visually impaired need your help. Your task will be of battery beacon maintenance. These beacons are their eyes. Sometimes the can go out. We need you to make sure they are not out."
-             messagetwo =  "The instructions are simple. Use the map provided to find the beacons you will work with. Once you found a beacon please take the beacon down, open it and replace or place a battery in it."
-             messagethree = "Then send me the four digit code on the back of the beacon please. If you need some more help on how to do this, please use the images provided."
-             messagefour =" If their is a beacon missing PLEASE send me a picture of where it should be so i know. If that is not enough, well read it again. And if that still is not enough, don't complain you have a body and a mind! You can figure it out."
+             var message = "The visually impaired need your help. Your task will be of battery beacon maintenance. These beacons are their eyes. Sometimes the can go out. We need you to make sure they are not out."
+             var messagetwo =  "The instructions are simple. Use the map provided to find the beacons you will work with. Once you found a beacon please take the beacon down, open it and replace or place a battery in it."
+             var messagethree = "Then send me the four digit code on the back of the beacon please. If you need some more help on how to do this, please use the images provided."
+             var messagefour = "If their is a beacon missing PLEASE send me a picture of where it should be so i know. If that is not enough, well read it again. And if that still is not enough, don't complain you have a body and a mind! You can figure it out."
             }
 
              sendMessage(recipientId, {text: message});
@@ -287,17 +287,13 @@ function managerMessage(recipientId, text) {
                         "template_type": "generic",
                         "elements": [{
                             "title": "Work Map",
-                            "subtitle": youAre + values[1] + ", your tasks today are part of beacon deployment.",
+                            "subtitle": youAre + values[1] + ", your tasks today are part of beacon deployment." + "When done please write: I'm done :)",
                             "image_url": imageUrl ,
                             "buttons": [{
                                 "type": "web_url",
                                 "url": imageUrl,
                                 "title": "Show Image"
-                                }, {
-                                "type": "postback",
-                                "title": "Write: I'm done :)",
-                                "payload": "User " + recipientId + " likes kitten " + imageUrl,
-                            }]
+                                }]
                         },{
                         title: "help one",
                         subtitle: "The beacon exploded view",
