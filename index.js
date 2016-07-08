@@ -290,46 +290,31 @@ function managerMessage(recipientId, text) {
                         },{
                         title: "help one",
                         subtitle: "The beacon exploded view",
-                        item_url: "https://www.oculus.com/en-us/touch/",
                         image_url: explodeImageUrl,
                         buttons: [{
                           type: "web_url",
                           url: explodeImageUrl,
                           title: "Show Image"
-                        }, {
-                          type: "postback",
-                          title: "Call Postback",
-                          payload: "Payload for second bubble",
                         }]
                       },
                       {
                       title: "help two",
                       subtitle: "The best way to open a beacon",
-                      item_url: "https://www.oculus.com/en-us/touch/",
                       image_url: nailImageUrl,
                       buttons: [{
                         type: "web_url",
                         url: nailImageUrl,
                         title: "Show Image"
-                      }, {
-                        type: "postback",
-                        title: "Call Postback",
-                        payload: "Payload for second bubble",
                       }]
                     },
                     {
                     title: "help three",
                     subtitle: "The sides of the battery",
-                    item_url: "https://www.oculus.com/en-us/touch/",
                     image_url: sideImageUrl,
                     buttons: [{
                       type: "web_url",
                       url: sideImageUrl,
                       title: "Show Image"
-                    }, {
-                      type: "postback",
-                      title: "Call Postback",
-                      payload: "Payload for second bubble",
                     }]
                   }
 
