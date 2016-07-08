@@ -243,7 +243,13 @@ function instructionsMessage(recipientId, text) {
             }
 
             sendMessage(recipientId, {text: message});
+            setTimeout(function() {
+  console.log('hello world!');
+}, 5000);
             sendMessage(recipientId, {text: messagetwo});
+            setTimeout(function() {
+  console.log('hello world!');
+}, 5000);
             sendMessage(recipientId, {text: messagethree});
             sendMessage(recipientId, {text: messagefour});
             return true;
