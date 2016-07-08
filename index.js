@@ -228,23 +228,27 @@ function instructionsMessage(recipientId, text) {
             //one pink
             var message = "You will be placing tape on the floor.\nPlace a small pice of tape from the the first beacon in a hallway every meter. Please repeat this for each hallway. For today there are four in total. At the end it should look a little like the map given to you.";
             }
-            else if(text === 'four' || text === '4'){
+            else if(text === 'four' || text === '4' || text === 'five' || text === '5'){
               var message = "The visually impaired need your help. Your task will be of battery beacon maintenance. These beacons are their eyes. Sometimes the can go out, we need you to make sure they are not out."
               var messagetwo =  "The instructions are simple. Use the map provided to find the beacons you will work with. Once you found a beacon please take the beacon down, open it and replace or place a battery in it."
               var messagethree = "Then send me the four digit code on the back of the beacon please. If you need some more help on how to do this, please use the images provided."
               var messagefour =" If their is a beacon missing PLEASE send me a picture of where it should be so i know. If that is not enough, well read it again. And if that still is not enough, don't complain you have a body and a mind! You can figure it out."
             }
-            else if(text === 'five' || text === '5'){
-             var message = "The visually impaired need your help. Your task will be of battery beacon maintenance. These beacons are their eyes. Sometimes the can go out, we need you to make sure they are not out."
-             var messagetwo =  "The instructions are simple. Use the map provided to find the beacons you will work with. Once you found a beacon please take the beacon down, open it and replace or place a battery in it."
-             var messagethree = "Then send me the four digit code on the back of the beacon please. If you need some more help on how to do this, please use the images provided."
-             var messagefour = "If their is a beacon missing PLEASE send me a picture of where it should be so i know. If that is not enough, well read it again. And if that still is not enough, don't complain you have a body and a mind! You can figure it out."
-            }
+            // else if(text === 'five' || text === '5'){
+            //  var message = "The visually impaired need your help. Your task will be of battery beacon maintenance. These beacons are their eyes. Sometimes the can go out, we need you to make sure they are not out."
+            //  var messagetwo =  "The instructions are simple. Use the map provided to find the beacons you will work with. Once you found a beacon please take the beacon down, open it and replace or place a battery in it."
+            //  var messagethree = "Then send me the four digit code on the back of the beacon please. If you need some more help on how to do this, please use the images provided."
+            //  var messagefour = "If their is a beacon missing PLEASE send me a picture of where it should be so i know. If that is not enough, well read it again. And if that still is not enough, don't complain you have a body and a mind! You can figure it out."
+            // }
 
              sendMessage(recipientId, {text: message});
+
              sendMessage(recipientId, {text: messagetwo});
+
              sendMessage(recipientId, {text: messagethree});
+
              sendMessage(recipientId, {text: messagefour});
+
             return true;
     }
     return false;
