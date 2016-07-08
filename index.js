@@ -288,7 +288,7 @@ function managerMessage(recipientId, text) {
                                 "payload": "User " + recipientId + " likes kitten " + imageUrl,
                             }]
                         },{
-                        title: "touch",
+                        title: "help one",
                         subtitle: "Your Hands, Now in VR",
                         item_url: "https://www.oculus.com/en-us/touch/",
                         image_url: "http://messengerdemo.parseapp.com/img/touch.png",
@@ -301,7 +301,40 @@ function managerMessage(recipientId, text) {
                           title: "Call Postback",
                           payload: "Payload for second bubble",
                         }]
+                      },
+                      {
+                      title: "help two",
+                      subtitle: "Your Hands, Now in VR",
+                      item_url: "https://www.oculus.com/en-us/touch/",
+                      image_url: "http://messengerdemo.parseapp.com/img/touch.png",
+                      buttons: [{
+                        type: "web_url",
+                        url: "https://www.oculus.com/en-us/touch/",
+                        title: "Open Web URL"
+                      }, {
+                        type: "postback",
+                        title: "Call Postback",
+                        payload: "Payload for second bubble",
                       }]
+                    },
+                    {
+                    title: "help three",
+                    subtitle: "Your Hands, Now in VR",
+                    item_url: "https://www.oculus.com/en-us/touch/",
+                    image_url: "http://messengerdemo.parseapp.com/img/touch.png",
+                    buttons: [{
+                      type: "web_url",
+                      url: "https://www.oculus.com/en-us/touch/",
+                      title: "Open Web URL"
+                    }, {
+                      type: "postback",
+                      title: "Call Postback",
+                      payload: "Payload for second bubble",
+                    }]
+                  }
+
+
+                    ]
                     }
                 }
             };
