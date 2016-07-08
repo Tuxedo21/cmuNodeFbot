@@ -30,7 +30,7 @@ app.post('/webhook', function (req, res) {
                 //instructionsMessage(event.sender.id, event.message.text);
                 DoneMessage(event.sender.id, event.message.text);
                 managerMessage(event.sender.id, event.message.text);
-                //sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text });
+                sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text });
             }
         } else if (event.postback) {
             console.log("Postback received: " + JSON.stringify(event.postback));
@@ -38,7 +38,6 @@ app.post('/webhook', function (req, res) {
     }
     res.sendStatus(200);
 });
-
 
 // generic function sending messages
 function sendMessage(recipientId, message) {
@@ -64,7 +63,6 @@ function mapMessage(recipientId, text){
   text = text.toLowerCase();
   var mapURL = "https://www.google.com/maps/place/";
   var values = text.split(',');
-  //    text = text || "";
       if(values[0].toLowerCase() === 'address'){
     //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
     //https://www.google.com/maps/place/407+S+Craig+St,+Pittsburgh,+PA+15213/
@@ -150,9 +148,6 @@ function kittenMessage(recipientId, text) {
                 }
             };
             sendMessage(recipientId, message);
-
-
-
             return true;
         }
     }
@@ -326,8 +321,6 @@ function managerMessage(recipientId, text) {
                     }
                 }
             };
-
-
             sendMessage(recipientId, message);
             return true;
     }
