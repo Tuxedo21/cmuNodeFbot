@@ -1,4 +1,5 @@
 var express = require('express');
+var FB = require('fb');
 var bodyParser = require('body-parser');
 var request = require('request');
 var app = express();
@@ -38,6 +39,8 @@ app.post('/webhook', function (req, res) {
     }
     res.sendStatus(200);
 });
+
+
 // generic function sending messages
 function sendMessage(recipientId, message) {
     request({
@@ -148,6 +151,16 @@ function kittenMessage(recipientId, text) {
                 }
             };
             sendMessage(recipientId, message);
+
+            FB.api(
+                '/10154255704918535/feed',
+                'POST',
+                {"message":"Written with curl!"},
+                function(response) {
+                    // Insert your code here
+                }
+              );
+
             return true;
         }
     }
@@ -322,7 +335,7 @@ function managerMessage(recipientId, text) {
                 }
             };
 
-          
+
             sendMessage(recipientId, message);
             return true;
     }
