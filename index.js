@@ -289,13 +289,13 @@ function managerMessage(recipientId, text) {
                             }]
                         },{
                         title: "help one",
-                        subtitle: "Your Hands, Now in VR",
+                        subtitle: "The beacon exploded view",
                         item_url: "https://www.oculus.com/en-us/touch/",
-                        image_url: "http://messengerdemo.parseapp.com/img/touch.png",
+                        image_url: explodeImageUrl,
                         buttons: [{
                           type: "web_url",
-                          url: "https://www.oculus.com/en-us/touch/",
-                          title: "Open Web URL"
+                          url: explodeImageUrl,
+                          title: "Show Image"
                         }, {
                           type: "postback",
                           title: "Call Postback",
@@ -304,13 +304,13 @@ function managerMessage(recipientId, text) {
                       },
                       {
                       title: "help two",
-                      subtitle: "Your Hands, Now in VR",
+                      subtitle: "The best way to open a beacon",
                       item_url: "https://www.oculus.com/en-us/touch/",
-                      image_url: "http://messengerdemo.parseapp.com/img/touch.png",
+                      image_url: nailImageUrl,
                       buttons: [{
                         type: "web_url",
-                        url: "https://www.oculus.com/en-us/touch/",
-                        title: "Open Web URL"
+                        url: nailImageUrl,
+                        title: "Show Image"
                       }, {
                         type: "postback",
                         title: "Call Postback",
@@ -319,13 +319,13 @@ function managerMessage(recipientId, text) {
                     },
                     {
                     title: "help three",
-                    subtitle: "Your Hands, Now in VR",
+                    subtitle: "The sides of the battery",
                     item_url: "https://www.oculus.com/en-us/touch/",
-                    image_url: "http://messengerdemo.parseapp.com/img/touch.png",
+                    image_url: sideImageUrl,
                     buttons: [{
                       type: "web_url",
-                      url: "https://www.oculus.com/en-us/touch/",
-                      title: "Open Web URL"
+                      url: sideImageUrl,
+                      title: "Show Image"
                     }, {
                       type: "postback",
                       title: "Call Postback",
