@@ -211,10 +211,7 @@ function greetingsMessage(recipientId, text) {
     return false;
 };
 function instructionsMessage(recipientId, text) {
-    if (text === 'one' || text === 'two' || text === 'three'
-    || text === '1' || text === '2' || text === '3'
-    || text === '4' || text === '5'
-    || text === 'five' || text === 'four') {
+    if (text === '4' || text === '5' || text === 'five' || text === 'four') {
       var message = "";
             if(text === 'three' || text === '3'){
               //three red
