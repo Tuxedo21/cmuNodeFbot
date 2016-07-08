@@ -248,7 +248,7 @@ function instructionsMessage(recipientId, text) {
 
              sendMessage(recipientId, {text: messagethree});
 
-             sendMessage(recipientId, {text: messagefour});
+             sendMessage(recipientId, {text: messagefour + "When done please say I'm done :)"});
 
             return true;
     }
@@ -258,7 +258,7 @@ function DoneMessage(recipientId, text) {
     text = text || "";
     text = text.toLowerCase();
     var values = text.split(' ');
-    if (values[0] === "i'm" || values[1] === 'done' || values[2] === ':)') {
+    if (values[0] === "I'm" || values[1] === 'done' || values[2] === ':)') {
             sendMessage(recipientId, {text: "Thank you very much!\nYou just helped by giving light to the visually impaired.\n\nI am still in research phase, please answer this survey so i can become better at helping.\n\n"+ "https://docs.google.com/forms/d/1hcwB18hnyniWFUQAQDm2MSMdlQQL4QYOG_Md9eFsQnE/viewform"});
             return true;
     }
@@ -291,7 +291,7 @@ function managerMessage(recipientId, text) {
                         "template_type": "generic",
                         "elements": [{
                             "title": "Work Map",
-                            "subtitle": youAre + values[1] + ", your tasks today are part of beacon deployment." + "When done please write: I'm done :)",
+                            "subtitle": youAre + values[1] + ", your tasks today are part of beacon management.",
                             "image_url": imageUrl ,
                             "buttons": [{
                                 "type": "web_url",
