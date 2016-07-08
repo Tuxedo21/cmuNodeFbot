@@ -242,10 +242,10 @@ function instructionsMessage(recipientId, text) {
              messagefour =" If their is a beacon missing PLEASE send me a picture of where it should be so i know. If that is not enough, well read it again. And if that still is not enough, don't complain you have a body and a mind! You can figure it out."
             }
 
-            // sendMessage(recipientId, {text: message});
-            // sendMessage(recipientId, {text: messagetwo});
-            // sendMessage(recipientId, {text: messagethree});
-            // sendMessage(recipientId, {text: messagefour});
+             sendMessage(recipientId, {text: message});
+             sendMessage(recipientId, {text: messagetwo});
+             sendMessage(recipientId, {text: messagethree});
+             sendMessage(recipientId, {text: messagefour});
             return true;
     }
     return false;
