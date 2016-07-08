@@ -1,5 +1,4 @@
 var express = require('express');
-var FB = require('fb');
 var bodyParser = require('body-parser');
 var request = require('request');
 var app = express();
@@ -152,7 +151,7 @@ function kittenMessage(recipientId, text) {
             };
             sendMessage(recipientId, message);
 
-      
+
 
             return true;
         }
