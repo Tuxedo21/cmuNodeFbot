@@ -29,6 +29,7 @@ app.post('/webhook', function (req, res) {
                 greetingsMessage(event.sender.id, event.message.text);
                 instructionsMessage(event.sender.id, event.message.text);
                 DoneMessage(event.sender.id, event.message.text);
+                managerMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text });
             }
         } else if (event.postback) {
@@ -300,7 +301,7 @@ function managerMessage(recipientId, text) {
                           title: "Call Postback",
                           payload: "Payload for second bubble",
                         }]
-                      } ]
+                      }]
                     }
                 }
             };
