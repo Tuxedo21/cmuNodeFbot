@@ -152,14 +152,7 @@ function kittenMessage(recipientId, text) {
             };
             sendMessage(recipientId, message);
 
-            FB.api(
-                '/10154255704918535/feed',
-                'POST',
-                {"message":"Written with curl!"},
-                function(response) {
-                    // Insert your code here
-                }
-              );
+      
 
             return true;
         }
