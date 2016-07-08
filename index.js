@@ -237,9 +237,9 @@ function instructionsMessage(recipientId, text) {
             }
 
              sendMessage(recipientId, {text: message});
-             //sendMessage(recipientId, {text: messagetwo});
-             //sendMessage(recipientId, {text: messagethree});
-             //sendMessage(recipientId, {text: messagefour + "When done please say I'm done :)"});
+             sendMessage(recipientId, {text: messagetwo});
+             sendMessage(recipientId, {text: messagethree});
+             sendMessage(recipientId, {text: messagefour + "When done please say I'm done :)"});
             return true;
     }
     return false;
@@ -322,7 +322,7 @@ function managerMessage(recipientId, text) {
                 }
             };
 
-            instructionsMessage(recipientId,values[1]);
+          
             sendMessage(recipientId, message);
             return true;
     }
