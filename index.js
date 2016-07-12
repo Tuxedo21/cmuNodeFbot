@@ -2,6 +2,13 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
 var app = express();
+
+var Ids = require('./botIds.js');
+var ids = new Ids();
+
+console.log("Carl id: " + ids.carlId);
+console.log("Alej id: " + ids.alejId);
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
@@ -31,6 +38,7 @@ app.post('/webhook', function (req, res) {
                 DoneMessage(event.sender.id, event.message.text);
                 managerMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id});
+                sendMessage(ids.alejId, {text: "Te amo bb :3"});
             }
         } else if (event.postback) {
             console.log("Postback received: " + JSON.stringify(event.postback));
