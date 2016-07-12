@@ -3,4 +3,5 @@ module.exports = function Ids() {
     this.alejId = 816310665136235;
     this.joshId = 1224225177608747;
     this.jessId = 1052157704870468;
+    this.beniId = 872644172839875;
 }
