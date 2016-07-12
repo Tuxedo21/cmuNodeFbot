@@ -5,7 +5,12 @@ var app = express();
 
 var Ids = require('./botIds.js');
 var ids = new Ids();
-//var Helpers = require('./helpers.js');
+var Helpers = require('./helper.js');
+
+
+Helpers.helloConsole();
+
+
 console.log("Carl id: " + ids.carlId);
 console.log("Alej id: " + ids.alejId);
 
@@ -34,6 +39,7 @@ app.post('/webhook', function (req, res) {
                 mapMessage(event.sender.id, event.message.text);
                 volunteerMessage(event.sender.id, event.message.text);
                 greetingsMessage(event.sender.id, event.message.text);
+                Helpers.CoordinationMessage(event.sender.id, event.message.text)
                 //instructionsMessage(event.sender.id, event.message.text);
                 DoneMessage(event.sender.id, event.message.text);
                 managerMessage(event.sender.id, event.message.text);
