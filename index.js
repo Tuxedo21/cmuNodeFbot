@@ -30,7 +30,7 @@ app.post('/webhook', function (req, res) {
                 //instructionsMessage(event.sender.id, event.message.text);
                 DoneMessage(event.sender.id, event.message.text);
                 managerMessage(event.sender.id, event.message.text);
-                sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text });
+                sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " recipientId});
             }
         } else if (event.postback) {
             console.log("Postback received: " + JSON.stringify(event.postback));
@@ -140,7 +140,7 @@ function kittenMessage(recipientId, text) {
                                 "title": "Show kitten"
                                 }, {
                                 "type": "postback",
-                                "title": "I like this" + recipientId,
+                                "title": "I like this " + recipientId,
                                 "payload": "User " + recipientId + " likes kitten " + imageUrl,
                             }]
                         }]
