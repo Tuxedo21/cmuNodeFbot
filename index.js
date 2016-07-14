@@ -6,6 +6,7 @@ var app = express();
 var Ids = require('./botIds.js');
 var ids = new Ids();
 var Helpers = require('./helper.js');
+var ReadData = require('./readData.js');
 
 Helpers.helloConsole();
 
@@ -43,6 +44,7 @@ app.post('/webhook', function (req, res) {
                 managerMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id});
               if(event.sender.id == ids.carlId){
+                  var data = ReadData.readData();
                   sendMessage(ids.beniId,{text: "Hey buddy!"});
                 }
             }
