@@ -48,7 +48,7 @@ app.post('/webhook', function (req, res) {
               if(event.sender.id == ids.carlId){
                   ReadData.writeData(event.message.text + ":");
                   var data = ReadData.readData()
-                  sendMessage(ids.beniId,{text: "Hey buddy!" + });
+                  sendMessage(ids.beniId,{text: "Hey buddy!" + data});
                 }
             }
         } else if (event.postback) {
