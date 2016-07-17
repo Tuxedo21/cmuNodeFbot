@@ -1,6 +1,6 @@
 module.exports = function Instructions() {
     //Placing Beacons
-    this.placeBeacons = "You will be placing beacons.\n Place a beacon where you see a red square and a number inside on your map as high as you can and always on the wall.";
+    this.placeBeacons = " You will be placing beacons.\n Place a beacon where you see a red square and a number inside on your map as high as you can and always on the wall.";
     this.numBeacons = "Only place the beacons that are assigned to you. When you have placed a beacon please tell me the number of the beacon (number in the red square) and the serial code on the back of the beacon (four digit code, this is case sensitive). With the following format: [17, xF5r]. ";
     //Battery Maintenance
     this.firstBatt = "Your task will be beacon maintenance. Use the map provided to you to find the beacons you will work with and the range given to you. Once you have found your first beacon please take the beacon down, open it and replace or place a battery in it.";
