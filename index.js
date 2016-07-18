@@ -65,6 +65,16 @@ function startASMessage(recipientId, text){
   text = text.toLowerCase();
   var values = text.split(',');
       if(values[0].toLowerCase() === 'startas'){
+        if(values.length == 5){
+          jsonContent.timePerTask = values[1];
+          fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
+          jsonContent.numOfTask = values[2];
+          fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
+          jsonContent.volunteers = values[3];
+          fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
+          jsonContent.askTime = values[4];
+          fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
+        }
   // startas, 1, 120, 3, 5
           for (var i = 0; i < values[4]; i++) {
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "Instructions"});
@@ -94,8 +104,6 @@ function volunteerEventMessage(recipientId, text){
         //Modify JSON!!
         jsonContent.workPool = jsonContent.workPool - 1;
         fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
-
-
         return true;
       }
     }
