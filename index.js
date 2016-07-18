@@ -93,7 +93,7 @@ function volunteerEventMessage(recipientId, text){
         //change the value in the in-memory object
         jsonContent.volunteers = 42;
         //Serialize as JSON and Write it to a file
-        fs.writeFileSync(botData.json, JSON.stringify(jsonContent));
+        fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
         return true;
       }
     }
