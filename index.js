@@ -11,7 +11,6 @@ var ReadData = require('./readData.js');
 //Helpers.helloConsole();
 //ReadData.readData()
 
-
 console.log("Carl id: " + ids.carlId);
 console.log("Alej id: " + ids.alejId);
 
@@ -46,13 +45,7 @@ app.post('/webhook', function (req, res) {
                 managerMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id});
               if(event.sender.id == ids.carlId){
-
-                  var data = ReadData.readData();
-                  sendMessage(ids.beniId,{text: "Hey buddy! " + data + event.message.text});
-                  sendMessage(ids.bajId,{text: "Hey buddy! " + data + event.message.text});
-                  sendMessage(ids.estId,{text: "Hey buddy! " + data + event.message.text});
-                  sendMessage(ids.zamId,{text: "Hey buddy! " + data + event.message.text});
-                  sendMessage(ids.jorId,{text: "Hey buddy! " + data + event.message.text});
+                  startASMessage(event.sender.id, event.message.text);
                 }
             }
         } else if (event.postback) {
@@ -61,6 +54,32 @@ app.post('/webhook', function (req, res) {
     }
     res.sendStatus(200);
 });
+
+
+//====================
+
+function startASMessage(recipientId, text){
+  text = text || "";
+  text = text.toLowerCase();
+  var values = text.split(',');
+      if(values[0].toLowerCase() === 'startas'){
+
+  // “timePerTask” : 1,
+  // “NumOfTask” : 120,
+  // “volunteers” : 3,
+  // “askTime” : 5
+
+          for (var i = 1; i < values[4]; i++) {
+            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1)});
+          }
+
+          return true;
+       }
+     return false;
+};
+
+//====================
+
 
 // generic function sending messages
 function sendMessage(recipientId, message) {
