@@ -75,7 +75,7 @@ function startASMessage(recipientId, text){
           jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
 
-          sendMessage(recipientId, {text: "volunteers:" +jsonContent.volunteers + });
+          sendMessage(recipientId, {text: "volunteers: " + jsonContent.volunteers});
         }
             // startas, 1, 120, 3, 5
           for (var i = 0; i < values[4]; i++) {
