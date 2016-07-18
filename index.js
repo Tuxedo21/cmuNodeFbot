@@ -81,8 +81,9 @@ function volunteerEvent(recipientId, text){
   if (values[0] === 'd' || values[0] === 'done'){
         sendMessage(recipientId, {text: "Thank you" + arrayOfIds });
         //Modify JSON!!
+        return true;
     }
-
+    return false;
 }
 
 // generic function sending messages
