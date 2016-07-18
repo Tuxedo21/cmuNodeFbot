@@ -37,11 +37,6 @@ app.post('/webhook', function (req, res) {
         var event = events[i];
         if (event.message && event.message.text) {
             if (!kittenMessage(event.sender.id, event.message.text)){
-                mapMessage(event.sender.id, event.message.text);
-                volunteerMessage(event.sender.id, event.message.text);
-                greetingsMessage(event.sender.id, event.message.text);
-                //Helpers.CoordinationMessage(event.sender.id, event.message.text)
-                //instructionsMessage(event.sender.id, event.message.text);
                 DoneMessage(event.sender.id, event.message.text);
                 managerMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id});
