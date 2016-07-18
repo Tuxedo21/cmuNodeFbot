@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
+var fs = require("fs")
 var app = express();
 
 var Ids = require('./botIds.js');
@@ -38,7 +39,7 @@ app.post('/webhook', function (req, res) {
         if (event.message && event.message.text) {
             if (!kittenMessage(event.sender.id, event.message.text)){
 
-                volunteerEvent(event.sender.id, event.message.text);
+                volunteerEventMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id});
               if(event.sender.id == ids.carlId){
                   startASMessage(event.sender.id, event.message.text);
@@ -66,7 +67,7 @@ function startASMessage(recipientId, text){
      return false;
 };
 
-function volunteerEvent(recipientId, text){
+function volunteerEventMessage(recipientId, text){
   text = text || "";
   text = text.toLowerCase();
   var values = text.split(' ');
