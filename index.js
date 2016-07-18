@@ -55,55 +55,55 @@ app.post('/webhook', function (req, res) {
 
 //====================
 
-function startASMessage(recipientId, text){
-  text = text || "";
-  text = text.toLowerCase();
-  var values = text.split(',');
-      if(values[0].toLowerCase() === 'startas'){
-  // startas, 1, 120, 3, 5
-  // “timePerTask” : 1,
-  // “NumOfTask” : 120,
-  // “volunteers” : 3,
-  // “askTime” : 5
-          for (var i = 0; i < values[4]; i++) {
-            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1)});
-            //TODO SEND INSTRUCTIONS
-          }
-
-          AlgorithumAS.startAlgorithm(values);
-
-          return true;
-       }
-     return false;
-};
-
-//====================
-function startAlgorithm(recipientId, text, standardInput){
-  text = text.toLowerCase();
-  var values = text.split(' ');
-  //Wait for event
-
-}
-
-//====================
-
-function volunteerEvent(recipientId, text){
-  text = text || "";
-  text = text.toLowerCase();
-  var values = text.split(' ');
-
-  var contents = fs.readFileSync("botData.json");
-  var jsonContent = JSON.parse(contents);
-  var arrayOfIds;
-  for (var i = 0; i < jsonContent.volunteers; i++) {
-    arrayOfIds.push(ids.idArray[i]);
-  }
-  if ((values[0] === 'd' || values[0] === 'done') && arrayOfIds.includes(recipientId)){
-        sendMessage(recipientId, {text: "Thank you" });
-
-    }
-
-}
+// function startASMessage(recipientId, text){
+//   text = text || "";
+//   text = text.toLowerCase();
+//   var values = text.split(',');
+//       if(values[0].toLowerCase() === 'startas'){
+//   // startas, 1, 120, 3, 5
+//   // “timePerTask” : 1,
+//   // “NumOfTask” : 120,
+//   // “volunteers” : 3,
+//   // “askTime” : 5
+//           for (var i = 0; i < values[4]; i++) {
+//             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1)});
+//             //TODO SEND INSTRUCTIONS
+//           }
+//
+//           AlgorithumAS.startAlgorithm(values);
+//
+//           return true;
+//        }
+//      return false;
+// };
+//
+// //====================
+// function startAlgorithm(recipientId, text, standardInput){
+//   text = text.toLowerCase();
+//   var values = text.split(' ');
+//   //Wait for event
+//
+// }
+//
+// //====================
+//
+// function volunteerEvent(recipientId, text){
+//   text = text || "";
+//   text = text.toLowerCase();
+//   var values = text.split(' ');
+//
+//   var contents = fs.readFileSync("botData.json");
+//   var jsonContent = JSON.parse(contents);
+//   var arrayOfIds;
+//   for (var i = 0; i < jsonContent.volunteers; i++) {
+//     arrayOfIds.push(ids.idArray[i]);
+//   }
+//   if ((values[0] === 'd' || values[0] === 'done') && arrayOfIds.includes(recipientId)){
+//         sendMessage(recipientId, {text: "Thank you" });
+//
+//     }
+//
+// }
 
 //====================
 
