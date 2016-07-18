@@ -69,11 +69,13 @@ function startASMessage(recipientId, text){
         if(values.length == 5){
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
-          //jsonContent.volunteers = parsInt(values[4]);
-          jsonContent.workPool = 100;
+          jsonContent.numOfTask = Number(values[1]);
+
+          jsonContent.volunteers = Number(values[4]);
+          jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
 
-          sendMessage(recipientId, {text: (Number(values[4]) + 1) + " volunteers"});
+          sendMessage(recipientId, {text: "volunteers:" +jsonContent.volunteers + });
         }
             // startas, 1, 120, 3, 5
           for (var i = 0; i < values[4]; i++) {
