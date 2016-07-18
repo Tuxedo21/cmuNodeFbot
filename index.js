@@ -37,8 +37,8 @@ app.post('/webhook', function (req, res) {
         var event = events[i];
         if (event.message && event.message.text) {
             if (!kittenMessage(event.sender.id, event.message.text)){
-                DoneMessage(event.sender.id, event.message.text);
-                managerMessage(event.sender.id, event.message.text);
+
+                volunteerEvent(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id});
               if(event.sender.id == ids.carlId){
                   startASMessage(event.sender.id, event.message.text);
@@ -65,6 +65,24 @@ function startASMessage(recipientId, text){
        }
      return false;
 };
+
+function volunteerEvent(recipientId, text){
+  text = text || "";
+  text = text.toLowerCase();
+  var values = text.split(' ');
+
+  var contents = fs.readFileSync("botData.json");
+  var jsonContent = JSON.parse(contents);
+  var arrayOfIds;
+  for (var i = 0; i < jsonContent.volunteers; i++) {
+    arrayOfIds.push(ids.idArray[i]);
+  }
+  if ((values[0] === 'd' || values[0] === 'done') && arrayOfIds.includes(recipientId)){
+        sendMessage(recipientId, {text: "Thank you" });
+        //Modify JSON!!
+    }
+
+}
 
 // generic function sending messages
 function sendMessage(recipientId, message) {
