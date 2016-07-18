@@ -76,8 +76,7 @@ function startASMessage(recipientId, text){
                     //  SEND INSTRUCTIONS
             if(values[5] === 'bm'){
                 batteryMessage(ids.idArray[i]);
-            }
-            else if (values[5] === 'bd') {
+            }else if (values[5] === 'bd') {
                 beaconMessage(ids.idArray[i]);
             } else if (values[5] === 'fp') {
               fingerprintingMessage(ids.idArray[i]);
@@ -232,52 +231,6 @@ function kittenMessage(recipientId, text) {
             sendMessage(recipientId, message);
             return true;
         }
-    }
-    return false;
-};
-
-function volunteerMessage(recipientId, text) {
-    text = text || "";
-    text = text.toLowerCase();
-    var values = text.split(' ');
-    if (values[0] === 'volunteer') {
-      var youAre = "You are volunteer ";
-      var blueImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13533270_10154272438778535_6610747476267727156_n.jpg?oh=2e6fad4cc86cc96781636a1488847e7b&oe=57FCED30";
-      var redImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13510940_10154272438783535_3809594659337214943_n.jpg?oh=b5d74bbe3c4dcde1ec137bd9ad8bb702&oe=57F1DC9B";
-      var pinkImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13439091_10154272438828535_2387518102360378023_n.jpg?oh=70b18523768bbaaf8ca7b8aabada79a7&oe=58005170";
-      if(values[1] === 'one' || values[1] === '1'){
-        var imageUrl = pinkImageUrl;
-      }else if (values[1] === 'two' || values[1] === '2'){
-          var imageUrl = blueImageUrl;
-      }else if (values[1] === 'three' || values[1] === '3') {
-          var imageUrl = redImageUrl;
-      }
-            message = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": "Work Map",
-                            "subtitle": youAre + values[1] + ", your tasks today are part of beacon deployment.",
-                            //"text":youAre + values[1] + ", your task today is to place beacons in the area show on the map. Remember the rules: bla bla ",
-                            "image_url": imageUrl ,
-                            "buttons": [{
-                                "type": "web_url",
-                                "url": imageUrl,
-                                "title": "Show Image"
-                                }, {
-                                "type": "postback",
-                                "title": "Write: I'm done :)",
-                                "payload": "User " + recipientId + " likes kitten " + imageUrl,
-                            }]
-                        }]
-                    }
-                }
-            };
-            sendMessage(recipientId, message);
-            instructionsMessage(recipientId,values[1]);
-            return true;
     }
     return false;
 };
