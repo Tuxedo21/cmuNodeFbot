@@ -79,7 +79,7 @@ function volunteerEventMessage(recipientId, text){
     arrayOfIds.push(ids.idArray[i]);
   }
   //) && arrayOfIds.includes(recipientId)
-  if (values[0] === 'd' || values[0] === 'done'){
+  if ((values[0] === 'd' || values[0] === 'done') && arrayOfIds.includes(recipientId)){
         sendMessage(recipientId, {text: "Thank you" + arrayOfIds });
         //Modify JSON!!
         return true;
