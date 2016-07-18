@@ -263,7 +263,7 @@ function fingerprintingTextMessage(recipientId){
 function fingerprintingImageMessage(recipientId){
   var linkes = Data.linkes();
   var lnks = linkes.fingerprintingLinks;
-  var blueImage = lnks.blueImage;
+  var redImage = lnks.redImage;
     message = {
       "attachment": {
       "type": "template",
@@ -272,11 +272,11 @@ function fingerprintingImageMessage(recipientId){
         "elements": [{
           "title": "Map",
           "subtitle": "Here you can see your deployment map.",
-          "item_url": blueImage,
-          "image_url": blueImage,
+          "item_url": redImage,
+          "image_url": redImage,
           "buttons": [{
             "type": "web_url",
-            "url": blueImage,
+            "url": redImage,
             "title": "Open Web URL"
           }]
         }]
