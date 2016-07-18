@@ -419,8 +419,8 @@ function beaconImageMessage(recipientId){
       "payload": {
         "template_type": "generic",
         "elements": [{
-          "title": "How to open a beacon.",
-          "subtitle": "Please try this way. People tend to not read instructions.",
+          "title": "Map",
+          "subtitle": "Here you can see your deployment map.",
           "item_url": blueImage,
           "image_url": blueImage,
           "buttons": [{
