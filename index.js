@@ -90,10 +90,12 @@ function volunteerEvent(recipientId, text){
   var contents = fs.readFileSync("botData.json");
   var jsonContent = JSON.parse(contents);
   var arrayOfIds;
-
   for (var i = 0; i < jsonContent.volunteers; i++) {
     arrayOfIds.push(ids.idArray[i]);
   }
+  text = text || "";
+  text = text.toLowerCase();
+  var values = text.split(' ');
 
   if ((values[0] === 'd' || values[0] === 'done') && arrayOfIds.includes(recipientId)){
         sendMessage(recipientId, {text: "Thank you" });
