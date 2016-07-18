@@ -82,7 +82,7 @@ function volunteerEventMessage(recipientId, text){
   }
   if (values[0] === 'd' || values[0] === 'done'){
     if(isInArray(recipientId.toString(),arrayOfIds)){
-        sendMessage(recipientId, {text: "Thank you" + jsonContent.volunteers});
+        sendMessage(recipientId, {text: "Thank you" });
         //Modify JSON!!
 
         return true;
