@@ -80,9 +80,11 @@ function volunteerEventMessage(recipientId, text){
   }
   //) && arrayOfIds.includes(recipientId)
   if (values[0] === 'd' || values[0] === 'done'){
-        sendMessage(recipientId, {text: "Thank you " + arrayOfIds });
+    if(arrayOfIds.includes(recipientId)){
+        sendMessage(recipientId, {text: "Thank you: " + arrayOfIds });
         //Modify JSON!!
         return true;
+      }
     }
     return false;
 }
