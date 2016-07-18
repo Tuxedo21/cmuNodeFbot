@@ -43,7 +43,7 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {
         var event = events[i];
         if (event.message && event.message.text) {
-            if (!kittenMessage(event.sender.id, event.message.text)){
+            if (!kittenMessage(event.sender.id, event.message.text) || !mapMessage(event.sender.id, event.message.text)){
 
                 volunteerEventMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id});
@@ -138,7 +138,7 @@ function sendMessage(recipientId, message) {
     });
 };
 
-// send rich message with kitten
+// send rich message with kitten EASTEREGG
 function mapMessage(recipientId, text){
   text = text || "";
   text = text.toLowerCase();
@@ -198,7 +198,7 @@ function mapMessage(recipientId, text){
        }
      return false;
 };
-// send rich message with kitten
+// send rich message with kitten EASTEREGG
 function kittenMessage(recipientId, text) {
     text = text || "";
     text = text.toLowerCase();
