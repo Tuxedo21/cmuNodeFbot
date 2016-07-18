@@ -63,13 +63,14 @@ app.post('/webhook', function (req, res) {
 function startASMessage(recipientId, text){
   text = text || "";
   text = text.toLowerCase();
-  var values = text.split(',');
+  var values = text.split(" ");
       if(values[0].toLowerCase() === 'startas'){
 
         if(values.length == 5){
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
-        
+          jsonContent.volunteers = parsInt(values[4]);
+          fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
           jsonContent.workPool = 100;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
         }
