@@ -7,7 +7,7 @@ var Ids = require('./botIds.js');
 var ids = new Ids();
 var Helpers = require('./helper.js');
 var ReadData = require('./readData.js');
-var AlgorithumAS = require('./algorithumAS.js')
+//var AlgorithumAS = require('./algorithumAS.js');
 
 //Helpers.helloConsole();
 //ReadData.readData()
