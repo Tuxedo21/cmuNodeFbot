@@ -16,8 +16,6 @@ var Data = require('./getData.js');
 console.log("Carl id: " + ids.carlId);
 console.log("Alej id: " + ids.alejId);
 
-
-
 // var contents = fs.readFileSync("botData.json");
 // var jsonContent = JSON.parse(contents);
 // var number = jsonContent.volunteers + 2;
@@ -25,6 +23,10 @@ console.log("Alej id: " + ids.alejId);
 // jsonContent.volunteers = 5;
 // jsonContent.timePerTask = 5;
 // fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
+
+
+//    var message = Data.texts().batteryMaintenance.batteryMaintenance1;
+//    setTimeout(function(){console.log(message);}, 2000);
 
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -78,9 +80,7 @@ function startASMessage(recipientId, text){
             // startas, 1, 120, 3, 5
           for (var i = 0; i < values[4]; i++) {
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nInstructions..."});
-          //  batteryMessage(ids.idArray[i]);
-          //  batteryImageMessage(ids.idArray[i]);
-            batteryTextMessage(ids.idArray[i]);
+            batteryMessage(ids.idArray[i]);
             //  SEND INSTRUCTIONS
           }
 
