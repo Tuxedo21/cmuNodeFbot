@@ -39,6 +39,7 @@ app.post('/webhook', function (req, res) {
             if (!kittenMessage(event.sender.id, event.message.text)){
                 volunteerMessage(event.sender.id, event.message.text);
                 volunteerEvent(event.sender.id, event.message.text);
+                sendMessage(event.sender.id, {text: "Echo " + event.message.text});
               if(event.sender.id == ids.carlId){
                   //This will update json to a starting point
                   startASMessage(event.sender.id, event.message.text);
@@ -87,16 +88,16 @@ function startAlgorithm(recipientId, text, standardInput){
 //====================
 
 function volunteerEvent(recipientId, text){
+  text = text || "";
+  text = text.toLowerCase();
+  var values = text.split(' ');
+
   var contents = fs.readFileSync("botData.json");
   var jsonContent = JSON.parse(contents);
   var arrayOfIds;
   for (var i = 0; i < jsonContent.volunteers; i++) {
     arrayOfIds.push(ids.idArray[i]);
   }
-  text = text || "";
-  text = text.toLowerCase();
-  var values = text.split(' ');
-
   if ((values[0] === 'd' || values[0] === 'done') && arrayOfIds.includes(recipientId)){
         sendMessage(recipientId, {text: "Thank you" });
 
