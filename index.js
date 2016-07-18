@@ -16,12 +16,13 @@ var ReadData = require('./readData.js');
 console.log("Carl id: " + ids.carlId);
 console.log("Alej id: " + ids.alejId);
 
-//var contents = fs.readFileSync("botData.json");
-//var jsonContent = JSON.parse(contents);
-//var number = jsonContent.volunteers + 2;
-//console.log(number);
-
-//var val1 = content.val1;
+// var contents = fs.readFileSync("botData.json");
+// var jsonContent = JSON.parse(contents);
+// var number = jsonContent.volunteers + 2;
+// console.log(number);
+// jsonContent.volunteers = 5;
+// jsonContent.timePerTask = 5;
+// fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
 
 
 app.use(bodyParser.urlencoded({extended: false}));
