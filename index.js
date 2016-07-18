@@ -66,7 +66,7 @@ function startASMessage(recipientId, text){
   text = text.toLowerCase();
   var values = text.split(" ");
       if(values[0].toLowerCase() === 'startas'){
-          //batteryImageMessage(recipientId);
+
         if(values.length == 5){
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
@@ -74,15 +74,15 @@ function startASMessage(recipientId, text){
           jsonContent.volunteers = Number(values[4]);
           jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
-
           sendMessage(recipientId, {text: "volunteers: " + jsonContent.volunteers});
-        }
             // startas, 1, 120, 3, 5
           for (var i = 0; i < values[4]; i++) {
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nInstructions..."});
+            batteryImageMessage(ids.idArray[i]);
             //  SEND INSTRUCTIONS
 
           }
+        }
           return true;
        }
      return false;
