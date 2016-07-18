@@ -71,7 +71,6 @@ function startASMessage(recipientId, text){
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
           jsonContent.numOfTask = Number(values[1]);
-
           jsonContent.volunteers = Number(values[4]);
           jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
@@ -82,6 +81,7 @@ function startASMessage(recipientId, text){
           for (var i = 0; i < values[4]; i++) {
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nInstructions..."});
             //  SEND INSTRUCTIONS
+            batteryImageMessage(recipientId);
 
           }
           return true;
@@ -400,4 +400,56 @@ function managerMessage(recipientId, text) {
             return true;
     }
     return false;
+};
+
+function batteryImageMessage(recipientId) {
+    var linkes = Data.linkes();
+    var lnks = linkes.batteryManagementLinks;
+    var youAre = "You are volunteer ";
+    var sideImageUrl = lnks.batterySides;
+    var explodeImageUrl = lnks.batteryExplode;
+    var nailImageUrl = lnks.batteryNail;
+    var imageUrl = lnks.batteryNail;
+
+      message = {
+        "attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "generic",
+          "elements": [{
+            "title": "rift",
+            "subtitle": "Next-generation virtual reality",
+            "item_url": nailImageUrl,
+            "image_url": nailImageUrl,
+            "buttons": [{
+              "type": "web_url",
+              "url": imageUrl.toString(),
+              "title": "Open Web URL"
+            }, {
+              "type": "postback",
+              "title": "Call Postback",
+              "payload": "Payload for first bubble",
+            }],
+          }, {
+            "title": "touch",
+            "subtitle": "Your Hands, Now in VR",
+            "item_url": sideImageUrl,
+            "image_url": sideImageUrl,
+            "buttons": [{
+              "type": "web_url",
+              "url": sideImageUrl,
+              "title": "Open Web URL"
+            }, {
+              "type": "postback",
+              "title": "Call Postback",
+              "payload": "Payload for second bubble",
+            }]
+          }]
+        }
+      }
+
+      };
+
+    sendMessage(recipientId, message);
+
 };
