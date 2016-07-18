@@ -76,11 +76,11 @@ function volunteerEventMessage(recipientId, text){
   var jsonContent = JSON.parse(contents);
   var arrayOfIds = [];
   for (var i = 0; i < 3; i++) {
-    arrayOfIds.push(ids.idArray[i]);
+    arrayOfIds.push(ids.idArray[i].toString());
   }
   //) && arrayOfIds.includes(recipientId)
   if (values[0] === 'd' || values[0] === 'done'){
-    if(isInArray(recipientId,arrayOfIds)){
+    if(isInArray(recipientId.toString(),arrayOfIds)){
         sendMessage(recipientId, {text: "Thank you: " + arrayOfIds });
         //Modify JSON!!
         return true;
