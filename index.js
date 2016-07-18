@@ -63,13 +63,13 @@ function startASMessage(recipientId, text){
   text = text.toLowerCase();
   var values = text.split(',');
       if(values[0].toLowerCase() === 'startas'){
-
+  // startas, 1, 120, 3, 5
   // “timePerTask” : 1,
   // “NumOfTask” : 120,
   // “volunteers” : 3,
   // “askTime” : 5
 
-          for (var i = 1; i < values[4]; i++) {
+          for (var i = 0; i < values[4]; i++) {
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1)});
           }
 
