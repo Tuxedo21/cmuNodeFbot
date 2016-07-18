@@ -70,7 +70,6 @@ function startASMessage(recipientId, text){
           jsonContent.numOfTask = parsInt(values[2]);
           jsonContent.volunteers = parsInt(values[3]);
           jsonContent.askTime = parsInt(values[4]);
-          jsonContent.volunteers = 100;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
         }
             // startas, 1, 120, 3, 5
