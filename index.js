@@ -39,7 +39,7 @@ app.post('/webhook', function (req, res) {
             if (!kittenMessage(event.sender.id, event.message.text)){
                 volunteerMessage(event.sender.id, event.message.text);
                 volunteerEvent(event.sender.id, event.message.text);
-                sendMessage(event.sender.id, {text: "Echo " + event.message.text});
+                sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id});
               if(event.sender.id == ids.carlId){
                   //This will update json to a starting point
                   startASMessage(event.sender.id, event.message.text);
