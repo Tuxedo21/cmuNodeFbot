@@ -81,7 +81,8 @@ function startASMessage(recipientId, text){
           for (var i = 0; i < values[4]; i++) {
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nInstructions..."});
             //  SEND INSTRUCTIONS
-          //batteryImageMessage(recipientId);
+            
+            batteryImageMessage(ids.idArray[i]);
 
           }
           return true;
@@ -139,6 +140,7 @@ function sendMessage(recipientId, message) {
         }
     });
 };
+
 // send rich message with kitten
 function mapMessage(recipientId, text){
   text = text || "";
@@ -330,77 +332,77 @@ function DoneMessage(recipientId) {
     return true;
 };
 //WORK ON THISS!!
-function managerMessage(recipientId, text) {
-    text = text || "";
-    text = text.toLowerCase();
-    var values = text.split(' ');
-    if (values[0] === 'volunteer') {
-      var youAre = "You are volunteer ";
-      var blueImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13533270_10154272438778535_6610747476267727156_n.jpg?oh=2e6fad4cc86cc96781636a1488847e7b&oe=57FCED30";
-      var redImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13510940_10154272438783535_3809594659337214943_n.jpg?oh=b5d74bbe3c4dcde1ec137bd9ad8bb702&oe=57F1DC9B";
+                                              function managerMessage(recipientId, text) {
+                                                  text = text || "";
+                                                  text = text.toLowerCase();
+                                                  var values = text.split(' ');
+                                                  if (values[0] === 'volunteer') {
+                                                    var youAre = "You are volunteer ";
+                                                    var blueImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13533270_10154272438778535_6610747476267727156_n.jpg?oh=2e6fad4cc86cc96781636a1488847e7b&oe=57FCED30";
+                                                    var redImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13510940_10154272438783535_3809594659337214943_n.jpg?oh=b5d74bbe3c4dcde1ec137bd9ad8bb702&oe=57F1DC9B";
 
-      var sideImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13592396_10154287796748535_4137404384532504939_n.jpg?oh=55be5271fb2922f90455bfde572c43fd&oe=5832ED41"
-      var explodeImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13592318_10154287796758535_3022623960114472833_n.jpg?oh=e9ce0e7bd48efc35268e01eaa074e500&oe=57F42F0D"
-      var nailImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13438974_10154287796753535_6660619595394208385_n.jpg?oh=7508738851ca3a9705f71b15b9eecf0a&oe=57F0FAE7"
-      var videoUrl = "https://www.youtube.com/watch?v=1d-Wxf1b55o"
+                                                    var sideImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13592396_10154287796748535_4137404384532504939_n.jpg?oh=55be5271fb2922f90455bfde572c43fd&oe=5832ED41"
+                                                    var explodeImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13592318_10154287796758535_3022623960114472833_n.jpg?oh=e9ce0e7bd48efc35268e01eaa074e500&oe=57F42F0D"
+                                                    var nailImageUrl = "https://scontent.xx.fbcdn.net/v/t1.0-9/13438974_10154287796753535_6660619595394208385_n.jpg?oh=7508738851ca3a9705f71b15b9eecf0a&oe=57F0FAE7"
+                                                    var videoUrl = "https://www.youtube.com/watch?v=1d-Wxf1b55o"
 
-      if (values[1] === 'five' || values[1] === '5'){
-          var imageUrl = blueImageUrl;
-      }else if (values[1] === 'four' || values[1] === '4') {
-          var imageUrl = redImageUrl;
-      }
-            message = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": "Work Map",
-                            "subtitle": youAre + values[1] + ", your tasks today are part of beacon management.",
-                            "image_url": imageUrl ,
-                            "buttons": [{
-                                "type": "web_url",
-                                "url": imageUrl,
-                                "title": "Show Image"
-                                }]
-                        },{
-                        title: "help one",
-                        subtitle: "The beacon exploded view",
-                        image_url: explodeImageUrl,
-                        buttons: [{
-                          type: "web_url",
-                          url: explodeImageUrl,
-                          title: "Show Image"
-                        }]
-                      },
-                      {
-                      title: "help two",
-                      subtitle: "The best way to open a beacon",
-                      image_url: nailImageUrl,
-                      buttons: [{
-                        type: "web_url",
-                        url: nailImageUrl,
-                        title: "Show Image"
-                      }]
-                    },
-                    {
-                    title: "help three",
-                    subtitle: "The sides of the battery",
-                    image_url: sideImageUrl,
-                    buttons: [{
-                      type: "web_url",
-                      url: sideImageUrl,
-                      title: "Show Image"
-                    }]
-                  }]
-                    }
-                }
-            };
-            sendMessage(recipientId, message);
-            return true;
-    }
-    return false;
-};
+                                                    if (values[1] === 'five' || values[1] === '5'){
+                                                        var imageUrl = blueImageUrl;
+                                                    }else if (values[1] === 'four' || values[1] === '4') {
+                                                        var imageUrl = redImageUrl;
+                                                    }
+                                                          message = {
+                                                              "attachment": {
+                                                                  "type": "template",
+                                                                  "payload": {
+                                                                      "template_type": "generic",
+                                                                      "elements": [{
+                                                                          "title": "Work Map",
+                                                                          "subtitle": youAre + values[1] + ", your tasks today are part of beacon management.",
+                                                                          "image_url": imageUrl ,
+                                                                          "buttons": [{
+                                                                              "type": "web_url",
+                                                                              "url": imageUrl,
+                                                                              "title": "Show Image"
+                                                                              }]
+                                                                      },{
+                                                                      title: "help one",
+                                                                      subtitle: "The beacon exploded view",
+                                                                      image_url: explodeImageUrl,
+                                                                      buttons: [{
+                                                                        type: "web_url",
+                                                                        url: explodeImageUrl,
+                                                                        title: "Show Image"
+                                                                      }]
+                                                                    },
+                                                                    {
+                                                                    title: "help two",
+                                                                    subtitle: "The best way to open a beacon",
+                                                                    image_url: nailImageUrl,
+                                                                    buttons: [{
+                                                                      type: "web_url",
+                                                                      url: nailImageUrl,
+                                                                      title: "Show Image"
+                                                                    }]
+                                                                  },
+                                                                  {
+                                                                  title: "help three",
+                                                                  subtitle: "The sides of the battery",
+                                                                  image_url: sideImageUrl,
+                                                                  buttons: [{
+                                                                    type: "web_url",
+                                                                    url: sideImageUrl,
+                                                                    title: "Show Image"
+                                                                  }]
+                                                                }]
+                                                                  }
+                                                              }
+                                                          };
+                                                          sendMessage(recipientId, message);
+                                                          return true;
+                                                  }
+                                                  return false;
+                                              };
 
 function batteryImageMessage(recipientId) {
     var linkes = Data.linkes();
