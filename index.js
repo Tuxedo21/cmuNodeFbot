@@ -70,7 +70,6 @@ function startASMessage(recipientId, text){
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
           jsonContent.volunteers = parsInt(values[4]);
-          fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
           jsonContent.workPool = 100;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
         }
