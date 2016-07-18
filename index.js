@@ -74,7 +74,7 @@ function volunteerEvent(recipientId, text){
   var contents = fs.readFileSync("botData.json");
   var jsonContent = JSON.parse(contents);
   var arrayOfIds = [];
-  for (var i = 0; i < jsonContent.volunteers; i++) {
+  for (var i = 0; i < 3; i++) {
     arrayOfIds.push(ids.idArray[i]);
   }
   if ((values[0] === 'd' || values[0] === 'done') && arrayOfIds.includes(recipientId)){
