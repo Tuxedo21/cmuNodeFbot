@@ -16,10 +16,13 @@ var ReadData = require('./readData.js');
 console.log("Carl id: " + ids.carlId);
 console.log("Alej id: " + ids.alejId);
 
-var contents = fs.readFileSync("botData.json");
-var jsonContent = JSON.parse(contents);
-var number = jsonContent.volunteers + 2;
-console.log(number);
+//var contents = fs.readFileSync("botData.json");
+//var jsonContent = JSON.parse(contents);
+//var number = jsonContent.volunteers + 2;
+//console.log(number);
+
+//var val1 = content.val1;
+
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -89,6 +92,9 @@ function volunteerEventMessage(recipientId, text){
     if(isInArray(recipientId.toString(),arrayOfIds)){
         sendMessage(recipientId, {text: "Thank you: " + jsonContent.workPool});
         //Modify JSON!!
+        jsonContent.workPool = jsonContent.workPool - 1;
+        fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
+
 
         return true;
       }
