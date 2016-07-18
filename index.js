@@ -61,6 +61,7 @@ function startASMessage(recipientId, text){
           for (var i = 0; i < values[4]; i++) {
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1)});
             //  SEND INSTRUCTIONS
+            sendMessage(event.sender.id, {text: "Instructions"});
           }
           return true;
        }
@@ -75,14 +76,15 @@ function volunteerEventMessage(recipientId, text){
   var contents = fs.readFileSync("botData.json");
   var jsonContent = JSON.parse(contents);
   var arrayOfIds = [];
-  for (var i = 0; i < 3; i++) {
+  for (var i = 0; i < jsonContent.volunteers; i++) {
     arrayOfIds.push(ids.idArray[i].toString());
   }
   //) && arrayOfIds.includes(recipientId)
   if (values[0] === 'd' || values[0] === 'done'){
     if(isInArray(recipientId.toString(),arrayOfIds)){
-        sendMessage(recipientId, {text: "Thank you: " + arrayOfIds });
+        sendMessage(recipientId, {text: "Thank you" });
         //Modify JSON!!
+
         return true;
       }
     }
