@@ -7,7 +7,7 @@ var app = express();
 var Ids = require('./botIds.js');
 var ids = new Ids();
 var Helpers = require('./helper.js');
-var ReadData = require('./readData.js');
+var Data = require('./getData.js');
 
 //Helpers.helloConsole();
 //ReadData.readData()
@@ -15,6 +15,8 @@ var ReadData = require('./readData.js');
 
 console.log("Carl id: " + ids.carlId);
 console.log("Alej id: " + ids.alejId);
+
+
 
 // var contents = fs.readFileSync("botData.json");
 // var jsonContent = JSON.parse(contents);
