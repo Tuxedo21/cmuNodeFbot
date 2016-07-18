@@ -262,7 +262,7 @@ function fingerprintingTextMessage(recipientId){
 }
 function fingerprintingImageMessage(recipientId){
   var linkes = Data.linkes();
-  var lnks = linkes.fingerprintingLinks;
+  var lnks = linkes.placingBeaconsLinks;
   var blueImage = lnks.blueImage;
 
     message = {
