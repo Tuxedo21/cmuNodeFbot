@@ -64,8 +64,9 @@ function startASMessage(recipientId, text){
       if(values[0].toLowerCase() === 'startas'){
   // startas, 1, 120, 3, 5
           for (var i = 0; i < values[4]; i++) {
-            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1)});
+            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "Instructions"});
             //  SEND INSTRUCTIONS
+
           }
           return true;
        }
@@ -86,8 +87,9 @@ function volunteerEventMessage(recipientId, text){
   //) && arrayOfIds.includes(recipientId)
   if (values[0] === 'd' || values[0] === 'done'){
     if(isInArray(recipientId.toString(),arrayOfIds)){
-        sendMessage(recipientId, {text: "Thank you: " + arrayOfIds });
+        sendMessage(recipientId, {text: "Thank you: " + jsonContent.workPool});
         //Modify JSON!!
+        jsonContent.workPool = jsonContent.workPool - 1;
         return true;
       }
     }
