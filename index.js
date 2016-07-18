@@ -89,8 +89,11 @@ function volunteerEventMessage(recipientId, text){
     if(isInArray(recipientId.toString(),arrayOfIds)){
         sendMessage(recipientId, {text: "Thank you: " + jsonContent.workPool});
         //Modify JSON!!
-        var temp = jsonContent.workPool
-        jsonContent.workPool = temp - 1;
+
+        //change the value in the in-memory object
+        jsonContent.volunteers = 42;
+        //Serialize as JSON and Write it to a file
+        fs.writeFileSync(botData.json, JSON.stringify(jsonContent));
         return true;
       }
     }
