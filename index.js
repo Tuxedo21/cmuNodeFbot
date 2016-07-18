@@ -66,6 +66,10 @@ function startASMessage(recipientId, text){
   var values = text.split(',');
       if(values[0].toLowerCase() === 'startas'){
         if(values.length == 5){
+
+          var contents = fs.readFileSync("botData.json");
+          var jsonContent = JSON.parse(contents);
+
           jsonContent.timePerTask = parsInt(values[1],10);
           jsonContent.numOfTask = parsInt(values[2]);
           jsonContent.volunteers = parsInt(values[3]);
