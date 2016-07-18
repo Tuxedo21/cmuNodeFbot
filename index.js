@@ -262,9 +262,8 @@ function fingerprintingTextMessage(recipientId){
 }
 function fingerprintingImageMessage(recipientId){
   var linkes = Data.linkes();
-  var lnks = linkes.placingBeaconsLinks;
+  var lnks = linkes.fingerprintingLinks;
   var blueImage = lnks.blueImage;
-
     message = {
       "attachment": {
       "type": "template",
