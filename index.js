@@ -416,21 +416,17 @@ function batteryImageMessage(recipientId) {
         "payload": {
           "template_type": "generic",
           "elements": [{
-            "title": "rift",
-            "subtitle": "Next-generation virtual reality",
+            "title": "How to open a beacon.",
+            "subtitle": "Please try this way. People tend to not read instructions.",
             "item_url": nailImageUrl,
             "image_url": nailImageUrl,
             "buttons": [{
               "type": "web_url",
               "url": imageUrl.toString(),
               "title": "Open Web URL"
-            }, {
-              "type": "postback",
-              "title": "Call Postback",
-              "payload": "Payload for first bubble",
             }],
           }, {
-            "title": "touch",
+            "title": "Battery sides",
             "subtitle": "Your Hands, Now in VR",
             "item_url": sideImageUrl,
             "image_url": sideImageUrl,
@@ -438,10 +434,6 @@ function batteryImageMessage(recipientId) {
               "type": "web_url",
               "url": sideImageUrl,
               "title": "Open Web URL"
-            }, {
-              "type": "postback",
-              "title": "Call Postback",
-              "payload": "Payload for second bubble",
             }]
           }]
         }
