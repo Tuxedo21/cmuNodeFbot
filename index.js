@@ -80,7 +80,7 @@ function startASMessage(recipientId, text){
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nInstructions..."});
           //  batteryMessage(ids.idArray[i]);
             batteryImageMessage(ids.idArray[i]);
-            batteryTextMessage(ids.idArray[i]);
+          //  batteryTextMessage(ids.idArray[i]);
             //  SEND INSTRUCTIONS
           }
 
