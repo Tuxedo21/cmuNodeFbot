@@ -7,6 +7,7 @@ var Ids = require('./botIds.js');
 var ids = new Ids();
 var Helpers = require('./helper.js');
 var ReadData = require('./readData.js');
+var AlgorithumAS = require('./algorithumAS.js')
 
 //Helpers.helloConsole();
 //ReadData.readData()
@@ -36,15 +37,10 @@ app.post('/webhook', function (req, res) {
         var event = events[i];
         if (event.message && event.message.text) {
             if (!kittenMessage(event.sender.id, event.message.text)){
-                mapMessage(event.sender.id, event.message.text);
                 volunteerMessage(event.sender.id, event.message.text);
-                greetingsMessage(event.sender.id, event.message.text);
-                //Helpers.CoordinationMessage(event.sender.id, event.message.text)
-                //instructionsMessage(event.sender.id, event.message.text);
-                DoneMessage(event.sender.id, event.message.text);
-                managerMessage(event.sender.id, event.message.text);
-                sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id});
+                volunteerEvent(event.sender.id, event.message.text);
               if(event.sender.id == ids.carlId){
+                  //This will update json to a starting point
                   startASMessage(event.sender.id, event.message.text);
                 }
             }
@@ -68,15 +64,43 @@ function startASMessage(recipientId, text){
   // “NumOfTask” : 120,
   // “volunteers” : 3,
   // “askTime” : 5
-
           for (var i = 0; i < values[4]; i++) {
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1)});
+            //TODO SEND INSTRUCTIONS
           }
+
+          AlgorithumAS.startAlgorithm(values);
 
           return true;
        }
      return false;
 };
+
+//====================
+function startAlgorithm(recipientId, text, standardInput){
+  text = text.toLowerCase();
+  var values = text.split(' ');
+  //Wait for event
+
+}
+
+//====================
+
+function volunteerEvent(recipientId, text){
+  var contents = fs.readFileSync("botData.json");
+  var jsonContent = JSON.parse(contents);
+  var arrayOfIds;
+
+  for (var i = 0; i < jsonContent.volunteers; i++) {
+    arrayOfIds.push(ids.idArray[i]);
+  }
+
+  if ((values[0] === 'd' || values[0] === 'done') && arrayOfIds.includes(recipientId)){
+        sendMessage(recipientId, {text: "Thank you" });
+
+    }
+
+}
 
 //====================
 
@@ -158,42 +182,6 @@ function mapMessage(recipientId, text){
           return true;
        }
      return false;
-};
-// send rich message with kitten
-function kittenMessage(recipientId, text) {
-    text = text || "";
-    text = text.toLowerCase();
-    var values = text.split(' ');
-    if (values.length === 3 && values[0] === 'kitten') {
-        if (Number(values[1]) > 0 && Number(values[2]) > 0) {
-            var imageUrl = "https://placekitten.com/" + Number(values[1]) + "/" + Number(values[2]);
-            message = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": "The Kitten",
-                            "subtitle": "Epic kitten picture",
-                            "image_url": imageUrl ,
-                            "buttons": [{
-                                "type": "web_url",
-                                "url": imageUrl,
-                                "title": "Show kitten"
-                                }, {
-                                "type": "postback",
-                                "title": "I like this " + recipientId,
-                                "payload": "User " + recipientId + " likes kitten " + imageUrl,
-                            }]
-                        }]
-                    }
-                }
-            };
-            sendMessage(recipientId, message);
-            return true;
-        }
-    }
-    return false;
 };
 
 function volunteerMessage(recipientId, text) {
@@ -364,6 +352,83 @@ function managerMessage(recipientId, text) {
             };
             sendMessage(recipientId, message);
             return true;
+    }
+    return false;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// send rich message with kitten ========================== EASTER EGG===================
+function kittenMessage(recipientId, text) {
+    text = text || "";
+    text = text.toLowerCase();
+    var values = text.split(' ');
+    if (values.length === 3 && values[0] === 'kitten') {
+        if (Number(values[1]) > 0 && Number(values[2]) > 0) {
+            var imageUrl = "https://placekitten.com/" + Number(values[1]) + "/" + Number(values[2]);
+            message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": "The Kitten",
+                            "subtitle": "Epic kitten picture",
+                            "image_url": imageUrl ,
+                            "buttons": [{
+                                "type": "web_url",
+                                "url": imageUrl,
+                                "title": "Show kitten"
+                                }, {
+                                "type": "postback",
+                                "title": "I like this " + recipientId,
+                                "payload": "User " + recipientId + " likes kitten " + imageUrl,
+                            }]
+                        }]
+                    }
+                }
+            };
+            sendMessage(recipientId, message);
+            return true;
+        }
     }
     return false;
 };
