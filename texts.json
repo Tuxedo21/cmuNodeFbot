@@ -4,13 +4,10 @@
                            "batteryMaintenance3":  " If no beacon is found send “MISSING”."},
 
     "placingBeacons": {"placingBeacons1" : "You will be placing beacons. Go to the supply station that is marked with a red square on the map. Once there grab a batch of beacons. Then go to the position that is marked with a blue circle on the map with the same number as the first beacon.",
-                      "placingBeacons2" :  "Please place the beacon at about 10 ft of height on the wall. Repeat this for each other beacon. Once done with this batch write “Done”."
+                       "placingBeacons2" :  "Please place the beacon at about 10 ft of height on the wall. Repeat this for each other beacon. Once done with this batch write “Done”."
                     },
 
     "fingerprinting": {"fingerprinting1" : "You will be collecting data to help navigate the blind. Please go the location of X as shown on the map. Place you back against the wall so that you are facing the direction towards location Y.",
-                       "fingerprinting2" : "Once you click on the link provided below an app will spawn on your phone. Press the start button and, once the countdown reaches zero take a step towards location Y.  Repeat these two operations until you have arrived at location Y. Now click on the following link.",
+                       "fingerprinting2" : "Once you click on the link provided below an app will spawn on your phone. Press the start button and, once the countdown reaches zero take a step towards location Y.  Repeat these two operations until you have arrived at location Y. Now click on the following link."
                      }
-
-
-
 }

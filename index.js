@@ -25,7 +25,8 @@ console.log("Alej id: " + ids.alejId);
 // jsonContent.volunteers = 5;
 // jsonContent.timePerTask = 5;
 // fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
-
+  setTimeout(function(){console.log("message");
+  }, 2000);
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -79,8 +80,8 @@ function startASMessage(recipientId, text){
           for (var i = 0; i < values[4]; i++) {
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nInstructions..."});
           //  batteryMessage(ids.idArray[i]);
-            batteryImageMessage(ids.idArray[i]);
-          //  batteryTextMessage(ids.idArray[i]);
+          //  batteryImageMessage(ids.idArray[i]);
+            batteryTextMessage(ids.idArray[i]);
             //  SEND INSTRUCTIONS
           }
 
