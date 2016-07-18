@@ -41,7 +41,8 @@ app.post('/webhook', function (req, res) {
                 managerMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id});
               if(event.sender.id == ids.carlId){
-                  startASMessage(event.sender.id, event.message.text);
+
+                  //startASMessage(event.sender.id, event.message.text);
                 }
             }
         } else if (event.postback) {
