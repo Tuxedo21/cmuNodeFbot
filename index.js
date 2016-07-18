@@ -81,7 +81,7 @@ function startASMessage(recipientId, text){
           for (var i = 0; i < values[4]; i++) {
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nInstructions..."});
             //  SEND INSTRUCTIONS
-            batteryImageMessage(recipientId);
+          //batteryImageMessage(recipientId);
 
           }
           return true;
