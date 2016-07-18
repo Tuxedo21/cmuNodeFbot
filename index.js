@@ -38,7 +38,7 @@ app.post('/webhook', function (req, res) {
         if (event.message && event.message.text) {
             if (!kittenMessage(event.sender.id, event.message.text)){
 
-                //volunteerEvent(event.sender.id, event.message.text);
+                volunteerEvent(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id});
               if(event.sender.id == ids.carlId){
                   startASMessage(event.sender.id, event.message.text);
@@ -77,8 +77,9 @@ function volunteerEvent(recipientId, text){
   for (var i = 0; i < 3; i++) {
     arrayOfIds.push(ids.idArray[i]);
   }
-  if ((values[0] === 'd' || values[0] === 'done') && arrayOfIds.includes(recipientId)){
-        sendMessage(recipientId, {text: "Thank you" });
+  //) && arrayOfIds.includes(recipientId)
+  if (values[0] === 'd' || values[0] === 'done'){
+        sendMessage(recipientId, {text: "Thank you" + arrayOfIds });
         //Modify JSON!!
     }
 
