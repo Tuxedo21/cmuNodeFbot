@@ -401,6 +401,21 @@ function DoneMessage(recipientId) {
                                                   return false;
                                               };
 
+
+
+function batteryMessage(recipientId) {
+    setTimeout(function(){batteryTextMessage(recipientId);}, 2000);
+    setTimeout(function(){batteryImageMessage(recipientId);}, 9000);
+};
+
+
+function batteryTextMessage(recipientId) {
+    var message = Data.texts().batteryMaintenance;
+    setTimeout(function(){sendMessage(recipientId, {text: message.batteryMaintenance1 });}, 2000);
+    setTimeout(function(){sendMessage(recipientId, {text: message.batteryMaintenance2 });}, 2000);
+};
+
+
 function batteryImageMessage(recipientId) {
     var linkes = Data.linkes();
     var lnks = linkes.batteryManagementLinks;
@@ -427,7 +442,7 @@ function batteryImageMessage(recipientId) {
             }]
           }, {
             "title": "Battery sides",
-            "subtitle": "Your Hands, Now in VR",
+            "subtitle": "Here you can see how the battery should be placed.",
             "item_url": sideImageUrl,
             "image_url": sideImageUrl,
             "buttons": [{
@@ -436,13 +451,13 @@ function batteryImageMessage(recipientId) {
               "title": "Open Web URL"
             }]
           },{
-            "title": "Battery sides",
-            "subtitle": "Your Hands, Now in VR",
-            "item_url": sideImageUrl,
-            "image_url": sideImageUrl,
+            "title": "Battery exploded",
+            "subtitle": "Here you can see all the parts of the beacon.",
+            "item_url": explodeImageUrl,
+            "image_url": explodeImageUrl,
             "buttons": [{
               "type": "web_url",
-              "url": sideImageUrl,
+              "url": explodeImageUrl,
               "title": "Open Web URL"
             }]
           }]
