@@ -66,7 +66,7 @@ function startASMessage(recipientId, text){
   text = text.toLowerCase();
   var values = text.split(" ");
       if(values[0].toLowerCase() === 'startas'){
-
+          batteryImageMessage(recipientId);
         if(values.length == 5){
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
@@ -81,8 +81,6 @@ function startASMessage(recipientId, text){
           for (var i = 0; i < values[4]; i++) {
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nInstructions..."});
             //  SEND INSTRUCTIONS
-            
-            batteryImageMessage(ids.idArray[i]);
 
           }
           return true;
