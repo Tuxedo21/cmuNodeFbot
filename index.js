@@ -103,10 +103,14 @@ function volunteerEventMessage(recipientId, text){
   //) && arrayOfIds.includes(recipientId)
   if (values[0] === 'd' || values[0] === 'done'){
     if(isInArray(recipientId.toString(),arrayOfIds)){
-        sendMessage(recipientId, {text: "Thank you: " + jsonContent.workPool});
-        //Modify JSON!!
+      //Modify JSON!!
         jsonContent.workPool = jsonContent.workPool - 1;
         fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
+        if(jsonContent.workPool > 0){
+        sendMessage(recipientId, {text: "Thank you: " + jsonContent.workPool + "\nMore instructions..."});
+      }else {
+        DoneMessage(recipientId);
+      }
         return true;
       }
     }
@@ -321,15 +325,9 @@ function instructionsMessage(recipientId, text) {
     }
     return false;
 };
-function DoneMessage(recipientId, text) {
-    text = text || "";
-    text = text.toLowerCase();
-    var values = text.split(' ');
-    if (values[0] === "I'm" || values[1] === 'done' || values[2] === ':)') {
-            sendMessage(recipientId, {text: "Thank you very much!\nYou just helped by giving light to the visually impaired.\n\nI am still in research phase, please answer this survey so i can become better at helping.\n\n"+ "https://docs.google.com/forms/d/1hcwB18hnyniWFUQAQDm2MSMdlQQL4QYOG_Md9eFsQnE/viewform"});
-            return true;
-    }
-    return false;
+function DoneMessage(recipientId) {
+    sendMessage(recipientId, {text: "Thank you very much!\nYou just helped by giving light to the visually impaired.\n\nI am still in research phase, please answer this survey so i can become better at helping.\n\n"+ "https://docs.google.com/forms/d/1hcwB18hnyniWFUQAQDm2MSMdlQQL4QYOG_Md9eFsQnE/viewform"});
+    return true;
 };
 //WORK ON THISS!!
 function managerMessage(recipientId, text) {
