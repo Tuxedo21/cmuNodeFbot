@@ -16,6 +16,11 @@ var ReadData = require('./readData.js');
 console.log("Carl id: " + ids.carlId);
 console.log("Alej id: " + ids.alejId);
 
+var contents = fs.readFileSync("botData.json");
+var jsonContent = JSON.parse(contents);
+var number = jsonContent.volunteers + 2;
+console.log(number);
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
@@ -72,8 +77,8 @@ function volunteerEventMessage(recipientId, text){
   text = text.toLowerCase();
   var values = text.split(' ');
 
-  //var contents = fs.readFileSync("botData.json");
-  //var jsonContent = JSON.parse(contents);
+  var contents = fs.readFileSync("botData.json");
+  var jsonContent = JSON.parse(contents);
   var arrayOfIds = [];
   for (var i = 0; i < 3; i++) {
     arrayOfIds.push(ids.idArray[i].toString());
