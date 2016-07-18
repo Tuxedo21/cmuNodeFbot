@@ -66,7 +66,7 @@ function startASMessage(recipientId, text){
   text = text.toLowerCase();
   var values = text.split(" ");
       if(values[0].toLowerCase() === 'startas'){
-          batteryImageMessage(recipientId);
+          //batteryImageMessage(recipientId);
         if(values.length == 5){
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
