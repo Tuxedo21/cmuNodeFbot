@@ -424,8 +424,18 @@ function batteryImageMessage(recipientId) {
               "type": "web_url",
               "url": imageUrl.toString(),
               "title": "Open Web URL"
-            }],
+            }]
           }, {
+            "title": "Battery sides",
+            "subtitle": "Your Hands, Now in VR",
+            "item_url": sideImageUrl,
+            "image_url": sideImageUrl,
+            "buttons": [{
+              "type": "web_url",
+              "url": sideImageUrl,
+              "title": "Open Web URL"
+            }]
+          },{
             "title": "Battery sides",
             "subtitle": "Your Hands, Now in VR",
             "item_url": sideImageUrl,
