@@ -78,7 +78,9 @@ function startASMessage(recipientId, text){
             // startas, 1, 120, 3, 5
           for (var i = 0; i < values[4]; i++) {
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nInstructions..."});
-            batteryMessage(ids.idArray[i]);
+          //  batteryMessage(ids.idArray[i]);
+            batteryImageMessage(ids.idArray[i]);
+            batteryTextMessage(ids.idArray[i]);
             //  SEND INSTRUCTIONS
           }
 
@@ -419,7 +421,7 @@ function batteryTextMessage(recipientId) {
 function batteryImageMessage(recipientId) {
     var linkes = Data.linkes();
     var lnks = linkes.batteryManagementLinks;
-    var youAre = "You are volunteer ";
+
     var sideImageUrl = lnks.batterySides;
     var explodeImageUrl = lnks.batteryExplode;
     var nailImageUrl = lnks.batteryNail;
@@ -463,9 +465,6 @@ function batteryImageMessage(recipientId) {
           }]
         }
       }
-
       };
-
     sendMessage(recipientId, message);
-
 };
