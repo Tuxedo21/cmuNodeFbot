@@ -9,10 +9,6 @@ var ids = new Ids();
 var Helpers = require('./helper.js');
 var Data = require('./getData.js');
 
-//Helpers.helloConsole();
-//ReadData.readData()
-
-
 console.log("Carl id: " + ids.carlId);
 console.log("Alej id: " + ids.alejId);
 
@@ -24,11 +20,8 @@ console.log("Alej id: " + ids.alejId);
 // jsonContent.timePerTask = 5;
 // fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
 
-
 //    var message = Data.texts().batteryMaintenance.batteryMaintenance1;
 //    setTimeout(function(){console.log(message);}, 2000);
-
-
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
@@ -77,20 +70,19 @@ function startASMessage(recipientId, text){
           jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
           sendMessage(recipientId, {text: "volunteers: " + jsonContent.volunteers});
-            // startas, 1, 120, 3, 5
+          // startas, 1, 120, 3, 5
           for (var i = 0; i < values[4]; i++) {
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nInstructions..."});
+                    //  SEND INSTRUCTIONS
             if(values[5] === 'bm'){
                 batteryMessage(ids.idArray[i]);
             }
             else if (values[5] === 'bd') {
                 beaconMessage(ids.idArray[i]);
+            } else if (values[5] === 'fp') {
+              fingerprintingMessage(ids.idArray[i]);
             }
-
-
-            //  SEND INSTRUCTIONS
           }
-
           return true;
        }
      return false;
@@ -289,6 +281,7 @@ function volunteerMessage(recipientId, text) {
     }
     return false;
 };
+
 function greetingsMessage(recipientId, text) {
     text = text || "";
     text = text.toLowerCase();
@@ -300,55 +293,56 @@ function greetingsMessage(recipientId, text) {
     return false;
 };
 
-function instructionsMessage(recipientId, text) {
-    if (text === 'one' || text === 'two' || text === 'three' || text === '1' || text === '2' || text === '3' || text === '4' || text === '5' || text === 'five' || text === 'four') {
-      var message = "";
-      var messagetwo = "";
-      var messagethree = "";
-      var messagefour = "";
-            if(text === 'three' || text === '3'){
-              //three red
-              var message = "You will be placing beacons.\n Place a beacon where you see a red square on your map as high as you can and always on the wall.";
-            }
-            else if(text === 'two' || text === '2'){
-            //two blue
-          var message = "You will be placing beacons.\n Place a beacon where you see a blue square on your map as high as you can and always on the wall.";
-            }
-            else if(text === 'one' || text === '1'){
-            //one pink
-            var message = "You will be placing tape on the floor.\nPlace a small pice of tape from the the first beacon in a hallway every meter. Please repeat this for each hallway. For today there are four in total. At the end it should look a little like the map given to you.";
-            }
-            else if(text === 'four' || text === '4' || text === 'five' || text === '5'){
-              var message = "The visually impaired need your help. Your task will be of battery beacon maintenance. These beacons are their eyes. Sometimes the can go out, we need you to make sure they are not out.";
-              var messagetwo =  "The instructions are simple. Use the map provided to find the beacons you will work with. Once you found a beacon please take the beacon down, open it and replace or place a battery in it.";
-              var messagethree = "Then send me the four digit code on the back of the beacon please. If you need some more help on how to do this, please use the images provided.";
-              var messagefour = "If their is a beacon missing PLEASE send me a picture of where it should be so i know. If that is not enough, well read it again. And if that still is not enough, don't complain you have a body and a mind! You can figure it out.";
-            }
-
-             sendMessage(recipientId, {text: message});
-             sendMessage(recipientId, {text: messagetwo});
-             sendMessage(recipientId, {text: messagethree});
-             sendMessage(recipientId, {text: messagefour + "When done please say I'm done :)"});
-            return true;
-    }
-    return false;
-};
 function DoneMessage(recipientId) {
     sendMessage(recipientId, {text: "Thank you very much!\nYou just helped by giving light to the visually impaired.\n\nI am still in research phase, please answer this survey so i can become better at helping.\n\n"+ "https://docs.google.com/forms/d/1hcwB18hnyniWFUQAQDm2MSMdlQQL4QYOG_Md9eFsQnE/viewform"});
     return true;
 };
 //WORK ON THISS!!
+function fingerprintingMessage(recipientId){
+  setTimeout(function(){fingerprintingTextMessage(recipientId);}, 2000);
+  setTimeout(function(){fingerprintingImageMessage(recipientId);}, 9000);
+}
+function fingerprintingTextMessage(recipientId){
+  var message = Data.texts().fingerprinting;
+  setTimeout(function(){sendMessage(recipientId, {text: message.fingerprinting1 });}, 2000);
+  setTimeout(function(){sendMessage(recipientId, {text: message.fingerprinting2 });}, 2000);
+}
+function fingerprintingImageMessage(recipientId){
+  var linkes = Data.linkes();
+  var lnks = linkes.fingerprintingLinks;
+  var blueImage = lnks.blueImage;
+
+    message = {
+      "attachment": {
+      "type": "template",
+      "payload": {
+        "template_type": "generic",
+        "elements": [{
+          "title": "Map",
+          "subtitle": "Here you can see your deployment map.",
+          "item_url": blueImage,
+          "image_url": blueImage,
+          "buttons": [{
+            "type": "web_url",
+            "url": blueImage,
+            "title": "Open Web URL"
+          }]
+        }]
+      }
+    }
+    };
+  sendMessage(recipientId, message);
+}
+
 function batteryMessage(recipientId) {
     setTimeout(function(){batteryTextMessage(recipientId);}, 2000);
     setTimeout(function(){batteryImageMessage(recipientId);}, 9000);
 };
-
 function batteryTextMessage(recipientId) {
     var message = Data.texts().batteryMaintenance;
     setTimeout(function(){sendMessage(recipientId, {text: message.batteryMaintenance1 });}, 2000);
     setTimeout(function(){sendMessage(recipientId, {text: message.batteryMaintenance2 });}, 2000);
 };
-
 function batteryImageMessage(recipientId) {
     var linkes = Data.linkes();
     var lnks = linkes.batteryManagementLinks;
