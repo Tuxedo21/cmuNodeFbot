@@ -72,7 +72,7 @@ function startASMessage(recipientId, text){
           //jsonContent.volunteers = parsInt(values[4]);
           jsonContent.workPool = 100;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
-          sendMessage(ids.idArray[i], {text: values.toString()});
+          sendMessage(recipientId, {text: values.toString() + "ventaja"});
         }
             // startas, 1, 120, 3, 5
           for (var i = 0; i < values[4]; i++) {
