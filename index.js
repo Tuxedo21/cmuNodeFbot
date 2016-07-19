@@ -59,6 +59,7 @@ app.post('/webhook', function (req, res) {
 
 function startASMessage(recipientId, text){
   globalTaskArray = [];
+  globalVolTaskArray = [];
   text = text || "";
   text = text.toLowerCase();
   var values = text.split(" ");
