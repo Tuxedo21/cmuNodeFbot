@@ -90,8 +90,8 @@ function startASMessage(recipientId, text){
 
           makeglobalTaskArray(Number(jsonContent.numOfTask));
 
-          for(var i = 0; i <  Number(values[1]); i++){//120
-            for (var j = 0; j < Number(values[1])*globalWeightArray[j] ; j++) {//120/3=40
+          for(var i = 0; i <  Number(jsonContent.numOfTask); i++){//120
+            for (var j = 0; j < Number(jsonContent.numOfTask) * globalWeightArray[j]; j++) {//120/3=40
             globalVolTaskArray[j].push(globalTaskArray[i]);//globalTaskArray[i]
             }
           }
