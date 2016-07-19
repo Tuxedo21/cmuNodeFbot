@@ -90,11 +90,19 @@ function startASMessage(recipientId, text){
 
           makeglobalTaskArray(Number(jsonContent.numOfTask));
 
-          for(var i = 0; i <  Number(jsonContent.numOfTask); i++){//120
-            for (var j = 0; j < Number(jsonContent.numOfTask) * globalWeightArray[j]; j++) {//120/3=40
-            globalVolTaskArray[j].push(globalTaskArray[i]);//globalTaskArray[i]
+          // for(var i = 0; i < Number(jsonContent.numOfTask); i++){//120
+          //   for (var j = 0; j < Number(jsonContent.numOfTask) * globalWeightArray[j]; j++) {//120/3=40
+          //   globalVolTaskArray[j].push(globalTaskArray[i]);//globalTaskArray[i]
+          //   }
+          // }
+
+          for (var j = 0; j < volunteers; j++) {
+            for(var i = 0; i < Number(jsonContent.numOfTask)*globalWeightArray[j]; i++){//120
+              globalVolTaskArray[j].push(5)
             }
-          }
+        }
+
+
 
           sendMessage(ids.carlId, {text: "Tasks: " + "[" + globalTaskArray + "]"});
 
