@@ -101,8 +101,8 @@ function startASMessage(recipientId, text){
           }
 
           sendMessage(ids.carlId, {text: "Tasks: " + "\n[" + globalTaskArray + "]"});
-          for(var i = 0; globalVolTaskArray.length; i++){  
-          sendMessage(ids.carlId, {text: "Tasks: " + "\n[" + globalVolTaskArray[i] + "]"});
+          for(var i = 0; globalVolTaskArray.length; i++){
+          sendMessage(ids.carlId, {text: "Vol: " + i + "\n[" + globalVolTaskArray[i] + "]"});
           }
           volunteers = globalWeightArray.length;
           return true;
