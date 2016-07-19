@@ -89,6 +89,7 @@ function startASMessage(recipientId, text){
               fingerprintingMessage(ids.idArray[i]);
             }
           }
+          
           volunteers = globalWeightArray.length;
           makeglobalTaskArray(Number(jsonContent.numOfTask),time);
 
