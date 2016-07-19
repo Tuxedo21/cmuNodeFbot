@@ -73,8 +73,8 @@ function startASMessage(recipientId, text){
           globalWeight = 1 / values[4];
 
           for (var i = 0; i < values[4]; i++) {
-            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeight + globalWeightArray});
             globalWeightArray.push(globalWeight);
+            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeight + "[" + globalWeightArray + "]"});
                     //  SEND INSTRUCTIONS
             if(values[5] === 'bm'){
                 batteryMessage(ids.idArray[i]);
