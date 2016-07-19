@@ -20,6 +20,5 @@ if(current_sec >= 0 && current_sec < 10){
 }
 console.log(current_hour+ ":"+ current_min +":" + current_sec);
 console.log("" +current_hour+ current_min+ current_sec);
-//TODO Add the zero error
-return "" +current_hour+ current_min+ current_sec;
+return ""+current_hour+ current_min+ current_sec;
 }

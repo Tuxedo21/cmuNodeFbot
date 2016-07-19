@@ -13,6 +13,8 @@ console.log("Carl id: " + ids.carlId);
 console.log("Alej id: " + ids.alejId);
 console.log(algoVE.getCurrentTime());
 
+var g = 0;
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
@@ -34,9 +36,10 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {
         var event = events[i];
         if (event.message && event.message.text) {
+          g = g + 1;
             if (!kittenMessage(event.sender.id, event.message.text) || !mapMessage(event.sender.id, event.message.text)){
                 volunteerEventMessage(event.sender.id, event.message.text);
-                sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id:" + event.sender.id + "\n Time:" +algoVE.getCurrentTime()});
+                sendMessage(event.sender.id, {text: g + " For debugging echo: " + event.message.text + "\n Id:" + event.sender.id + "\n Time:" +algoVE.getCurrentTime()});
               if(event.sender.id == ids.carlId){
                   startASMessage(event.sender.id, event.message.text);
                 }
