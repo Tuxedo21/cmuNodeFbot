@@ -7,6 +7,7 @@ var app = express();
 var Ids = require('./botIds.js');
 var ids = new Ids();
 var Helpers = require('./helper.js');
+var helpers = new Helpers();
 var Data = require('./getData.js');
 
 console.log("Carl id: " + ids.carlId);
@@ -40,7 +41,7 @@ app.post('/webhook', function (req, res) {
         if (event.message && event.message.text) {
             if (!kittenMessage(event.sender.id, event.message.text) || !mapMessage(event.sender.id, event.message.text)){
                 volunteerEventMessage(event.sender.id, event.message.text);
-                Helpers.CoordinationMessage(event.sender.id, event.message.text);
+                helpers.CoordinationMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id});
               if(event.sender.id == ids.carlId){
                   startASMessage(event.sender.id, event.message.text);
