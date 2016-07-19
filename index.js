@@ -38,7 +38,7 @@ app.post('/webhook', function (req, res) {
                 volunteerEventMessage(event.sender.id, event.message.text);
 
                 console.log();
-                sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id + getCurrentTime()});
+                sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id + algoVE.getCurrentTime()});
               if(event.sender.id == ids.carlId){
                   startASMessage(event.sender.id, event.message.text);
                 }
