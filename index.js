@@ -90,6 +90,7 @@ function startASMessage(recipientId, text){
           volunteers = globalWeightArray.length;
           makeglobalTaskArray(Number(jsonContent.numOfTask));
 
+
           for (var vol = 0; vol < volunteers; vol++) {
             for(var task = 0;task < jsonContent.numOfTask*globalWeightArray[vol]; task++){
             globalVolTaskArray[vol].push(globalTaskArray.pop());
@@ -97,7 +98,6 @@ function startASMessage(recipientId, text){
           }
 
 
-          sendMessage(ids.carlId, {text: "Tasks: " + "[" + globalTaskArray + "]"});
 
           for(var i =0; i < globalVolTaskArray.length; i++){
           sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
@@ -112,8 +112,9 @@ function startASMessage(recipientId, text){
 function makeglobalTaskArray(len){
   for(var i = 0; i <  len; i++){
     //Length of task
-    globalTaskArray.push(2);
+    globalTaskArray.push(5);
   }
+    sendMessage(ids.carlId, {text: "Tasks: " + "[" + globalTaskArray + "]"});
 }
 
 function arrrayCountSum(numarray,count){
