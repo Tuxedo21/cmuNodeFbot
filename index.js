@@ -148,7 +148,7 @@ function volunteerEventMessage(recipientId, text){
         if(jsonContent.workPool > 0){
          globalDoneTime = Number(algoVE.getCurrentTime());
 
-         if( (globalDoneTime - globalStartTime) > globalPredictTime){
+         if( (globalDoneTime - globalStartTime) < globalPredictTime){
            sendMessage(recipientId, {text: "GOOD"});
          }
 
