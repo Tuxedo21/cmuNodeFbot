@@ -66,7 +66,7 @@ function startASMessage(recipientId, text){
       if(values[0].toLowerCase() === 'startas' && values.length == 6){
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
-          jsonContent.numOfTask = Number(values[1]);
+          jsonContent.numOfTask = Number(values[2]);
           jsonContent.volunteers = Number(values[4]);
           jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
@@ -90,19 +90,15 @@ function startASMessage(recipientId, text){
           volunteers = globalWeightArray.length;
           makeglobalTaskArray(Number(jsonContent.numOfTask),15);
 
-
           for (var vol = 0; vol < volunteers; vol++) {
             for(var task = 0;task < jsonContent.numOfTask*globalWeightArray[vol]; task++){
             globalVolTaskArray[vol].push(globalTaskArray.pop());
             }
           }
 
-
-
           for(var i =0; i < globalVolTaskArray.length; i++){
           sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
           }
-
           return true;
        }
      return false;
