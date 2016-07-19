@@ -18,7 +18,10 @@ var volunteers = 1;
 var globalWeight = 1;
 var globalWeightArray = [];
 var globalTaskArray = [];
+var globalVolTaskArray = [];
 console.log(globalWeightArray.length);
+
+
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -74,6 +77,7 @@ function startASMessage(recipientId, text){
 
           for (var i = 0; i < values[4]; i++) {
             globalWeightArray.push(globalWeight);
+            globalVolTaskArray[i] = [];
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeight + "\n[" + globalWeightArray + "]"});
             //  SEND INSTRUCTIONS
             if(values[5] === 'bm'){
@@ -85,9 +89,20 @@ function startASMessage(recipientId, text){
             }
           }
           for(var i = 0; i <  Number(values[1]); i++){
-            globalTaskArray.push(i);
+            //Length of task
+            globalTaskArray.push(2);
           }
+
+          for(var i = 0; i <  Number(values[1]); i++){
+            for (var j = 0; j < (Number(values[1])*globalWeightArray[j]) ; j++) {
+            globalVolTaskArray[j].push(globalTaskArray[i]);
+            }
+
+          }
+
           sendMessage(ids.carlId, {text: "Tasks: " + "\n[" + globalTaskArray + "]"});
+          sendMessage(ids.carlId, {text: "Tasks: " + "\n[" + globalVolTaskArray + "]"});
+
           volunteers = globalWeightArray.length;
           return true;
        }
