@@ -16,6 +16,9 @@ console.log(algoVE.getCurrentTime());
 var g = 0;
 var volunteers = 1;
 var globalWeight = 1;
+var globalWeightArray = [];
+globalWeightArray.push(globalWeight);
+console.log(globalWeightArray);
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -67,10 +70,11 @@ function startASMessage(recipientId, text){
           sendMessage(recipientId, {text: "volunteers: " + jsonContent.volunteers});
           // startas, 1, 120, 3, 5
 
+          globalWeight = 1 / values[4];
 
-          globalWeight = 1 / values[4]
           for (var i = 0; i < values[4]; i++) {
-            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeight});
+            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeight + globalWeightArray});
+            globalWeightArray.push(globalWeight);
                     //  SEND INSTRUCTIONS
             if(values[5] === 'bm'){
                 batteryMessage(ids.idArray[i]);
