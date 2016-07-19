@@ -66,7 +66,7 @@ function startASMessage(recipientId, text){
       if(values[0].toLowerCase() === 'startas' && values.length == 6){
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
-          jsonContent.numOfTask = Number(values[1]);
+          jsonContent.numOfTask = Number(values[2]);
           jsonContent.volunteers = Number(values[4]);
           jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
