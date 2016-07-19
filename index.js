@@ -7,14 +7,11 @@ var app = express();
 var Ids = require('./botIds.js');
 var ids = new Ids();
 var Data = require('./getData.js');
+var algoVE = require('./algorithumVE.js');
 
 console.log("Carl id: " + ids.carlId);
 console.log("Alej id: " + ids.alejId);
-
-var date = new Date();
-var current_hour = date.getHours();
-
-console.log(current_hour);
+console.log(algoVE.getCurrentTime());
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -39,7 +36,9 @@ app.post('/webhook', function (req, res) {
         if (event.message && event.message.text) {
             if (!kittenMessage(event.sender.id, event.message.text) || !mapMessage(event.sender.id, event.message.text)){
                 volunteerEventMessage(event.sender.id, event.message.text);
-                sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id});
+
+                console.log();
+                sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id + getCurrentTime()});
               if(event.sender.id == ids.carlId){
                   startASMessage(event.sender.id, event.message.text);
                 }
