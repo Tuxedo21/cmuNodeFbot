@@ -96,7 +96,7 @@ function startASMessage(recipientId, text){
           //   }
           // }
 
-          for (var j = 0; j < volunteers; j++) {
+          for (var j = 0; j < volunteers; j++){
             for(var i = 0; i < Number(jsonContent.numOfTask)*globalWeightArray[j]; i++){//120
               globalVolTaskArray[j].push(5)
             }
