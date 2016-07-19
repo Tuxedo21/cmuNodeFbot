@@ -17,7 +17,8 @@ var g = 0;
 var volunteers = 1;
 var globalWeight = 1;
 var globalWeightArray = [];
-console.log(globalWeightArray);
+var globalTaskArray = [];
+console.log(globalWeightArray.length);
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -63,18 +64,18 @@ function startASMessage(recipientId, text){
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
           jsonContent.numOfTask = Number(values[1]);
+
           jsonContent.volunteers = Number(values[4]);
           jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
           sendMessage(recipientId, {text: "volunteers: " + jsonContent.volunteers});
           // startas, 1, 120, 3, 5
-
           globalWeight = 1 / values[4];
 
           for (var i = 0; i < values[4]; i++) {
             globalWeightArray.push(globalWeight);
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeight + "\n[" + globalWeightArray + "]"});
-                    //  SEND INSTRUCTIONS
+            //  SEND INSTRUCTIONS
             if(values[5] === 'bm'){
                 batteryMessage(ids.idArray[i]);
             }else if (values[5] === 'bd') {
@@ -83,6 +84,11 @@ function startASMessage(recipientId, text){
               fingerprintingMessage(ids.idArray[i]);
             }
           }
+          for(var i = 0; i <  Number(values[1]); i++){
+            globalTaskArray.push(i);
+          }
+          sendMessage(ids.carlId, {text: "Tasks: " + "\n[" + globalTaskArray + "]"});
+          volunteers = globalWeightArray.length;
           return true;
        }
      return false;
@@ -115,7 +121,6 @@ function volunteerEventMessage(recipientId, text){
     }
     return false;
 }
-
 function isInArray(value, array) {
   return array.indexOf(value) > -1;
 }
