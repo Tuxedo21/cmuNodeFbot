@@ -36,9 +36,7 @@ app.post('/webhook', function (req, res) {
         if (event.message && event.message.text) {
             if (!kittenMessage(event.sender.id, event.message.text) || !mapMessage(event.sender.id, event.message.text)){
                 volunteerEventMessage(event.sender.id, event.message.text);
-
-                console.log();
-                sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id + algoVE.getCurrentTime()});
+                sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id:" + event.sender.id + "\n Time:" +algoVE.getCurrentTime()});
               if(event.sender.id == ids.carlId){
                   startASMessage(event.sender.id, event.message.text);
                 }

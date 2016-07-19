@@ -14,7 +14,6 @@ var current_hour = date.getHours();
 var current_min = date.getMinutes();
 var current_sec = date.getSeconds();
 
-
 console.log(current_hour+ ":"+ current_min +":" + current_sec);
 console.log("" +current_hour+ current_min+ current_sec);
 //TODO Add the zero error
