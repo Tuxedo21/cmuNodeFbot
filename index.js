@@ -70,7 +70,7 @@ function startASMessage(recipientId, text){
           jsonContent.volunteers = Number(values[4]);
           jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
-          sendMessage(recipientId, {text: "volunteers: " + jsonContent.volunteers + "tasks: " + jsonContent.numOfTask});
+          sendMessage(recipientId, {text: "volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.numOfTask});
           // startas, 1, 120, 3, 5
           globalWeight = 1 / values[4];
 
@@ -99,7 +99,7 @@ function startASMessage(recipientId, text){
 
           sendMessage(ids.carlId, {text: "Tasks: " + "[" + globalTaskArray + "]"});
 
-          for(var i =0; i < globalVolTaskArray[i]; i++){
+          for(var i =0; i < globalVolTaskArray.length; i++){
           sendMessage(ids.carlId, {text: "Vol: " + i + "[" + globalVolTaskArray[i] + "]"});
           }
           volunteers = globalWeightArray.length;
