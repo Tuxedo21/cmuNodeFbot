@@ -21,8 +21,6 @@ var globalTaskArray = [];
 var globalVolTaskArray = [];
 console.log(globalWeightArray.length);
 
-
-
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
@@ -60,6 +58,7 @@ app.post('/webhook', function (req, res) {
 });
 
 function startASMessage(recipientId, text){
+  globalTaskArray = [];
   text = text || "";
   text = text.toLowerCase();
   var values = text.split(" ");
