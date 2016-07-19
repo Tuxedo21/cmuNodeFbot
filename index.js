@@ -77,7 +77,7 @@ function startASMessage(recipientId, text){
 
           for (var i = 0; i < values[4]; i++) {
             globalWeightArray.push(globalWeight);
-            globalVolTaskArray[i] = [];
+            globalVolTaskArray.push([]);
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeight + "\n[" + globalWeightArray + "]"});
             //  SEND INSTRUCTIONS
             if(values[5] === 'bm'){
@@ -88,10 +88,8 @@ function startASMessage(recipientId, text){
               fingerprintingMessage(ids.idArray[i]);
             }
           }
-          for(var i = 0; i <  Number(values[1]); i++){
-            //Length of task
-            globalTaskArray.push(2);
-          }
+
+          makeglobalTaskArray(Number(values[1]));
 
           for(var i = 0; i <  Number(values[1]); i++){
             for (var j = 0; j < (Number(values[1])*globalWeightArray[j]) ; j++) {
@@ -101,14 +99,22 @@ function startASMessage(recipientId, text){
           }
 
           sendMessage(ids.carlId, {text: "Tasks: " + "\n[" + globalTaskArray + "]"});
-          for(var i = 0; globalVolTaskArray.length; i++){
-          sendMessage(ids.carlId, {text: "Vol: " + i + "\n[" + globalVolTaskArray[i] + "]"});
-          }
+
+          sendMessage(ids.carlId, {text: "Vol: " + i + "\n[" + globalVolTaskArray + "]"});
+
           volunteers = globalWeightArray.length;
           return true;
        }
      return false;
 };
+
+
+function makeglobalTaskArray(len){
+  for(var i = 0; i <  len; i++){
+    //Length of task
+    globalTaskArray.push(2);
+  }
+}
 
 function volunteerEventMessage(recipientId, text){
   text = text || "";
