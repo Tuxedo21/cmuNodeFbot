@@ -12,16 +12,11 @@ var Data = require('./getData.js');
 console.log("Carl id: " + ids.carlId);
 console.log("Alej id: " + ids.alejId);
 
-// var contents = fs.readFileSync("botData.json");
-// var jsonContent = JSON.parse(contents);
-// var number = jsonContent.volunteers + 2;
-// console.log(number);
-// jsonContent.volunteers = 5;
-// jsonContent.timePerTask = 5;
-// fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
+var date = new Date();
+var current_hour = date.getHours();
 
-//    var message = Data.texts().batteryMaintenance.batteryMaintenance1;
-//    setTimeout(function(){console.log(message);}, 2000);
+console.log(current_hour);
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
@@ -45,6 +40,7 @@ app.post('/webhook', function (req, res) {
         if (event.message && event.message.text) {
             if (!kittenMessage(event.sender.id, event.message.text) || !mapMessage(event.sender.id, event.message.text)){
                 volunteerEventMessage(event.sender.id, event.message.text);
+                Helpers.CoordinationMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: "For debugging echo: " + event.message.text + "\n Id: " + event.sender.id});
               if(event.sender.id == ids.carlId){
                   startASMessage(event.sender.id, event.message.text);
