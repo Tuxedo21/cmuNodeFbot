@@ -19,7 +19,11 @@ var globalWeight = 1;
 var globalWeightArray = [];
 var globalTaskArray = [];
 var globalVolTaskArray = [];
-console.log(globalWeightArray.length);
+var globalRealTime = [];
+
+var globalDoneTime;
+var globalStartTime;
+var globalPredictTime = 10;
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -89,10 +93,11 @@ function startASMessage(recipientId, text){
               fingerprintingMessage(ids.idArray[i]);
             }
           }
-          
+
           volunteers = globalWeightArray.length;
           makeglobalTaskArray(Number(jsonContent.numOfTask),time);
 
+          //TODO BREAKS IF GIVEN A NUMBER THAT IS NOT NEAT
           for (var vol = 0; vol < volunteers; vol++) {
             for(var task = 0;task < jsonContent.numOfTask*globalWeightArray[vol]; task++){
             globalVolTaskArray[vol].push(globalTaskArray.pop());
@@ -138,17 +143,31 @@ function volunteerEventMessage(recipientId, text){
   //) && arrayOfIds.includes(recipientId)
   if (values[0] === 'd' || values[0] === 'done'){
     if(isInArray(recipientId.toString(),arrayOfIds)){
-      //Modify JSON!!
         jsonContent.workPool = jsonContent.workPool - 1;
         fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
         if(jsonContent.workPool > 0){
+         globalDoneTime = Number(algoVE.getCurrentTime());
+
+         if( (globalDoneTime - globalStartTime) > globalPredictTime){
+           sendMessage(recipientId, {text: "GOOD"});
+         }
+
         sendMessage(recipientId, {text: "Thank you: " + jsonContent.workPool + "\nMore instructions..."});
+
       }else {
         DoneMessage(recipientId);
-      }
-        return true;
-      }
-    }
+      }return true;}
+    }else if (values[0] === 'h' || values[0] === 'help') {
+      //TODO help module
+      return true;
+    }else if (values[0] === 'n' || values[0] === 'next') {
+      //TODO next module
+      return true;
+    }else if (values[0] === 's' || values[0] === 'start') {
+      //TODO start module
+      globalStartTime = Number(algoVE.getCurrentTime());
+      return true;
+}
     return false;
 }
 function isInArray(value, array) {
