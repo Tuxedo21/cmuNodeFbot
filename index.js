@@ -17,7 +17,6 @@ var g = 0;
 var volunteers = 1;
 var globalWeight = 1;
 var globalWeightArray = [];
-globalWeightArray.push(globalWeight);
 console.log(globalWeightArray);
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -74,7 +73,7 @@ function startASMessage(recipientId, text){
 
           for (var i = 0; i < values[4]; i++) {
             globalWeightArray.push(globalWeight);
-            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeight + "[" + globalWeightArray + "]"});
+            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeight + "\n[" + globalWeightArray + "]"});
                     //  SEND INSTRUCTIONS
             if(values[5] === 'bm'){
                 batteryMessage(ids.idArray[i]);
