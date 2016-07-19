@@ -90,17 +90,16 @@ function startASMessage(recipientId, text){
 
           makeglobalTaskArray(Number(jsonContent.numOfTask));
 
-          for(var i = 0; i <  Number(values[1]); i++){
-            for (var j = 0; j < (Number(values[1])*globalWeightArray[j]) ; j++) {
-            globalVolTaskArray[j].push(globalTaskArray[i]);
+          for(var i = 0; i <  Number(values[1]); i++){//120
+            for (var j = 0; j < Number(values[1])*globalWeightArray[j] ; j++) {//120/3=40
+            globalVolTaskArray[j].push(5);//globalTaskArray[i]
             }
-
           }
 
           sendMessage(ids.carlId, {text: "Tasks: " + "[" + globalTaskArray + "]"});
 
           for(var i =0; i < globalVolTaskArray.length; i++){
-          sendMessage(ids.carlId, {text: "Vol: " + i + "[" + globalVolTaskArray[i] + "]"});
+          sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
           }
           volunteers = globalWeightArray.length;
           return true;
