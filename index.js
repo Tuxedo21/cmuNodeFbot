@@ -88,7 +88,7 @@ function startASMessage(recipientId, text){
             }
           }
           volunteers = globalWeightArray.length;
-          makeglobalTaskArray(Number(jsonContent.numOfTask));
+          makeglobalTaskArray(Number(jsonContent.numOfTask),15);
 
 
           for (var vol = 0; vol < volunteers; vol++) {
@@ -109,10 +109,10 @@ function startASMessage(recipientId, text){
 };
 
 
-function makeglobalTaskArray(len){
+function makeglobalTaskArray(len,time){
   for(var i = 0; i <  len; i++){
     //Length of task
-    globalTaskArray.push(5);
+    globalTaskArray.push(time);
   }
     sendMessage(ids.carlId, {text: "Tasks: " + "[" + globalTaskArray + "]"});
 }
