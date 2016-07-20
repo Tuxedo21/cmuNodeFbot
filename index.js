@@ -67,6 +67,7 @@ app.post('/webhook', function (req, res) {
   });
 
 function startASMessage(recipientId, text){
+  sendMessage(recipientId, {text: "Volu"});
   return true;
   globalTaskArray = [];
   globalVolTaskArray = [];
