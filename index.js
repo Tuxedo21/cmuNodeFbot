@@ -14,8 +14,6 @@ console.log("Alej id: " + ids.alejId);
 console.log(algoVE.getCurrentTime());
 
 var g = 0;
-var volunteers = 1;
-var globalWeight = 1;
 var globalAvg = 1;
 var globalBest = 1;
 
@@ -77,17 +75,18 @@ function startASMessage(recipientId, text){
           jsonContent.timePerTask = Number(values[1]);
           var time = Number(values[1]);
           jsonContent.numOfTask = Number(values[2]);
+          jsonContent.askTime = Number(values[3]);
           jsonContent.volunteers = Number(values[4]);
           jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
           sendMessage(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.numOfTask});
           // startas, 1, 120, 3, 5
-          globalWeight = 1 / values[4];
+          var startWeight = 1 / values[4]; // Weight/volunteers
           for (var i = 0; i < values[4]; i++) {
-            globalWeightArray.push(globalWeight);
+            globalWeightArray.push(startWeight);
             globalVolTaskArray.push([]);
             globalVolunteers.push(ids.idArray[i].toString());
-            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeight + "\n[" + globalWeightArray + "]"});
+            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + startWeight + "\n[" + globalWeightArray + "]"});
             //  SEND INSTRUCTIONS
             if(values[5] === 'bm'){
                 batteryMessage(ids.idArray[i]);
@@ -97,7 +96,6 @@ function startASMessage(recipientId, text){
               fingerprintingMessage(ids.idArray[i]);
             }
           }
-          volunteers = globalWeightArray.length;
           makeglobalTaskArray(Number(jsonContent.numOfTask),time);
           //TODO BREAKS IF GIVEN A NUMBER THAT IS NOT NEAT
           for (var vol = 0; vol < volunteers; vol++) {
