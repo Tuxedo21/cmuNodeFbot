@@ -59,14 +59,15 @@ app.post('/webhook', function (req, res) {
                 }
 
             }
-        } else if (event.postback) {
-            console.log("Postback received: " + JSON.stringify(event.postback));
-        }
-    }
-    res.sendStatus(200);
-});
+          } else if (event.postback) {
+              console.log("Postback received: " + JSON.stringify(event.postback));
+          }
+      }
+      res.sendStatus(200);
+  });
 
 function startASMessage(recipientId, text){
+  return true;
   globalTaskArray = [];
   globalVolTaskArray = [];
   text = text || "";
