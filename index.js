@@ -151,20 +151,15 @@ function volunteerEventMessage(recipientId, text){
         if(jsonContent.workPool > 0){
 
 
-
          globalDoneTime = Number(algoVE.getCurrentTime());
          if( (globalDoneTime - globalStartTime) < globalPredictTime){
            sendMessage(recipientId, {text: "GOOD"});
          }
         sendMessage(recipientId, {text: "Thank you: " + jsonContent.workPool + "\nMore instructions..."});
+
         for(var i =0; i < globalVolTaskArray.length; i++){
         sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
         }
-
-
-
-
-
 
 
       }else {
