@@ -73,7 +73,6 @@ function startASMessage(recipientId, text){
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
           jsonContent.timePerTask = Number(values[1]);
-          var time = Number(values[1]);
           jsonContent.numOfTask = Number(values[2]);
           jsonContent.askTime = Number(values[3]);
           jsonContent.volunteers = Number(values[4]);
@@ -83,9 +82,9 @@ function startASMessage(recipientId, text){
           // JSON startas, 1, 120, 3, 5
           var startWeight = 1 / values[4]; // Weight/volunteers
           for (var i = 0; i < values[4]; i++) {
-            globalWeightArray.push(startWeight);
+            globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
-            globalVolunteers.push(ids.idArray[i].toString());
+            globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + startWeight + "\n[" + globalWeightArray + "]"});
             //  SEND INSTRUCTIONS
             if(values[5] === 'bm'){
@@ -96,9 +95,7 @@ function startASMessage(recipientId, text){
               fingerprintingMessage(ids.idArray[i]);
             }
           }
-
-          makeglobalTaskArray(Number(jsonContent.numOfTask),time);
-
+          makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
           //TODO BREAKS IF GIVEN A NUMBER THAT IS NOT NEAT
           for (var vol = 0; vol < volunteers; vol++) {
             for(var task = 0;task < jsonContent.numOfTask*globalWeightArray[vol]; task++){
