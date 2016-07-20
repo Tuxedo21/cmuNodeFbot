@@ -16,11 +16,15 @@ console.log(algoVE.getCurrentTime());
 var g = 0;
 var volunteers = 1;
 var globalWeight = 1;
-var globalWeightArray = [];
-var globalTaskArray = [];
-var globalVolTaskArray = [];
-var globalRealTime = [];
+var globalAvg = 1;
+var globalBest = 1;
 
+var globalWeightArray = [];//[]
+var globalTaskArray = [];//[] all tasks like workPool
+var globalVolunteers = [];//[] their ids
+var globalVolTaskArray = [];//[][] all distributed tasks a task is time
+var globalRealTimeArray = [];//[][] all distributed done tasks, a task is done time
+//Time is done in seconds
 var globalDoneTime;
 var globalStartTime;
 var globalPredictTime = 10;
@@ -76,13 +80,13 @@ function startASMessage(recipientId, text){
           jsonContent.volunteers = Number(values[4]);
           jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
-          sendMessage(recipientId, {text: "volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.numOfTask});
+          sendMessage(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.numOfTask});
           // startas, 1, 120, 3, 5
           globalWeight = 1 / values[4];
-
           for (var i = 0; i < values[4]; i++) {
             globalWeightArray.push(globalWeight);
             globalVolTaskArray.push([]);
+            globalVolunteers.push(ids.idArray[i].toString());
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeight + "\n[" + globalWeightArray + "]"});
             //  SEND INSTRUCTIONS
             if(values[5] === 'bm'){
@@ -93,17 +97,14 @@ function startASMessage(recipientId, text){
               fingerprintingMessage(ids.idArray[i]);
             }
           }
-
           volunteers = globalWeightArray.length;
           makeglobalTaskArray(Number(jsonContent.numOfTask),time);
-
           //TODO BREAKS IF GIVEN A NUMBER THAT IS NOT NEAT
           for (var vol = 0; vol < volunteers; vol++) {
             for(var task = 0;task < jsonContent.numOfTask*globalWeightArray[vol]; task++){
             globalVolTaskArray[vol].push(globalTaskArray.pop());
             }
           }
-
           for(var i =0; i < globalVolTaskArray.length; i++){
           sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
           }
@@ -133,7 +134,6 @@ function volunteerEventMessage(recipientId, text){
   text = text || "";
   text = text.toLowerCase();
   var values = text.split(' ');
-
   var contents = fs.readFileSync("botData.json");
   var jsonContent = JSON.parse(contents);
   var arrayOfIds = [];
@@ -143,16 +143,29 @@ function volunteerEventMessage(recipientId, text){
   //) && arrayOfIds.includes(recipientId)
   if (values[0] === 'd' || values[0] === 'done'){
     if(isInArray(recipientId.toString(),arrayOfIds)){
-        jsonContent.workPool = jsonContent.workPool - 1;
+
+        var volIndex = arrayOfIds.indexOf(recipientId);
+        sendMessage(ids.carlId, {text: "Vol id: " + "[" + volIndex + "]"});
+        jsonContent.workPool = jsonContent.workPool - 1; // THIS SHOULD BE globalTaskArray
         fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
         if(jsonContent.workPool > 0){
-         globalDoneTime = Number(algoVE.getCurrentTime());
 
+
+
+         globalDoneTime = Number(algoVE.getCurrentTime());
          if( (globalDoneTime - globalStartTime) < globalPredictTime){
            sendMessage(recipientId, {text: "GOOD"});
          }
-
         sendMessage(recipientId, {text: "Thank you: " + jsonContent.workPool + "\nMore instructions..."});
+        for(var i =0; i < globalVolTaskArray.length; i++){
+        sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
+        }
+
+
+
+
+
+
 
       }else {
         DoneMessage(recipientId);
