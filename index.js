@@ -70,6 +70,7 @@ function startASMessage(recipientId, text){
 
   globalTaskArray = [];
   globalVolTaskArray = [];
+  globalWeightArray = [];
   text = text || "";
   text = text.toLowerCase();
   var values = text.split(" ");
