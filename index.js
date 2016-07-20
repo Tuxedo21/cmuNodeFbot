@@ -75,8 +75,7 @@ function startASMessage(recipientId, text){
   var values = text.split(" ");
       if(values[0].toLowerCase() === 'startas' && values.length == 6){
 
-        sendMessage(recipientId, {text: "Volu"});
-        return true;
+
 
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
@@ -89,6 +88,9 @@ function startASMessage(recipientId, text){
           sendMessage(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.numOfTask});
           // JSON startas, 1, 120, 3, 5
           var startWeight = 1 / Number(values[4]); // Weight/volunteers
+
+          sendMessage(recipientId, {text: "Volu" + startWeight});
+          return true;
           for (var i = 0; i < 2/*Number(values[4])*/ ; i++) {
             globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
