@@ -91,18 +91,20 @@ function startASMessage(recipientId, text){
 
 
 
-          for (var i = 0; i < Number(values[4])/*Number(values[4])*/ ; i++) {
+          for (var i = 0; i < Number(values[4]); i++) {
             sendMessage(recipientId, {text: "debugger " + startWeight + "  " +(Number(values[4])+5)});
+
+            globalWeightArray.push(startWeight);//Volunteers weight
+            globalVolTaskArray.push([]); //Start the volunteer weight array
+            globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
+            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + startWeight + "\n[" + globalWeightArray + "]"});
 
           }
             return true;
 
           for (var i = 0; i < Number(values[4])/*Number(values[4])*/ ; i++) {
 
-            globalWeightArray.push(startWeight);//Volunteers weight
-            globalVolTaskArray.push([]); //Start the volunteer weight array
-            globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
-            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + startWeight + "\n[" + globalWeightArray + "]"});
+
             //  SEND INSTRUCTIONS
             if(values[5] === 'bm'){
                 batteryMessage(ids.idArray[i]);
