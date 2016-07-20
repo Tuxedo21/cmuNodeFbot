@@ -112,7 +112,7 @@ function startASMessage(recipientId, text){
             globalVolTaskArray[vol].push(globalTaskArray.pop());
             }
           }
-                  return true;
+
 
           for(var i =0; i < globalVolTaskArray.length; i++){
           sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
