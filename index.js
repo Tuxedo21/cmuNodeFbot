@@ -98,15 +98,15 @@ function startASMessage(recipientId, text){
             globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
             globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
-            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + startWeight + "\n[" + globalWeightArray + "]"});
+            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i]});
+            //  SEND INSTRUCTIONS
+            sendInstructions(values[5],ids.idArray[i]);
 
           }
             return true;
 
           for (var i = 0; i < Number(values[4])/*Number(values[4])*/ ; i++) {
 
-
-            //  SEND INSTRUCTIONS
             if(values[5] === 'bm'){
                 batteryMessage(ids.idArray[i]);
             }else if (values[5] === 'bd') {
@@ -114,6 +114,7 @@ function startASMessage(recipientId, text){
             } else if (values[5] === 'fp') {
               fingerprintingMessage(ids.idArray[i]);
             }
+
           }
           makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
           //TODO BREAKS IF GIVEN A NUMBER THAT IS NOT NEAT
@@ -129,6 +130,17 @@ function startASMessage(recipientId, text){
        }
      return false;
 };
+
+function sendInstructions(command,id){
+  //  SEND INSTRUCTIONS
+  if(command === 'bm'){
+      batteryMessage(id);
+  }else if (command === 'bd') {
+      beaconMessage(id);
+  } else if (command === 'fp') {
+    fingerprintingMessage(id);
+  }
+}
 
 function makeglobalTaskArray(len,time){
   for(var i = 0; i <  len; i++){
