@@ -53,7 +53,7 @@ app.post('/webhook', function (req, res) {
                 volunteerEventMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: g + " For debugging echo: " + event.message.text + "\n Id:" + event.sender.id + "\n Time:" +algoVE.getCurrentTime()});
               if(event.sender.id == ids.carlId){
-                  startASMessage(event.sender.id, event.message.text);
+                  //startASMessage(event.sender.id, event.message.text);
                 }
             }
         } else if (event.postback) {
@@ -81,7 +81,7 @@ function startASMessage(recipientId, text){
           sendMessage(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.numOfTask});
           // JSON startas, 1, 120, 3, 5
           var startWeight = 1 / Number(values[4]); // Weight/volunteers
-          for (var i = 0; i < Number(values[4]); i++) {
+          for (var i = 0; i < 2/*Number(values[4]*/ ); i++) {
             globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
             globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
