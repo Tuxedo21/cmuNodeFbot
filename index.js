@@ -93,36 +93,27 @@ function startASMessage(recipientId, text){
 
 
           for (var i = 0; i < Number(values[4]); i++) {
-            sendMessage(recipientId, {text: "debugger " + startWeight + "  " +(Number(values[4])+5)});
-
             globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
             globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
-            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i]});
+            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nInstructions:" });
             //  SEND INSTRUCTIONS
             sendInstructions(values[5],ids.idArray[i]);
 
           }
-            return true;
 
-          for (var i = 0; i < Number(values[4])/*Number(values[4])*/ ; i++) {
 
-            if(values[5] === 'bm'){
-                batteryMessage(ids.idArray[i]);
-            }else if (values[5] === 'bd') {
-                beaconMessage(ids.idArray[i]);
-            } else if (values[5] === 'fp') {
-              fingerprintingMessage(ids.idArray[i]);
-            }
-
-          }
           makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
+          sendMessage(recipientId, {text: "debugger " + globalTaskArray + "  " +(Number(values[4])+5)});
+            return true;
           //TODO BREAKS IF GIVEN A NUMBER THAT IS NOT NEAT
           for (var vol = 0; vol < volunteers; vol++) {
             for(var task = 0;task < jsonContent.numOfTask*globalWeightArray[vol]; task++){
             globalVolTaskArray[vol].push(globalTaskArray.pop());
             }
           }
+
+
           for(var i =0; i < globalVolTaskArray.length; i++){
           sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
           }
