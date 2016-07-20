@@ -105,14 +105,14 @@ function startASMessage(recipientId, text){
 
           makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
           sendMessage(recipientId, {text: "debugger " + globalTaskArray + "  " +(Number(values[4])+5)});
-            return true;
+
           //TODO BREAKS IF GIVEN A NUMBER THAT IS NOT NEAT
           for (var vol = 0; vol < volunteers; vol++) {
             for(var task = 0;task < jsonContent.numOfTask*globalWeightArray[vol]; task++){
             globalVolTaskArray[vol].push(globalTaskArray.pop());
             }
           }
-
+                  return true;
 
           for(var i =0; i < globalVolTaskArray.length; i++){
           sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
