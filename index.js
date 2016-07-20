@@ -55,7 +55,7 @@ app.post('/webhook', function (req, res) {
                 sendMessage(event.sender.id, {text: g + " For debugging echo: " + event.message.text + "\n Id:" + event.sender.id + "\n Time:" +algoVE.getCurrentTime()});
 
               if(event.sender.id == ids.carlId){
-                 //startASMessage(event.sender.id, event.message.text);
+                 startASMessage(event.sender.id, event.message.text);
                 }
 
             }
@@ -67,14 +67,17 @@ app.post('/webhook', function (req, res) {
   });
 
 function startASMessage(recipientId, text){
-  sendMessage(recipientId, {text: "Volu"});
-  return true;
+
   globalTaskArray = [];
   globalVolTaskArray = [];
   text = text || "";
   text = text.toLowerCase();
   var values = text.split(" ");
       if(values[0].toLowerCase() === 'startas' && values.length == 6){
+
+        sendMessage(recipientId, {text: "Volu"});
+        return true;
+
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
           jsonContent.timePerTask = Number(values[1]);
