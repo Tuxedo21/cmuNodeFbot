@@ -146,7 +146,7 @@ function volunteerEventMessage(recipientId, text){
 
         var volIndex = arrayOfIds.indexOf(recipientId);
         sendMessage(ids.carlId, {text: "Vol id: " + "[" + volIndex + "]"});
-        jsonContent.workPool = jsonContent.workPool - 1; // THIS SHOULD BE globalTaskArray
+        jsonContent.workPool = jsonContent.workPool - 1;// THIS SHOULD BE globalTaskArray
         fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
         if(jsonContent.workPool > 0){
 
