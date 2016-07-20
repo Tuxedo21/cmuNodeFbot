@@ -53,7 +53,7 @@ app.post('/webhook', function (req, res) {
                 volunteerEventMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: g + " For debugging echo: " + event.message.text + "\n Id:" + event.sender.id + "\n Time:" +algoVE.getCurrentTime()});
               if(event.sender.id == ids.carlId){
-                  startASMessage(event.sender.id, event.message.text);
+                  //startASMessage(event.sender.id, event.message.text);
                 }
             }
         } else if (event.postback) {
@@ -116,7 +116,7 @@ function makeglobalTaskArray(len,time){
     //Length of task
     globalTaskArray.push(time);
   }
-    sendMessage(ids.carlId, {text: "Tasks: " + "[" + globalTaskArray + "]"});
+    sendMessage(ids.carlId, {text: "Global tasks: " + "[" + globalTaskArray + "]"});
 }
 
 function arrrayCountSum(numarray,count){
