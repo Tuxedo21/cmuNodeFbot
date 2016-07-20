@@ -50,10 +50,10 @@ app.post('/webhook', function (req, res) {
         if (event.message && event.message.text) {
           g = g + 1 ;
             if (!kittenMessage(event.sender.id, event.message.text) || !mapMessage(event.sender.id, event.message.text)){
-                //volunteerEventMessage(event.sender.id, event.message.text);
-              //  sendMessage(event.sender.id, {text: g + " For debugging echo: " + event.message.text + "\n Id:" + event.sender.id + "\n Time:" +algoVE.getCurrentTime()});
+                volunteerEventMessage(event.sender.id, event.message.text);
+                sendMessage(event.sender.id, {text: g + " For debugging echo: " + event.message.text + "\n Id:" + event.sender.id + "\n Time:" +algoVE.getCurrentTime()});
               if(event.sender.id == ids.carlId){
-                  startASMessage(event.sender.id, event.message.text);
+                //  startASMessage(event.sender.id, event.message.text);
                 }
             }
         } else if (event.postback) {
