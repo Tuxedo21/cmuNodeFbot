@@ -89,9 +89,16 @@ function startASMessage(recipientId, text){
           // JSON startas, 1, 120, 3, 5
           var startWeight = 1 / Number(values[4]); // Weight/volunteers
 
-          sendMessage(recipientId, {text: "Volu" + startWeight + (Number(values[4])+5)});
-          return true;
+
+
           for (var i = 0; i < Number(values[4])/*Number(values[4])*/ ; i++) {
+            sendMessage(recipientId, {text: "debugger " + startWeight + "  " +(Number(values[4])+5)});
+
+          }
+            return true;
+
+          for (var i = 0; i < Number(values[4])/*Number(values[4])*/ ; i++) {
+
             globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
             globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
