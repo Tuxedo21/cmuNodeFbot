@@ -169,11 +169,11 @@ function volunteerEventMessage(recipientId, text){
            if(xi > globalBest){
              globalBest = xi;
            }
-           globalAvg = (globalAvg*(globalWeightArray.length - 1))/globalWeightArray - xi/globalWeightArray.length;
-           sendMessage(recipientId, {text: ":: " + xi})
+           globalAvg = ((globalAvg*(globalWeightArray.length - 1))/globalWeightArray.length) - xi/globalWeightArray.length;
+           //sendMessage(recipientId, {text: ":: " + globalWeightArray.length})
            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
            var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult;
-           //sendMessage(recipientId, {text: newWeight + "::" + globalWeightArray[volIndex] + "::" + ((xi - (globalAvg/2)) / (globalBest - (globalAvg/2))) });
+           sendMessage(recipientId, {text: newWeight + "::" + globalWeightArray[volIndex] + "::" + curWeight });
            //TODO This is where you reassign.
          }else
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
