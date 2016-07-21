@@ -95,24 +95,18 @@ function startASMessage(recipientId, text){
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nInstructions:" });
             //  SEND INSTRUCTIONS
             sendInstructions(values[5],ids.idArray[i]);
-
           }
-
           makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
-
           //TODO BREAKS IF GIVEN A NUMBER THAT IS NOT NEAT
           for (var vol = 0; vol < Number(values[4]); vol++) {
             for(var task = 0;task < jsonContent.numOfTask*globalWeightArray[vol]; task++){
             globalVolTaskArray[vol].push(globalTaskArray.pop());
             }
           }
-
-
           for(var i =0; i < globalVolTaskArray.length; i++){
           sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
-          sendMessage(ids.idArray[i], {text: "Your tasks: " + (i +1) + "[" + globalVolTaskArray[i] + "]" });
+          sendMessage(ids.idArray[i], {text: "Your tasks: " + "[" + globalVolTaskArray[i] + "]" });
           }
-
           return true;
        }
      return false;
@@ -161,11 +155,11 @@ function volunteerEventMessage(recipientId, text){
 
         var volIndex = arrayOfIds.indexOf(recipientId);
         sendMessage(ids.carlId, {text: "Vol id: " + "[" + volIndex + "]"});
+        if(jsonContent.workPool > 0){
         jsonContent.workPool = jsonContent.workPool - 1;// THIS SHOULD BE globalTaskArray
         fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
+            }
         if(jsonContent.workPool > 0){
-
-
          globalDoneTime = Number(algoVE.getCurrentTime());
          if( (globalDoneTime - globalStartTime) < globalPredictTime){
            if(globalVolTaskArray[volIndex].length != 0){
@@ -173,24 +167,22 @@ function volunteerEventMessage(recipientId, text){
          }else
            sendMessage(recipientId, {text: "You don't have any more tasks." + globalVolTaskArray });
          }
-        sendMessage(recipientId, {text: "Thank you: " + jsonContent.workPool + "\nMore instructions..."});
-
-        for(var i =0; i < globalVolTaskArray.length; i++){
-        sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
-        }
-
+        sendMessage(recipientId, {text: "Thank you, these are the total of tasks left: " + jsonContent.workPool + "\nMore instructions..."});
 
       }else {
         DoneMessage(recipientId);
       }return true;}
     }else if (values[0] === 'h' || values[0] === 'help') {
       //TODO help module
+       sendMessage(recipientId, {text: "help "});
       return true;
     }else if (values[0] === 'n' || values[0] === 'next') {
       //TODO next module
+      sendMessage(recipientId, {text: "next "});
       return true;
     }else if (values[0] === 's' || values[0] === 'start') {
       //TODO start module
+      sendMessage(recipientId, {text: "start "});
       globalStartTime = Number(algoVE.getCurrentTime());
       return true;
 }
