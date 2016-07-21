@@ -18,7 +18,9 @@ if(current_sec >= 0 && current_sec < 10){
 }if(current_min >= 0 && current_min < 10){
   current_min = "0" + current_min;
 }
+var realTime = (Number(current_hour)*60) + Number(current_min) + (Number(current_sec)/60);
 console.log(current_hour+ ":"+ current_min +":" + current_sec);
 console.log("" +current_hour+ current_min+ current_sec);
-return ""+current_hour+ current_min+ current_sec;
+console.log(realTime);
+return realTime;
 }

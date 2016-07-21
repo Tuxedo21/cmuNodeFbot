@@ -24,7 +24,7 @@ var globalVolTaskArray = [];//[][] all distributed tasks a task is time
 var globalRealTimeArray = [];//[][] all distributed done tasks, a task is done time
 //Time is done in seconds
 var globalDoneTime;
-var globalStartTime;
+var globalStartTime=[];
 var globalPredictTime = 100;
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -71,6 +71,7 @@ function startASMessage(recipientId, text){
   globalTaskArray = [];
   globalVolTaskArray = [];
   globalWeightArray = [];
+  globalStartTime = [];
   text = text || "";
   text = text.toLowerCase();
   var values = text.split(" ");
@@ -91,6 +92,7 @@ function startASMessage(recipientId, text){
           for (var i = 0; i < Number(values[4]); i++) {
             globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
+            globalStartTime.push([]);
             globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nInstructions:" });
             //  SEND INSTRUCTIONS
@@ -162,11 +164,12 @@ function volunteerEventMessage(recipientId, text){
             }
         if(jsonContent.workPool > 0){
          globalDoneTime = Number(algoVE.getCurrentTime());
-         if( (globalDoneTime - globalStartTime) < globalPredictTime){
+         if( (globalDoneTime - globalStartTime[volIndex]) < globalPredictTime){ //globalVolTaskArray[volIndex][0]
            if(globalVolTaskArray[volIndex].length != 0){
-           sendMessage(recipientId, {text: "GOOD, poped: " + globalVolTaskArray[volIndex].pop() + "\nLeft: " + globalVolTaskArray[volIndex]});
+           sendMessage(recipientId, {text: "GOOD, popped: " + globalVolTaskArray[volIndex].pop() + "\nLeft: " + globalVolTaskArray[volIndex]});
+           //TODO This is where you reassign.
          }else
-           sendMessage(recipientId, {text: "You don't have any more tasks." + globalVolTaskArray });
+           sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
          }
         sendMessage(recipientId, {text: "Thank you, these are the total of tasks left: " + jsonContent.workPool + "\nMore instructions..."});
 
@@ -183,8 +186,8 @@ function volunteerEventMessage(recipientId, text){
       return true;
     }else if (values[0] === 's' || values[0] === 'start') {
       //TODO start module
-      globalStartTime = Number(algoVE.getCurrentTime());
-      sendMessage(recipientId, {text: "start "});
+      globalStartTime[volIndex] = Number(algoVE.getCurrentTime());
+      sendMessage(recipientId, {text: "Vol:" + volIndex + "you started at " +   globalStartTime[volIndex]});
       return true;
 }
     return false;
