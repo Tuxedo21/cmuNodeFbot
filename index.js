@@ -165,17 +165,14 @@ function volunteerEventMessage(recipientId, text){
          globalDoneTime = Number(algoVE.getCurrentTime());
          if( (globalDoneTime - globalStartTime[volIndex]) < globalVolTaskArray[volIndex][0]){ //globalVolTaskArray[volIndex][0] globalPredictTime
            if(globalVolTaskArray[volIndex].length != 0){
-
               var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime - globalStartTime[volIndex]);
-
-
            if(xi > globalBest){
              globalBest = xi;
            }
            globalAvg = (globalAvg*(globalWeightArray.length - 1))/globalWeightArray - xi/globalWeightArray.length;
            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
-           var newWeight = globalWeightArray[volIndex]*(1 - globalMult) + curWeight*globalMult;
-           sendMessage(recipientId, {text: newWeight + "::" + globalWeightArray[volIndex]});
+           var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult;
+           sendMessage(recipientId, {text: newWeight + "::" + globalWeightArray[volIndex + "::" curWeight]});
            //TODO This is where you reassign.
          }else
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
