@@ -169,9 +169,9 @@ function volunteerEventMessage(recipientId, text){
            if(xi > globalBest){
              globalBest = xi;
            }
-          //  globalAvg = (globalAvg*(globalWeightArray.length - 1))/globalWeightArray - xi/globalWeightArray.length;
-          //  var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
-          //  var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult;
+           globalAvg = (globalAvg*(globalWeightArray.length - 1))/globalWeightArray - xi/globalWeightArray.length;
+           var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
+           var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult;
 
            //sendMessage(recipientId, {text: newWeight + "::" + globalWeightArray[volIndex] + "::" + curWeight});
            //TODO This is where you reassign.
