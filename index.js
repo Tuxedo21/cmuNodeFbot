@@ -182,8 +182,8 @@ function volunteerEventMessage(recipientId, text){
       return true;
     }else if (values[0] === 's' || values[0] === 'start') {
       //TODO start module
-      sendMessage(recipientId, {text: "start "});
       globalStartTime = Number(algoVE.getCurrentTime());
+      sendMessage(recipientId, {text: "start "});
       return true;
 }
     return false;
