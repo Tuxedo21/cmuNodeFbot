@@ -168,8 +168,10 @@ function volunteerEventMessage(recipientId, text){
 
          globalDoneTime = Number(algoVE.getCurrentTime());
          if( (globalDoneTime - globalStartTime) < globalPredictTime){
+           if(globalVolTaskArray[volIndex].length != 0){
            sendMessage(recipientId, {text: "GOOD " + globalVolTaskArray[volIndex].pop() + " " + globalVolTaskArray[volIndex]});
-           sendMessage(recipientId, {text: "debugger " + globalVolTaskArray });
+         }else
+           sendMessage(recipientId, {text: "You don't have any more tasks." + globalVolTaskArray });
          }
         sendMessage(recipientId, {text: "Thank you: " + jsonContent.workPool + "\nMore instructions..."});
 
