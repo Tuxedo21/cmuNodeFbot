@@ -76,8 +76,6 @@ function startASMessage(recipientId, text){
   var values = text.split(" ");
       if(values[0].toLowerCase() === 'startas' && values.length == 6){
 
-
-
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
           jsonContent.timePerTask = Number(values[1]);
@@ -90,8 +88,6 @@ function startASMessage(recipientId, text){
           // JSON startas, 1, 120, 3, 5
           var startWeight = 1 / Number(values[4]); // Weight/volunteers
 
-
-
           for (var i = 0; i < Number(values[4]); i++) {
             globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
@@ -102,9 +98,7 @@ function startASMessage(recipientId, text){
 
           }
 
-
           makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
-          sendMessage(recipientId, {text: "debugger " + globalTaskArray + "  " +(Number(values[4])+5)});
 
           //TODO BREAKS IF GIVEN A NUMBER THAT IS NOT NEAT
           for (var vol = 0; vol < Number(values[4]); vol++) {
@@ -117,6 +111,7 @@ function startASMessage(recipientId, text){
           for(var i =0; i < globalVolTaskArray.length; i++){
           sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
           }
+          sendMessage(recipientId, {text: "debugger " + globalVolTaskArray + "  " +(Number(values[4])+5)});
           return true;
        }
      return false;
