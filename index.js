@@ -172,7 +172,7 @@ function volunteerEventMessage(recipientId, text){
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
          }
         sendMessage(recipientId, {text: "Thank you, these are the total of tasks left: " + jsonContent.workPool + "\nMore instructions..."});
-
+        sendMessage(recipientId, {text: "Vol: " + volIndex + " you ended at " +   globalDoneTime});
       }else {
         DoneMessage(recipientId);
       }return true;}
