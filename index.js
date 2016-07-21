@@ -166,7 +166,10 @@ function volunteerEventMessage(recipientId, text){
          globalDoneTime = Number(algoVE.getCurrentTime());
          if( (globalDoneTime - globalStartTime[volIndex]) < globalVolTaskArray[volIndex][0]){ //globalVolTaskArray[volIndex][0] globalPredictTime
            if(globalVolTaskArray[volIndex].length != 0){
-           sendMessage(recipientId, {text: "GOOD, popped: " + globalVolTaskArray[volIndex].pop() + "\nLeft: " + globalVolTaskArray[volIndex]});
+
+              var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime - globalStartTime[volIndex]);
+
+           sendMessage(recipientId, {text: xi +"\nGOOD, popped: " + globalVolTaskArray[volIndex].pop() + "\nLeft: " + globalVolTaskArray[volIndex]});
            //TODO This is where you reassign.
          }else
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
