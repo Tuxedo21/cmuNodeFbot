@@ -169,7 +169,7 @@ function volunteerEventMessage(recipientId, text){
 
               var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime - globalStartTime[volIndex]);
 
-           sendMessage(recipientId, {text: xi +"\nGOOD, popped: " + globalVolTaskArray[volIndex].pop() + "\nLeft: " + globalVolTaskArray[volIndex]});
+           sendMessage(recipientId, {text: globalVolTaskArray[volIndex][0] + "  " + (globalDoneTime - globalStartTime[volIndex]) +"\nGOOD, popped: " + globalVolTaskArray[volIndex].pop() + "\nLeft: " + globalVolTaskArray[volIndex]});
            //TODO This is where you reassign.
          }else
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
