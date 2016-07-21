@@ -170,7 +170,7 @@ function volunteerEventMessage(recipientId, text){
              globalBest = xi;
            }
            globalAvg = (globalAvg*(globalWeightArray.length - 1))/globalWeightArray - xi/globalWeightArray.length;
-           sendMessage(recipientId, {text: ":: " + globalAvg})
+           sendMessage(recipientId, {text: ":: " + xi})
            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
            var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult;
            //sendMessage(recipientId, {text: newWeight + "::" + globalWeightArray[volIndex] + "::" + ((xi - (globalAvg/2)) / (globalBest - (globalAvg/2))) });
