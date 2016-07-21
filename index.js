@@ -162,7 +162,7 @@ function volunteerEventMessage(recipientId, text){
         fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
             }
         if(jsonContent.workPool > 0){
-         globalDoneTime = Number(algoVE.getCurrentTime());
+         globalDoneTime = Number(algoVE.getCurrentTime()); //TODO CHANGE THIS IF STATMENT
          if( (globalDoneTime - globalStartTime[volIndex]) < globalVolTaskArray[volIndex][0]){ //globalVolTaskArray[volIndex][0] globalPredictTime
            if(globalVolTaskArray[volIndex].length != 0){
               var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime - globalStartTime[volIndex]);
@@ -170,9 +170,10 @@ function volunteerEventMessage(recipientId, text){
              globalBest = xi;
            }
            globalAvg = (globalAvg*(globalWeightArray.length - 1))/globalWeightArray - xi/globalWeightArray.length;
+           sendMessage(recipientId, {text: ":: " + globalAvg})
            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
            var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult;
-           sendMessage(recipientId, {text: newWeight + "::" + globalWeightArray[volIndex] + "::" + ((xi - (globalAvg/2)) / (globalBest - (globalAvg/2))) });
+           //sendMessage(recipientId, {text: newWeight + "::" + globalWeightArray[volIndex] + "::" + ((xi - (globalAvg/2)) / (globalBest - (globalAvg/2))) });
            //TODO This is where you reassign.
          }else
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
