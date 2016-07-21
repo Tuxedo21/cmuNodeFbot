@@ -185,9 +185,13 @@ function volunteerEventMessage(recipientId, text){
       sendMessage(recipientId, {text: "next "});
       return true;
     }else if (values[0] === 's' || values[0] === 'start') {
+      if(isInArray(recipientId.toString(),arrayOfIds)){
+
+          var volIndex = arrayOfIds.indexOf(recipientId);
       //TODO start module
       globalStartTime[volIndex] = Number(algoVE.getCurrentTime());
       sendMessage(recipientId, {text: "Vol:" + volIndex + "you started at " +   globalStartTime[volIndex]});
+    }
       return true;
 }
     return false;
