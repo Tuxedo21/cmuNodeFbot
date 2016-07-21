@@ -164,7 +164,7 @@ function volunteerEventMessage(recipientId, text){
             }
         if(jsonContent.workPool > 0){
          globalDoneTime = Number(algoVE.getCurrentTime());
-         if( (globalDoneTime - globalStartTime[volIndex]) < globalPredictTime){ //globalVolTaskArray[volIndex][0]
+         if( (globalDoneTime - globalStartTime[volIndex]) < globalVolTaskArray[volIndex][0]){ //globalVolTaskArray[volIndex][0] globalPredictTime
            if(globalVolTaskArray[volIndex].length != 0){
            sendMessage(recipientId, {text: "GOOD, popped: " + globalVolTaskArray[volIndex].pop() + "\nLeft: " + globalVolTaskArray[volIndex]});
            //TODO This is where you reassign.
@@ -190,7 +190,7 @@ function volunteerEventMessage(recipientId, text){
           var volIndex = arrayOfIds.indexOf(recipientId);
       //TODO start module
       globalStartTime[volIndex] = Number(algoVE.getCurrentTime());
-      sendMessage(recipientId, {text: "Vol:" + volIndex + "you started at " +   globalStartTime[volIndex]});
+      sendMessage(recipientId, {text: "Vol: " + volIndex + " you started at " +   globalStartTime[volIndex]});
     }
       return true;
 }
