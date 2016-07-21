@@ -154,7 +154,8 @@ function volunteerEventMessage(recipientId, text){
     if(isInArray(recipientId.toString(),arrayOfIds)){
 
         var volIndex = arrayOfIds.indexOf(recipientId);
-        sendMessage(ids.carlId, {text: "Vol id: " + "[" + volIndex + "]"});
+        //TODO WHY DO I HAVE THIS?
+        //sendMessage(ids.carlId, {text: "Vol id: " + "[" + volIndex + "]"});
         if(jsonContent.workPool > 0){
         jsonContent.workPool = jsonContent.workPool - 1;// THIS SHOULD BE globalTaskArray
         fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
