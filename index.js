@@ -15,7 +15,7 @@ console.log(algoVE.getCurrentTime());
 
 var g = 0;
 var globalAvg = 1;
-var globalBest = 1;
+var globalBest = 0;
 
 var globalWeightArray = [];//[]
 var globalTaskArray = [];//[] all tasks like workPool
@@ -26,6 +26,7 @@ var globalRealTimeArray = [];//[][] all distributed done tasks, a task is done t
 var globalDoneTime;
 var globalStartTime=[];
 var globalPredictTime = 100;
+var globalMult = 0.3;
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -156,8 +157,6 @@ function volunteerEventMessage(recipientId, text){
     if(isInArray(recipientId.toString(),arrayOfIds)){
 
         var volIndex = arrayOfIds.indexOf(recipientId);
-        //TODO WHY DO I HAVE THIS?
-        //sendMessage(ids.carlId, {text: "Vol id: " + "[" + volIndex + "]"});
         if(jsonContent.workPool > 0){
         jsonContent.workPool = jsonContent.workPool - 1;// THIS SHOULD BE globalTaskArray
         fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
@@ -169,7 +168,14 @@ function volunteerEventMessage(recipientId, text){
 
               var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime - globalStartTime[volIndex]);
 
-           sendMessage(recipientId, {text: globalVolTaskArray[volIndex][0] + "  " + (globalDoneTime - globalStartTime[volIndex]) + ":"+xi + ":" +"\nGOOD, popped: " + globalVolTaskArray[volIndex].pop() + "\nLeft: " + globalVolTaskArray[volIndex]});
+
+           if(xi > globalBest){
+             globalBest = xi;
+           }
+           globalAvg = (globalAvg*(globalWeightArray.length - 1))/globalWeightArray - xi/globalWeightArray.length;
+           var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
+           var newWeight = globalWeightArray[volIndex]*(1 - globalMult) + curWeight*globalMult;
+           sendMessage(recipientId, {text: newWeight + "::" + globalWeightArray[volIndex]});
            //TODO This is where you reassign.
          }else
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
@@ -191,7 +197,7 @@ function volunteerEventMessage(recipientId, text){
       if(isInArray(recipientId.toString(),arrayOfIds)){
 
           var volIndex = arrayOfIds.indexOf(recipientId);
-      //TODO start module
+      // start module
       globalStartTime[volIndex] = Number(algoVE.getCurrentTime());
       sendMessage(recipientId, {text: "Vol: " + volIndex + " you started at " +   globalStartTime[volIndex]});
     }
