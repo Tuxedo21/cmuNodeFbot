@@ -25,7 +25,7 @@ var globalRealTimeArray = [];//[][] all distributed done tasks, a task is done t
 //Time is done in seconds
 var globalDoneTime;
 var globalStartTime;
-var globalPredictTime = 10;
+var globalPredictTime = 100;
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
