@@ -112,7 +112,7 @@ function startASMessage(recipientId, text){
           sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
           sendMessage(ids.idArray[i], {text: "Your tasks: " + (i +1) + "[" + globalVolTaskArray[i] + "]" });
           }
-          sendMessage(recipientId, {text: "debugger " + globalVolTaskArray + "  " +(Number(values[4])+5)});
+
           return true;
        }
      return false;
@@ -168,8 +168,8 @@ function volunteerEventMessage(recipientId, text){
 
          globalDoneTime = Number(algoVE.getCurrentTime());
          if( (globalDoneTime - globalStartTime) < globalPredictTime){
-           sendMessage(recipientId, {text: "GOOD" + volIndex});
-
+           sendMessage(recipientId, {text: "GOOD" + globalVolTaskArray[volIndex]});
+           sendMessage(recipientId, {text: "debugger " + globalVolTaskArray });
          }
         sendMessage(recipientId, {text: "Thank you: " + jsonContent.workPool + "\nMore instructions..."});
 
