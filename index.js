@@ -175,7 +175,7 @@ function volunteerEventMessage(recipientId, text){
            var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult;
            sendMessage(recipientId, {text: newWeight + "::" + globalWeightArray[volIndex] + "::" + curWeight });
            globalWeightArray[volIndex] = newWeight;
-           var subtract = newWeight / (globalWeightArray.length - 1);
+           var subtract = (newWeight - globalWeightArray[volIndex])/ (globalWeightArray.length - 1);
            sendMessage(recipientId, {text: "sub: " + subtract + "::[" + globalWeightArray + "]::" + curWeight });
            /*
            Update array with single value, then subtract to all, then reassigntasks
