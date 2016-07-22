@@ -101,8 +101,6 @@ function startASMessage(recipientId, text){
             sendInstructions(values[5],ids.idArray[i]);
           }
           makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
-          //TODO BREAKS IF GIVEN A NUMBER THAT IS NOT NEAT
-
           for (var vol = 0; vol < Number(values[4]); vol++) {
             for(var task = 0;task < jsonContent.numOfTask*globalWeightArray[vol]; task++){
               if(globalTaskArray.length > 0){
@@ -110,7 +108,6 @@ function startASMessage(recipientId, text){
               }
             }
           }
-
           for(var i =0; i < globalVolTaskArray.length; i++){
           sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
           sendMessage(ids.idArray[i], {text: "Your tasks: " + "[" + globalVolTaskArray[i] + "]" });
@@ -177,7 +174,14 @@ function volunteerEventMessage(recipientId, text){
            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
            var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult;
            sendMessage(recipientId, {text: newWeight + "::" + globalWeightArray[volIndex] + "::" + curWeight });
-           //TODO This is where you reassign.
+           globalWeightArray[volIndex] = newWeight;
+            sendMessage(recipientId, {text: newWeight + "::" + globalWeightArray[volIndex] + "::" + curWeight });
+           /*
+           Update array with single value, then subtract to all, then reassigntasks
+           */
+
+             //TODO This is where you reassign.
+             //TODO BREAKS IF GIVEN A NUMBER THAT IS NOT NEAT
          }else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
          }
