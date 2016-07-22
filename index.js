@@ -181,7 +181,7 @@ function volunteerEventMessage(recipientId, text){
                 globalWeightArray[i] = globalWeightArray[i] - subtract;}
            }
 
-            sendMessage(recipientId, {text: "sub: " + subtract + "GWA::[" + globalWeightArray + "]::" });
+          //  sendMessage(recipientId, {text: "sub: " + subtract + "GWA::[" + globalWeightArray + "]::" });
            /*
            Update array with single valuex, then subtract to allx, then reassigntasks
            */
