@@ -23,7 +23,7 @@ var globalVolunteers = [];//[] their ids
 var globalVolTaskArray = [];//[][] all distributed tasks a task is time
 var globalRealTimeArray = [];//[][] all distributed done tasks, a task is done time
 //Time is done in seconds
-var globalDoneTime;
+var globalDoneTime = [];
 var globalStartTime=[];
 var globalPredictTime = 100;
 var globalMult = 0.3;
@@ -94,6 +94,7 @@ function startASMessage(recipientId, text){
             globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
             globalStartTime.push([]);
+            globalDoneTime.push([]);
             globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nInstructions:" });
             //  SEND INSTRUCTIONS
@@ -162,24 +163,24 @@ function volunteerEventMessage(recipientId, text){
         fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
             }
         if(jsonContent.workPool > 0){
-         globalDoneTime = Number(algoVE.getCurrentTime()); //TODO CHANGE THIS IF STATMENT
-         if( (globalDoneTime - globalStartTime[volIndex]) < globalVolTaskArray[volIndex][0]){ //globalVolTaskArray[volIndex][0] globalPredictTime
+         globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //TODO CHANGE THIS IF STATMENT
+      //   if( (globalDoneTime - globalStartTime[volIndex]) < globalVolTaskArray[volIndex][0]){ //globalVolTaskArray[volIndex][0] globalPredictTime
            if(globalVolTaskArray[volIndex].length != 0){
-              var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime - globalStartTime[volIndex]);
+              var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]);
            if(xi > globalBest){
              globalBest = xi;
            }
            globalAvg = ((globalAvg*(globalWeightArray.length - 1))/globalWeightArray.length) - xi/globalWeightArray.length;
-           //sendMessage(recipientId, {text: ":: " + globalWeightArray.length})
            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
            var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult;
            sendMessage(recipientId, {text: newWeight + "::" + globalWeightArray[volIndex] + "::" + curWeight });
            //TODO This is where you reassign.
-         }else
+         }else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
          }
+  //     }
         sendMessage(recipientId, {text: "Thank you, these are the total of tasks left: " + jsonContent.workPool + "\nMore instructions..."});
-        sendMessage(recipientId, {text: "Vol: " + volIndex + " you ended at " +   globalDoneTime});
+        sendMessage(recipientId, {text: "Vol: " + volIndex + " you ended at " +   globalDoneTime[volIndex]});
       }else {
         DoneMessage(recipientId);
       }return true;}
