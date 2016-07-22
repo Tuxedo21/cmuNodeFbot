@@ -162,8 +162,7 @@ function volunteerEventMessage(recipientId, text){
         if(jsonContent.workPool > 0){
         jsonContent.workPool = jsonContent.workPool - 1;// THIS SHOULD BE globalTaskArray
         fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
-            }
-        if(jsonContent.workPool > 0){
+
          globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //TODO CHANGE THIS IF STATMENT
          if(globalVolTaskArray[volIndex].length != 0){
               var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]);
@@ -173,7 +172,7 @@ function volunteerEventMessage(recipientId, text){
            globalAvg = ((globalAvg*(globalWeightArray.length - 1))/globalWeightArray.length) - xi/globalWeightArray.length;
            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
            var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult;
-           sendMessage(recipientId, {text: newWeight + "::" + globalWeightArray[volIndex] + "::" + curWeight });
+           sendMessage(recipientId, {text: "::NW" + newWeight + "::LW" + globalWeightArray[volIndex] + "::CW" + curWeight });
            var subtract = (newWeight - globalWeightArray[volIndex])/(globalWeightArray.length - 1);
            globalWeightArray[volIndex] = newWeight;
 
@@ -182,12 +181,20 @@ function volunteerEventMessage(recipientId, text){
                 globalWeightArray[i] = globalWeightArray[i] - subtract;}
            }
 
-           sendMessage(recipientId, {text: "sub: " + subtract + "::[" + globalWeightArray + "]::" + curWeight });
+           sendMessage(recipientId, {text: "sub: " + subtract + "GWA::[" + globalWeightArray + "]::" });
            /*
-           Update array with single value, then subtract to all, then reassigntasks
+           Update array with single valuex, then subtract to allx, then reassigntasks
            */
+           //TODO This is where you reassign.
+          //  for (var vol = 0; vol < globalWeightArray.length; vol++) {
+          //    for(var task = 0;task < jsonContent.numOfTask*globalWeightArray[vol]; task++){
+          //      if(globalTaskArray.length > 0){
+          //          globalVolTaskArray[vol].push(globalTaskArray.pop());
+          //      }
+          //    }
+          //  }
 
-             //TODO This is where you reassign.
+
              //TODO BREAKS IF GIVEN A NUMBER THAT IS NOT NEAT
          }else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
