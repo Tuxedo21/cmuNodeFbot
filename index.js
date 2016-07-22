@@ -164,6 +164,7 @@ function volunteerEventMessage(recipientId, text){
          globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //TODO CHANGE THIS IF STATMENT
          if(globalVolTaskArray[volIndex].length != 0){
               var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]);
+              globalVolTaskArray[volIndex].pop();
            if(xi > globalBest){
              globalBest = xi;
            }
@@ -178,7 +179,7 @@ function volunteerEventMessage(recipientId, text){
                  if(i != volIndex){
                     globalWeightArray[i] = globalWeightArray[i] - subtract;}
                }
-          //  sendMessage(recipientId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
+            sendMessage(recipientId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
            //TODO This is where you reassign.
            //Empty all except for one and then rea
            for (var vol = 0; vol < globalWeightArray.length; vol++) {
@@ -214,7 +215,7 @@ function volunteerEventMessage(recipientId, text){
           var volIndex = arrayOfIds.indexOf(recipientId);
       //TODO start module
       globalStartTime[volIndex] = Number(algoVE.getCurrentTime());
-      sendMessage(recipientId, {text: "Vol: " + volIndex + " you started at " +   globalStartTime[volIndex]});
+      sendMessage(recipientId, {text: "Vol: " + volIndex + " you started at " + globalStartTime[volIndex]});
     }
       return true;
 }
@@ -224,7 +225,6 @@ function volunteerEventMessage(recipientId, text){
 function isInArray(value, array) {
   return array.indexOf(value) > -1;
 }
-
 // generic function sending messages
 function sendMessage(recipientId, message) {
     request({
