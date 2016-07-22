@@ -102,11 +102,15 @@ function startASMessage(recipientId, text){
           }
           makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
           //TODO BREAKS IF GIVEN A NUMBER THAT IS NOT NEAT
+
           for (var vol = 0; vol < Number(values[4]); vol++) {
             for(var task = 0;task < jsonContent.numOfTask*globalWeightArray[vol]; task++){
-            globalVolTaskArray[vol].push(globalTaskArray.pop());
+              if(globalTaskArray.length > 0){
+                  globalVolTaskArray[vol].push(globalTaskArray.pop());
+              }
             }
           }
+
           for(var i =0; i < globalVolTaskArray.length; i++){
           sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
           sendMessage(ids.idArray[i], {text: "Your tasks: " + "[" + globalVolTaskArray[i] + "]" });
@@ -164,8 +168,7 @@ function volunteerEventMessage(recipientId, text){
             }
         if(jsonContent.workPool > 0){
          globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //TODO CHANGE THIS IF STATMENT
-      //   if( (globalDoneTime - globalStartTime[volIndex]) < globalVolTaskArray[volIndex][0]){ //globalVolTaskArray[volIndex][0] globalPredictTime
-           if(globalVolTaskArray[volIndex].length != 0){
+         if(globalVolTaskArray[volIndex].length != 0){
               var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]);
            if(xi > globalBest){
              globalBest = xi;
@@ -178,7 +181,7 @@ function volunteerEventMessage(recipientId, text){
          }else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
          }
-  //     }
+
         sendMessage(recipientId, {text: "Thank you, these are the total of tasks left: " + jsonContent.workPool + "\nMore instructions..."});
         sendMessage(recipientId, {text: "Vol: " + volIndex + " you ended at " +   globalDoneTime[volIndex]});
       }else {
