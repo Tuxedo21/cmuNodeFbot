@@ -20,7 +20,7 @@ var globalBest = 0;
 var globalWeightArray = [];//[]
 var globalTaskArray = [];//[] all tasks like workPool
 var globalVolunteers = [];//[] their ids
-var  = [];//[][] all distributed tasks a task is time
+var globalVolTaskArray = [];//[][] all distributed tasks a task is time
 var globalRealTimeArray = [];//[][] all distributed done tasks, a task is done time
 //Time is done in seconds
 var globalDoneTime = [];
@@ -70,7 +70,7 @@ app.post('/webhook', function (req, res) {
 function startASMessage(recipientId, text){
 
   globalTaskArray = [];
-   = [];
+  globalVolTaskArray = [];
   globalWeightArray = [];
   globalStartTime = [];
   text = text || "";
