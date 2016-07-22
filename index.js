@@ -181,7 +181,7 @@ function volunteerEventMessage(recipientId, text){
                 globalWeightArray[i] = globalWeightArray[i] - subtract;}
            }
 
-          //  sendMessage(recipientId, {text: "sub: " + subtract + "GWA::[" + globalWeightArray + "]::" });
+          //  sendMessage(recipientId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
            /*
            Update array with single valuex, then subtract to allx, then reassigntasks
            */
@@ -211,7 +211,8 @@ function volunteerEventMessage(recipientId, text){
         sendMessage(recipientId, {text: "Vol: " + volIndex + " you ended at " +   globalDoneTime[volIndex]});
       }else {
         DoneMessage(recipientId);
-      }return true;}
+      }return true;
+    }
     }else if (values[0] === 'h' || values[0] === 'help') {
       //TODO help module
        sendMessage(recipientId, {text: "help "});
