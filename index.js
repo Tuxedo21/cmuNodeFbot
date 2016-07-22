@@ -186,6 +186,15 @@ function volunteerEventMessage(recipientId, text){
            Update array with single valuex, then subtract to allx, then reassigntasks
            */
            //TODO This is where you reassign.
+           //Empty all except for one and then rea
+           for (var vol = 0; vol < globalWeightArray.length; vol++) {
+             for(var task = 0;task < (globalTaskArray[vol].length - 1); task++){
+               if(globalTaskArray[vol].length > 0){
+                   globalTaskArray.push(globalTaskArray[vol].pop());
+               }
+             }
+           }
+            sendMessage(recipientId, {text: "GTA::[" + globalTaskArray + "]::" });
           //  for (var vol = 0; vol < globalWeightArray.length; vol++) {
           //    for(var task = 0;task < jsonContent.numOfTask*globalWeightArray[vol]; task++){
           //      if(globalTaskArray.length > 0){
@@ -194,8 +203,6 @@ function volunteerEventMessage(recipientId, text){
           //    }
           //  }
 
-
-             //TODO BREAKS IF GIVEN A NUMBER THAT IS NOT NEAT
          }else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
          }
