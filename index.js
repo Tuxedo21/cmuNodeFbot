@@ -174,7 +174,6 @@ function volunteerEventMessage(recipientId, text){
            //sendMessage(recipientId, {text: "::NW" + newWeight + "::LW" + globalWeightArray[volIndex] + "::CW" + curWeight });
            var subtract = (newWeight - globalWeightArray[volIndex])/(globalWeightArray.length - 1);
            globalWeightArray[volIndex] = newWeight;
-
                for (var i = 0; i < globalWeightArray.length; i++) {
                  if(i != volIndex){
                     globalWeightArray[i] = globalWeightArray[i] - subtract;}
@@ -195,9 +194,7 @@ function volunteerEventMessage(recipientId, text){
                }}}
                for(var i =0; i < globalVolTaskArray.length; i++){
                sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
-              }
-
-
+              }sendMessage(ids.carlId, {text:  "[" + globalTaskArray + "]"});
 
          }else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
