@@ -161,40 +161,46 @@ function volunteerEventMessage(recipientId, text){
         if(jsonContent.workPool > 0){
         jsonContent.workPool = jsonContent.workPool - 1;// THIS SHOULD BE globalTaskArray
         fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
-         globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //TODO CHANGE THIS IF STATMENT
+        globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //TODO CHANGE THIS IF STATMENT
+
          if(globalVolTaskArray[volIndex].length != 0){
               var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]);
               globalVolTaskArray[volIndex].pop();
+
            if(xi > globalBest){
              globalBest = xi;
            }
+
            globalAvg = ((globalAvg*(globalWeightArray.length - 1))/globalWeightArray.length) - xi/globalWeightArray.length;
            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
-           var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult;
-           //sendMessage(recipientId, {text: "::NW" + newWeight + "::LW" + globalWeightArray[volIndex] + "::CW" + curWeight });
+           var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult; //sendMessage(recipientId, {text: "::NW" + newWeight + "::LW" + globalWeightArray[volIndex] + "::CW" + curWeight });
            var subtract = (newWeight - globalWeightArray[volIndex])/(globalWeightArray.length - 1);
            globalWeightArray[volIndex] = newWeight;
+               //TODO mf subtract the weight of others
                for (var i = 0; i < globalWeightArray.length; i++) {
                  if(i != volIndex){
                     globalWeightArray[i] = globalWeightArray[i] - subtract;}
                }
+
             sendMessage(recipientId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
-           //TODO This is where you reassign.
-           //Empty all except for one and then rea
+           //TODO This is where you reassign.Empty all except for one and then rea
            for (var vol = 0; vol < globalWeightArray.length; vol++) {
              for(var task = 0;task < (globalVolTaskArray[vol].length - 1); task++){
                if(globalVolTaskArray[vol].length > 0){
                    globalTaskArray.push(globalVolTaskArray[vol].pop());
                }}}
             sendMessage(recipientId, {text: "GTA::[" + globalTaskArray + "]::" });
+
            for (var vol = 0; vol < globalWeightArray.length; vol++) {
              for(var task = 0;task < globalTaskArray*globalWeightArray[vol]; task++){
                if(globalTaskArray.length > 0){
                    globalVolTaskArray[vol].push(globalTaskArray.pop());
                }}}
+
                for(var i =0; i < globalVolTaskArray.length; i++){
                sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
                } sendMessage(ids.carlId, {text: "[" + globalTaskArray + "]"});
+
          }else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
          }
