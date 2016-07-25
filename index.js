@@ -163,7 +163,7 @@ function volunteerEventMessage(recipientId, text){
         fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
         globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //TODO CHANGE THIS IF STATMENT
 
-         if(globalVolTaskArray[volIndex].length != 0){
+         if(globalVolTaskArray[volIndex].length != 0) {
               var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]);
               globalVolTaskArray[volIndex].pop();
 
