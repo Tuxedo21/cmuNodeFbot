@@ -158,32 +158,33 @@ function volunteerEventMessage(recipientId, text){
     if(isInArray(recipientId.toString(),arrayOfIds)){//Is he a volunteer?
         var volIndex = arrayOfIds.indexOf(recipientId);//get his id
         if(jsonContent.workPool > 0){ //check if the pool is empty
-        jsonContent.workPool = jsonContent.workPool - 1;// take away from the pool
-        fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
-        globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
+          jsonContent.workPool = jsonContent.workPool - 1;// take away from the pool
+          fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
+          globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
 
-          sendMessage(recipientId, {text: "debugging " + volIndex});
+            sendMessage(recipientId, {text: "debugging " + volIndex});
 
-         if(true) { //globalVolTaskArray[volIndex].length != 0
-            var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]);
-            globalVolTaskArray[volIndex].pop();
-            if(xi > globalBest){
-             globalBest = xi;
-            }
-            globalWeightArray[volIndex] = newWeight;
-             // mf subtract the weight of others
-            for (var i = 0; i < globalWeightArray.length; i++) {
-               if(i != volIndex){
-                  globalWeightArray[i] = globalWeightArray[i] - subtract;}
-            }
-            sendMessage(recipientId, {text: "GTA::[" + globalTaskArray + "]::" });
-            sendMessage(recipientId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
-            globalVolTaskArray[volIndex].push(globalTaskArray.pop());
+           if(true) { //globalVolTaskArray[volIndex].length != 0
+              var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
 
-            for(var i =0; i < globalVolTaskArray.length; i++){
-            sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
-            }
-            sendMessage(ids.carlId, {text: "[" + globalTaskArray + "]"});
+              if(xi > globalBest){
+                globalBest = xi;
+              }
+              globalWeightArray[volIndex] = newWeight;
+               // mf subtract the weight of others
+              for (var i = 0; i < globalWeightArray.length; i++) {
+                 if(i != volIndex){
+                    globalWeightArray[i] = globalWeightArray[i] - subtract;}
+              }
+              sendMessage(recipientId, {text: "GTA::[" + globalTaskArray + "]::" });
+              sendMessage(recipientId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
+              globalVolTaskArray[volIndex].pop();
+              globalVolTaskArray[volIndex].push(globalTaskArray.pop());
+
+              for(var i =0; i < globalVolTaskArray.length; i++){
+              sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
+              }
+              sendMessage(ids.carlId, {text: "[" + globalTaskArray + "]"});
          }  else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left for others. [" + globalVolTaskArray + "]"});
          }
@@ -209,6 +210,7 @@ function volunteerEventMessage(recipientId, text){
       //TODO start module
       globalStartTime[volIndex] = Number(algoVE.getCurrentTime());
       sendMessage(recipientId, {text: "Vol: " + volIndex + " you started at " + globalStartTime[volIndex]});
+      return true;
     }
       return true;
 }
