@@ -152,8 +152,8 @@ function volunteerEventMessage(recipientId, text){
   var jsonContent = JSON.parse(contents);
   var arrayOfIds = [];
   for (var i = 0; i < jsonContent.volunteers; i++) {//Get all volunteers
-    arrayOfIds.push(ids.idArray[i].toString());
-  }
+    arrayOfIds.push(ids.idArray[i].toString());}
+
   if (values[0] === 'd' || values[0] === 'done'){
     if(isInArray(recipientId.toString(),arrayOfIds)){//Is he a volunteer?
         var volIndex = arrayOfIds.indexOf(recipientId);//get his id
@@ -162,7 +162,7 @@ function volunteerEventMessage(recipientId, text){
         fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
         globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
 
-          sendMessage(recipientId, {text: "debugging " + globalVolTaskArray[volIndex]});
+          sendMessage(recipientId, {text: "debugging " + volIndex});
 
          if(globalVolTaskArray[volIndex].length != 0) {
             var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]);
