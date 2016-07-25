@@ -166,7 +166,7 @@ function volunteerEventMessage(recipientId, text){
          if(globalVolTaskArray[volIndex].length != 0) {
               var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]);
               globalVolTaskArray[volIndex].pop();
-
+              globalVolTaskArray[volIndex].push(globalTaskArray.pop());
            if(xi > globalBest){
              globalBest = xi;
            }
@@ -182,6 +182,7 @@ function volunteerEventMessage(recipientId, text){
            //TODO This is where you reassign.Empty all except for one and then rea
 
             sendMessage(recipientId, {text: "GTA::[" + globalTaskArray + "]::" });
+            sendMessage(recipientId, {text: "GWA::[" + globalWeightArray + "]::" });
 
 
                for(var i =0; i < globalVolTaskArray.length; i++){
