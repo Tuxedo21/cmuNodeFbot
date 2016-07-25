@@ -195,17 +195,18 @@ function volunteerEventMessage(recipientId, text){
                for(var i =0; i < globalVolTaskArray.length; i++){
                sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
                } sendMessage(ids.carlId, {text: "[" + globalTaskArray + "]"});
-
-
          }else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
          }
         sendMessage(recipientId, {text: "Thank you, these are the total of tasks left: " + jsonContent.workPool + "\nMore instructions..."});
         sendMessage(recipientId, {text: "Vol: " + volIndex + " you ended at " +   globalDoneTime[volIndex]});
-      }else {
+      } else {
         DoneMessage(recipientId);
-      }return true;
-    }}
+      }
+      return true;
+    }
+  }
+
     else if (values[0] === 'h' || values[0] === 'help') {
       //TODO help module
        sendMessage(recipientId, {text: "help "});
