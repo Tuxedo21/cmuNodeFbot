@@ -109,8 +109,8 @@ function startASMessage(recipientId, text){
           }
 
           for(var i =0; i < globalVolTaskArray.length; i++){
-          sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
-          sendMessage(ids.idArray[i], {text: "Your tasks: " + "[" + globalVolTaskArray[i] + "]" });
+          sendMessage(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
+          sendMessage(ids.idArray[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i] + "] minutes." });
           }
           return true;
        }
