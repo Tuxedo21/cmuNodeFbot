@@ -101,13 +101,13 @@ function startASMessage(recipientId, text){
             sendInstructions(values[5],ids.idArray[i]);
           }
           makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
+
           for (var vol = 0; vol < Number(values[4]); vol++) {
-            for(var task = 0;task < jsonContent.numOfTask*globalWeightArray[vol]; task++){
               if(globalTaskArray.length > 0){
                   globalVolTaskArray[vol].push(globalTaskArray.pop());
               }
-            }
           }
+
           for(var i =0; i < globalVolTaskArray.length; i++){
           sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
           sendMessage(ids.idArray[i], {text: "Your tasks: " + "[" + globalVolTaskArray[i] + "]" });
@@ -171,10 +171,6 @@ function volunteerEventMessage(recipientId, text){
              globalBest = xi;
            }
 
-           globalAvg = ((globalAvg*(globalWeightArray.length - 1))/globalWeightArray.length) - xi/globalWeightArray.length;
-           var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
-           var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult; //sendMessage(recipientId, {text: "::NW" + newWeight + "::LW" + globalWeightArray[volIndex] + "::CW" + curWeight });
-           var subtract = (newWeight - globalWeightArray[volIndex])/(globalWeightArray.length - 1);
            globalWeightArray[volIndex] = newWeight;
                //TODO mf subtract the weight of others
                for (var i = 0; i < globalWeightArray.length; i++) {
@@ -184,18 +180,9 @@ function volunteerEventMessage(recipientId, text){
 
             sendMessage(recipientId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
            //TODO This is where you reassign.Empty all except for one and then rea
-           for (var vol = 0; vol < globalWeightArray.length; vol++) {
-             for(var task = 0;task < (globalVolTaskArray[vol].length - 1); task++){
-               if(globalVolTaskArray[vol].length > 0){
-                   globalTaskArray.push(globalVolTaskArray[vol].pop());
-               }}}
+
             sendMessage(recipientId, {text: "GTA::[" + globalTaskArray + "]::" });
 
-           for (var vol = 0; vol < globalWeightArray.length; vol++) {
-             for(var task = 0;task < globalTaskArray*globalWeightArray[vol]; task++){
-               if(globalTaskArray.length > 0){
-                   globalVolTaskArray[vol].push(globalTaskArray.pop());
-               }}}
 
                for(var i =0; i < globalVolTaskArray.length; i++){
                sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
