@@ -194,7 +194,8 @@ function volunteerEventMessage(recipientId, text){
                }}}
                for(var i =0; i < globalVolTaskArray.length; i++){
                sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
-              }sendMessage(ids.carlId, {text:  "[" + globalTaskArray + "]"});
+               } sendMessage(ids.carlId, {text: "[" + globalTaskArray + "]"});
+
 
          }else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
