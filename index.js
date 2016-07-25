@@ -76,21 +76,21 @@ function startASMessage(recipientId, text){
   text = text || "";
   text = text.toLowerCase();
   var values = text.split(" ");
-      if(values[0].toLowerCase() === 'startas' && values.length == 6){
+      if(values[0].toLowerCase() === 'startas' && values.length == 5){
 
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
           jsonContent.timePerTask = Number(values[1]);
           jsonContent.numOfTask = Number(values[2]);
-          jsonContent.askTime = Number(values[3]);
-          jsonContent.volunteers = Number(values[4]);
+          jsonContent.volunteers = Number(values[3]);
+          jsonContent.taskType = values[4];
           jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
           sendMessage(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.numOfTask});
-          // JSON startas, 1, 120, 3, 5
-          var startWeight = 1 / Number(values[4]); // Weight/volunteers
+          // JSON startas, 1, 120, 3, fp
+          var startWeight = 1 / Number(values[3]); // Weight/volunteers
 
-          for (var i = 0; i < Number(values[4]); i++) {
+          for (var i = 0; i < Number(values[3]); i++) {
             globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
             globalStartTime.push([]);
@@ -98,11 +98,11 @@ function startASMessage(recipientId, text){
             globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nInstructions:" });
             //  SEND INSTRUCTIONS
-            sendInstructions(values[5],ids.idArray[i]);
+            sendInstructions(values[4],ids.idArray[i]);
           }
           makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
 
-          for (var vol = 0; vol < Number(values[4]); vol++) {
+          for (var vol = 0; vol < Number(values[3]); vol++) {
               if(globalTaskArray.length > 0){
                   globalVolTaskArray[vol].push(globalTaskArray.pop());
               }
@@ -191,7 +191,7 @@ function volunteerEventMessage(recipientId, text){
          }else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
          }
-        sendMessage(recipientId, {text: "Thank you, these are the total of tasks left: " + jsonContent.workPool + "\nMore instructions..."});
+        sendMessage(recipientId, {text: "Thank you, these are the total of tasks left: " + jsonContent.workPool });
         sendMessage(recipientId, {text: "Vol: " + volIndex + " you ended at " +   globalDoneTime[volIndex]});
       } else {
         DoneMessage(recipientId);
