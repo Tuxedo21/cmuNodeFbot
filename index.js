@@ -196,7 +196,6 @@ function volunteerEventMessage(recipientId, text){
       return true;
     }
   }
-
     else if (values[0] === 'h' || values[0] === 'help') {
       //TODO help module
        sendMessage(recipientId, {text: "help "});
