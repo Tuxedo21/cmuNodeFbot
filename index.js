@@ -164,7 +164,7 @@ function volunteerEventMessage(recipientId, text){
 
           sendMessage(recipientId, {text: "debugging " + volIndex});
 
-         if(globalVolTaskArray[volIndex].length != 0) {
+         if(true) { //globalVolTaskArray[volIndex].length != 0
             var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]);
             globalVolTaskArray[volIndex].pop();
             if(xi > globalBest){
@@ -184,7 +184,6 @@ function volunteerEventMessage(recipientId, text){
             sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
             }
             sendMessage(ids.carlId, {text: "[" + globalTaskArray + "]"});
-
          }  else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left for others. [" + globalVolTaskArray + "]"});
          }
