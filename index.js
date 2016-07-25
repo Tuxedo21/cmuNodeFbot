@@ -166,28 +166,26 @@ function volunteerEventMessage(recipientId, text){
          if(globalVolTaskArray[volIndex].length != 0) {
               var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]);
               globalVolTaskArray[volIndex].pop();
-              globalVolTaskArray[volIndex].push(globalTaskArray.pop());
+
            if(xi > globalBest){
              globalBest = xi;
            }
 
            globalWeightArray[volIndex] = newWeight;
-               //TODO mf subtract the weight of others
+               // mf subtract the weight of others
                for (var i = 0; i < globalWeightArray.length; i++) {
                  if(i != volIndex){
                     globalWeightArray[i] = globalWeightArray[i] - subtract;}
                }
 
-            sendMessage(recipientId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
-           //TODO This is where you reassign.Empty all except for one and then rea
-
             sendMessage(recipientId, {text: "GTA::[" + globalTaskArray + "]::" });
-            sendMessage(recipientId, {text: "GWA::[" + globalWeightArray + "]::" });
-
+            sendMessage(recipientId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
+            globalVolTaskArray[volIndex].push(globalTaskArray.pop());
 
                for(var i =0; i < globalVolTaskArray.length; i++){
                sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
-               } sendMessage(ids.carlId, {text: "[" + globalTaskArray + "]"});
+               }
+                 sendMessage(ids.carlId, {text: "[" + globalTaskArray + "]"});
 
          }else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left. [" + globalVolTaskArray + "]"});
