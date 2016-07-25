@@ -9,9 +9,10 @@ var ids = new Ids();
 var Data = require('./getData.js');
 var algoVE = require('./algorithumVE.js');
 
-console.log("Carl id: " + ids.carlId);
-console.log("Alej id: " + ids.alejId);
-console.log(algoVE.getCurrentTime());
+// console.log("Carl id: " + ids.carlId);
+// console.log("Alej id: " + ids.alejId);
+// console.log(algoVE.getCurrentTime());
+
 
 var g = 0;
 var globalAvg = 1;
@@ -27,6 +28,9 @@ var globalDoneTime = [];
 var globalStartTime=[];
 var globalPredictTime = 100;
 var globalMult = 0.3;
+
+
+getTasks("tasks.json");
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -100,7 +104,8 @@ function startASMessage(recipientId, text){
             //  SEND INSTRUCTIONS
             sendInstructions(values[4],ids.idArray[i]);
           }
-          makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
+          //makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
+          getTasks("tasks.json");
 
           for (var vol = 0; vol < Number(values[3]); vol++) {
               if(globalTaskArray.length > 0){
@@ -134,6 +139,16 @@ function makeglobalTaskArray(len,time){
     globalTaskArray.push(time);
   }
     sendMessage(ids.carlId, {text: "Global tasks: " + "[" + globalTaskArray + "]"});
+}
+
+function getTasks(jsonFile){
+  var contents = fs.readFileSync(jsonFile);
+  var jsonContent = JSON.parse(contents);
+  for (var i = 0; i < jsonContent.tasks.length; i++) {
+  console.log(jsonContent.tasks[i].time + " " + jsonContent.tasks[i].type);
+  globalTaskArray.push(jsonContent.tasks[i].time);
+  }
+  sendMessage(ids.carlId, {text: "Global tasks: " + "[" + globalTaskArray + "]"});
 }
 
 function arrrayCountSum(numarray,count){
