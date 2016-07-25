@@ -167,25 +167,27 @@ function volunteerEventMessage(recipientId, text){
              //sendMessage(recipientId, {text: "debugging " + volIndex});
 
               var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
-                sendMessage(recipientId, {text: "debugging " + xi});
+
               if(xi > globalBest){
                 globalBest = xi;
               }
               globalWeightArray[volIndex] = newWeight;
-               // mf subtract the weight of others
-              for (var i = 0; i < globalWeightArray.length; i++) {
-                 if(i != volIndex){
-                    globalWeightArray[i] = globalWeightArray[i] - subtract;}
-              }
-              sendMessage(recipientId, {text: "GTA::[" + globalTaskArray + "]::" });
-              sendMessage(recipientId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
-              globalVolTaskArray[volIndex].pop();
-              globalVolTaskArray[volIndex].push(globalTaskArray.pop());
+              sendMessage(recipientId, {text: "debugging " + newWeight});
 
-              for(var i =0; i < globalVolTaskArray.length; i++){
-              sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
-              }
-              sendMessage(ids.carlId, {text: "[" + globalTaskArray + "]"});
+              //  // mf subtract the weight of others
+              // for (var i = 0; i < globalWeightArray.length; i++) {
+              //    if(i != volIndex){
+              //       globalWeightArray[i] = globalWeightArray[i] - subtract;}
+              // }
+              // sendMessage(recipientId, {text: "GTA::[" + globalTaskArray + "]::" });
+              // sendMessage(recipientId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
+              // globalVolTaskArray[volIndex].pop();
+              // globalVolTaskArray[volIndex].push(globalTaskArray.pop());
+              //
+              // for(var i =0; i < globalVolTaskArray.length; i++){
+              // sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
+              // }
+              // sendMessage(ids.carlId, {text: "[" + globalTaskArray + "]"});
          }  else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left for others. [" + globalVolTaskArray + "]"});
          }
