@@ -151,10 +151,9 @@ function volunteerEventMessage(recipientId, text){
   var contents = fs.readFileSync("botData.json");
   var jsonContent = JSON.parse(contents);
   var arrayOfIds = [];
-  for (var i = 0; i < jsonContent.volunteers; i++) {
+  for (var i = 0; i < jsonContent.volunteers; i++) {//Get all volunteers
     arrayOfIds.push(ids.idArray[i].toString());
   }
-  //) && arrayOfIds.includes(recipientId)
   if (values[0] === 'd' || values[0] === 'done'){
     if(isInArray(recipientId.toString(),arrayOfIds)){//Is he a volunteer?
         var volIndex = arrayOfIds.indexOf(recipientId);//get his id
