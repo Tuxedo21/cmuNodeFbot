@@ -167,7 +167,7 @@ function volunteerEventMessage(recipientId, text){
              //sendMessage(recipientId, {text: "debugging " + volIndex});
 
               var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
-
+                sendMessage(recipientId, {text: "debugging " + xi});
               if(xi > globalBest){
                 globalBest = xi;
               }
