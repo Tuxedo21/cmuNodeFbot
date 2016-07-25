@@ -162,9 +162,10 @@ function volunteerEventMessage(recipientId, text){
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
           globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
 
-            sendMessage(recipientId, {text: "debugging " + volIndex});
 
-           if(globalVolTaskArray[volIndex].length != 0) { //globalVolTaskArray[volIndex].length != 0
+           if(true) { //globalVolTaskArray[volIndex].length != 0
+             sendMessage(recipientId, {text: "debugging " + volIndex});
+
               var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
 
               if(xi > globalBest){
