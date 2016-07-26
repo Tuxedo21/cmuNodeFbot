@@ -106,15 +106,15 @@ function startASMessage(recipientId, text){
           for (var vol = 0; vol < Number(values[1]); vol++) {
               if(globalTaskArray.length > 0){
                   globalVolTaskArray[vol].push(globalTaskArray.pop());
-                  //  SEND INSTRUCTIONS
-                //  sendInstructions(globalVolTaskArray[i][0][1].toString(),ids.idArray[i]); //TODO get this from json jsonContent.tasks[i].type
-                //  sendMessage(ids.idArray[i], {text: globalVolTaskArray[i][0].toString() }); 
               }
           }
 
           for(var i =0; i < globalVolTaskArray.length; i++){
           sendMessage(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
           sendMessage(ids.idArray[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
+          //  SEND INSTRUCTIONS
+            sendInstructions(globalVolTaskArray[i][0][1].toString(),ids.idArray[i]); //TODO get this from json jsonContent.tasks[i].type
+        //  sendMessage(ids.idArray[i], {text: globalVolTaskArray[i][0].toString() }); 
           }
           return true;
        }
