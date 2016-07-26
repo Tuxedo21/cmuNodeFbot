@@ -110,7 +110,7 @@ function startASMessage(recipientId, text){
 
           for (var vol = 0; vol < Number(values[1]); vol++) {
               if(globalTaskArray.length > 0){
-                  globalVolTaskArray[vol][0].push(globalTaskArray.pop());
+                  globalVolTaskArray[vol].push(globalTaskArray.pop()); //TODO wtf!!?
               }
           }
 
@@ -208,8 +208,8 @@ function volunteerEventMessage(recipientId, text){
               sendMessage(recipientId, {text: "old::[" + globalVolTaskArray[volIndex] + "]::" });
               sendMessage(ids.carlId, {text: "GTA::[" + globalTaskArray + "]::" });
               sendMessage(ids.carlId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
-              globalVolTaskArray[volIndex][0].pop();
-              globalVolTaskArray[volIndex][0].push(globalTaskArray.pop());
+              globalVolTaskArray[volIndex].pop();
+              globalVolTaskArray[volIndex].push(globalTaskArray.pop());
                 sendMessage(recipientId, {text: "new::[" + globalVolTaskArray[volIndex] + "]::" });
 //               //Send new task
 //               sendMessage(recipientId, {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
