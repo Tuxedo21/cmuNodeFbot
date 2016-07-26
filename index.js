@@ -201,6 +201,8 @@ function volunteerEventMessage(recipientId, text){
               sendMessage(recipientId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
               globalVolTaskArray[volIndex].pop();
               globalVolTaskArray[volIndex].push(globalTaskArray.pop());
+              //Send new task
+              sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
 
               for(var i =0; i < globalVolTaskArray.length; i++){
               sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
