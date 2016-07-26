@@ -212,7 +212,7 @@ function volunteerEventMessage(recipientId, text){
               globalVolTaskArray[volIndex].push(globalTaskArray.pop());
                 sendMessage(recipientId, {text: "new::[" + globalVolTaskArray[volIndex] + "]::" });
 //               //Send new task
-//               sendMessage(recipientId, {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
+               sendMessage(recipientId, {text: "Your task should take: " + "[" + globalVolTaskArray[volIndex][0][0] + "] minutes." });
 //               sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
 //
 //               for(var i =0; i < globalVolTaskArray.length; i++){
