@@ -103,7 +103,7 @@ function startASMessage(recipientId, text){
   var values = text.split(" ");
       if(values[0].toLowerCase() === 'startwith' && values.length == 2){  // JSON startwith 3
 
-          updateBotData(Number(values[1]));
+          updateBotData(3);
 
           // var contents = fs.readFileSync("botData.json");
           // var jsonContent = JSON.parse(contents);
