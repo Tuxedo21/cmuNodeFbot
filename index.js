@@ -186,6 +186,7 @@ function volunteerEventMessage(recipientId, text){
 
             //TODO this breaks if not done nicely
             if(globalVolTaskArray[volIndex].length != 0 && globalDoneTime[volIndex] > globalStartTime[volIndex]) {
+              globalStartTime[volIndex] = 1000000;//So you cant cheat;
                var xi =  globalVolTaskArray[volIndex][0][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
                if(xi > globalBest){
                 globalBest = xi;
