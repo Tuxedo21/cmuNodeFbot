@@ -85,16 +85,16 @@ function startASMessage(recipientId, text){
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
 
-          var taskContent = fs.readFileSync("tasks.json");
-          var jsonTaskContent = JSON.parse(taskContent);
+        //  var taskContent = fs.readFileSync("tasks.json");
+        //  var jsonTaskContent = JSON.parse(taskContent);
 
-          jsonContent.workPool =   jsonContent.tasks.length;//ga
+          jsonContent.workPool =   24;  //jsonContent.tasks.length;//ga
           //jsonContent.numOfTask = Number(values[2]);//ga
           jsonContent.volunteers = Number(values[1]);
           //jsonContent.taskType = values[4];//ga
           //jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
-          sendMessage(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.numOfTask});
+          sendMessage(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + 24});
           // JSON startwith 3
           var startWeight = 1 / Number(values[1]); // Weight/volunteers
 
