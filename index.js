@@ -183,13 +183,14 @@ function volunteerEventMessage(recipientId, text){
            jsonContent.workPool = jsonContent.workPool - 1;// take away from the pool
            fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
            globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
-                       sendMessage(recipientId, {text: "debugging::[" + globalDoneTime + " || " + globalStartTime + "]::" });
-// debugging::[,1109.35,1,1 || 1,1109.3]::
-//            if(globalVolTaskArray[volIndex].length != 0) {
+           sendMessage(recipientId, {text: "debugging::[" + globalDoneTime + " || " + globalStartTime + "]::" });
+
+            if(globalVolTaskArray[volIndex].length != 0) {
 //               var xi =  globalVolTaskArray[volIndex][0][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
 //               if(xi > globalBest){
 //                 globalBest = xi;
-//               }
+ sendMessage(recipientId, {text: "debugging::[" + globalVolTaskArray + "]::" });
+               }
 //            //Dragans Cool Math
 //            globalAvg = ((globalAvg*(globalWeightArray.length - 1))/globalWeightArray.length) - xi/globalWeightArray.length;
 //            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
