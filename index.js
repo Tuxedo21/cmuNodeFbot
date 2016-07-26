@@ -28,6 +28,11 @@ var globalDoneTime = [];
 var globalStartTime=[];
 var globalPredictTime = 100;
 var globalMult = 0.3;
+//Threasholds
+var globalWarThreashold = 0;
+var globalAskThreashold = 0;
+var globalSendThreashold = 0;
+
 
 
 getTasks("tasks.json");
@@ -113,7 +118,7 @@ function startASMessage(recipientId, text){
           sendMessage(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
           sendMessage(ids.idArray[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
           //  SEND INSTRUCTIONS
-            sendInstructions(globalVolTaskArray[i][0][1].toString(),ids.idArray[i]); //TODO get this from json jsonContent.tasks[i].type
+            sendInstructions(globalVolTaskArray[i][0][1].toString(),ids.idArray[i]);
           }
           return true;
        }
@@ -169,6 +174,7 @@ function volunteerEventMessage(recipientId, text){
     arrayOfIds.push(ids.idArray[i].toString());}
 
   if (values[0] === 'd' || values[0] === 'done'){
+    //TODO check if he has started
     if(isInArray(recipientId.toString(),arrayOfIds)){//Is he a volunteer?
         var volIndex = arrayOfIds.indexOf(recipientId);//get his id
         if(jsonContent.workPool > 0){ //check if the pool is empty
@@ -176,38 +182,41 @@ function volunteerEventMessage(recipientId, text){
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
           globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
 
-           if(globalVolTaskArray[volIndex].length != 0) { //globalVolTaskArray[volIndex].length != 0
-             //sendMessage(recipientId, {text: "debugging " + volIndex});
-
+           if(globalVolTaskArray[volIndex].length != 0) {
               var xi =  globalVolTaskArray[volIndex][0][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
-
               if(xi > globalBest){
                 globalBest = xi;
               }
-          //Dragans Cool Math
+           //Dragans Cool Math
            globalAvg = ((globalAvg*(globalWeightArray.length - 1))/globalWeightArray.length) - xi/globalWeightArray.length;
            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
            var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult; //sendMessage(recipientId, {text: "::NW" + newWeight + "::LW" + globalWeightArray[volIndex] + "::CW" + curWeight });
            var subtract = (newWeight - globalWeightArray[volIndex])/(globalWeightArray.length - 1);
               globalWeightArray[volIndex] = newWeight;
-              sendMessage(recipientId, {text: "debugging " + newWeight});
+
 
                // mf subtract the weight of others
               for (var i = 0; i < globalWeightArray.length; i++) {
                  if(i != volIndex){
                     globalWeightArray[i] = globalWeightArray[i] - subtract;}
               }
-              sendMessage(recipientId, {text: "GTA::[" + globalTaskArray + "]::" });
-              sendMessage(recipientId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
+
               globalVolTaskArray[volIndex].pop();
               globalVolTaskArray[volIndex].push(globalTaskArray.pop());
+
+              //Update coordinator
+              sendMessage(ids.carlId, {text: "GTA::[" + globalTaskArray + "]::" });
+              sendMessage(ids.carlId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
+
               //Send new task
+              sendMessage(recipientId, {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
               sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
 
+              //Update coordinator
               for(var i =0; i < globalVolTaskArray.length; i++){
               sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
               }
-              sendMessage(ids.carlId, {text: "[" + globalTaskArray + "]"});
+
          }  else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left for others. [" + globalVolTaskArray + "]"});
          }
