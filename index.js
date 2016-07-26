@@ -85,10 +85,10 @@ function startASMessage(recipientId, text){
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
 
-        //  var taskContent = fs.readFileSync("tasks.json");
-        //  var jsonTaskContent = JSON.parse(taskContent);
+          var taskContent = fs.readFileSync("tasks.json");
+          var jsonTaskContent = JSON.parse(taskContent);
 
-          jsonContent.workPool =   24;  //jsonContent.tasks.length;//ga
+          jsonContent.workPool = 24;  //jsonContent.tasks.length;//ga
           //jsonContent.numOfTask = Number(values[2]);//ga
           jsonContent.volunteers = Number(values[1]);
           //jsonContent.taskType = values[4];//ga
