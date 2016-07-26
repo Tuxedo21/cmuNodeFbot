@@ -30,7 +30,7 @@ var globalPredictTime = 100;
 var globalMult = 0.3;
 
 
-//getTasks("tasks.json");
+getTasks("tasks.json");
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -81,18 +81,12 @@ function startASMessage(recipientId, text){
   text = text.toLowerCase();
   var values = text.split(" ");
       if(values[0].toLowerCase() === 'startwith' && values.length == 2){
-
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
-
           var taskContent = fs.readFileSync("tasks.json");
           var jsonTaskContent = JSON.parse(taskContent);
-
-          jsonContent.workPool = jsonTaskContent.tasks.length;  //jsonContent.tasks.length;//ga
-          //jsonContent.numOfTask = Number(values[2]);//ga
+          jsonContent.workPool = jsonTaskContent.tasks.length;
           jsonContent.volunteers = Number(values[1]);
-          //jsonContent.taskType = values[4];//ga
-          //jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
           sendMessage(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.workPool});
           // JSON startwith 3
@@ -105,21 +99,21 @@ function startASMessage(recipientId, text){
             globalDoneTime.push([]);
             globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nInstructions:" });
-            //  SEND INSTRUCTIONS
-            sendInstructions(jsonTaskContent.tasks[i].type.toString(),ids.idArray[i]); //TODO get this from json jsonContent.tasks[i].type
           }
           //makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
-          getTasks("tasks.json");
+          getTasks("tasks.json");//MakesglobalTaskArray
 
           for (var vol = 0; vol < Number(values[1]); vol++) {
               if(globalTaskArray.length > 0){
                   globalVolTaskArray[vol].push(globalTaskArray.pop());
+                  //  SEND INSTRUCTIONS
+                  sendInstructions(globalVolTaskArray[i][1].toString(),ids.idArray[i]); //TODO get this from json jsonContent.tasks[i].type
               }
           }
 
           for(var i =0; i < globalVolTaskArray.length; i++){
           sendMessage(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
-          sendMessage(ids.idArray[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i] + "] minutes." });
+          sendMessage(ids.idArray[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0] + "] minutes." });
           }
           return true;
        }
@@ -150,9 +144,10 @@ function getTasks(jsonFile){
   var jsonContent = JSON.parse(contents);
   for (var i = 0; i < jsonContent.tasks.length; i++) {
   console.log(jsonContent.tasks[i].time + " " + jsonContent.tasks[i].type);
-  globalTaskArray.push(jsonContent.tasks[i].time);
+  globalTaskArray.push([jsonContent.tasks[i].time,jsonContent.tasks[i].type]);
   }
   sendMessage(ids.carlId, {text: "Global tasks: " + "[" + globalTaskArray + "]"});
+  console.log(globalTaskArray);
 }
 
 function arrrayCountSum(numarray,count){
