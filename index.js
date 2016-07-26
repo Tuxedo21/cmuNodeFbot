@@ -199,16 +199,15 @@ function volunteerEventMessage(recipientId, text){
            var subtract = (newWeight - globalWeightArray[volIndex])/(globalWeightArray.length - 1);
            globalWeightArray[volIndex] = newWeight;
 
-           sendMessage(recipientId, {text: "debugging::[" + globalVolTaskArray[volIndex] + "]::" });
-           sendMessage(recipientId, {text: "debugging::[" + newWeight + "]::" });
-//
-//
-//
-//                // mf subtract the weight of others
-//               for (var i = 0; i < globalWeightArray.length; i++) {
-//                  if(i != volIndex){
-//                     globalWeightArray[i] = globalWeightArray[i] - subtract;}
-//               }
+               // mf subtract the weight of others
+              for (var i = 0; i < globalWeightArray.length; i++) {
+                 if(i != volIndex){
+                    globalWeightArray[i] = globalWeightArray[i] - subtract;}
+              }
+
+              sendMessage(recipientId, {text: "debugging::[" + globalVolTaskArray[volIndex] + "]::" });
+              sendMessage(recipientId, {text: "debugging::[" +   globalWeightArray + "]::" });
+
 //
 //               sendMessage(ids.carlId, {text: "GTA::[" + globalTaskArray + "]::" });
 //               sendMessage(ids.carlId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
