@@ -204,21 +204,21 @@ function volunteerEventMessage(recipientId, text){
                  if(i != volIndex){
                     globalWeightArray[i] = globalWeightArray[i] - subtract;}
               }
+
+              sendMessage(recipientId, {text: "old::[" + globalVolTaskArray[volIndex] + "]::" });
               sendMessage(ids.carlId, {text: "GTA::[" + globalTaskArray + "]::" });
               sendMessage(ids.carlId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
               globalVolTaskArray[volIndex].pop();
               globalVolTaskArray[volIndex].push(globalTaskArray.pop());
-
-              //Send new task
-              //sendMessage(recipientId, {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
-              // sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
-              //                 sendMessage(recipientId, {text: "time::[" + globalVolTaskArray[i][0][0] + "]::" });
-              //                 sendMessage(recipientId, {text: "type::[" + globalVolTaskArray[i][0][1] + "]::" });
-
+                sendMessage(recipientId, {text: "new::[" + globalVolTaskArray[volIndex] + "]::" });
+//               //Send new task
+//               sendMessage(recipientId, {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
+//               sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
+//
 //               for(var i =0; i < globalVolTaskArray.length; i++){
 //               sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
 //               }
-
+//               sendMessage(ids.carlId, {text: "[" + globalTaskArray + "]"});
           }  else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left for others. [" + globalVolTaskArray + "]"});
          }
