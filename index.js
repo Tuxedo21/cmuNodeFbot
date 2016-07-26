@@ -178,7 +178,7 @@ function volunteerEventMessage(recipientId, text){
     //TODO check if he has started
     if(isInArray(recipientId.toString(),arrayOfIds)){//Is he a volunteer?
         var volIndex = arrayOfIds.indexOf(recipientId);//get his id
-sendMessage(recipientId, {text: "debugging::[" + volIndex + "]::" });
+sendMessage(recipientId, {text: "debugging::[" + isInArray(recipientId.toString(),arrayOfIds) + "]::" });
 
         if(jsonContent.workPool > 0){ //check if the pool is empty
           jsonContent.workPool = jsonContent.workPool - 1;// take away from the pool
