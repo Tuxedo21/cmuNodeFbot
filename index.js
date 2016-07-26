@@ -182,8 +182,8 @@ function volunteerEventMessage(recipientId, text){
 
            jsonContent.workPool = jsonContent.workPool - 1;// take away from the pool
            fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
-            sendMessage(recipientId, {text: "debugging::[" + jsonContent.workPool + "]::" });
-//           globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
+           globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
+                       sendMessage(recipientId, {text: "debugging::[" + globalDoneTime[volIndex] + "]::" });
 //
 //            if(globalVolTaskArray[volIndex].length != 0) {
 //               var xi =  globalVolTaskArray[volIndex][0][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
