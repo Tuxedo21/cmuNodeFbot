@@ -171,17 +171,20 @@ function volunteerEventMessage(recipientId, text){
   var jsonContent = JSON.parse(contents);
   var arrayOfIds = [];
   for (var i = 0; i < jsonContent.volunteers; i++) {//Get all volunteers
-    arrayOfIds.push(ids.idArray[i].toString());}
+    arrayOfIds.push(ids.idArray[i].toString());
+  }
 
   if (values[0] === 'd' || values[0] === 'done'){
     //TODO check if he has started
     if(isInArray(recipientId.toString(),arrayOfIds)){//Is he a volunteer?
         var volIndex = arrayOfIds.indexOf(recipientId);//get his id
+sendMessage(recipientId, {text: "debugging::[" + jsonContent.workPool + "]::" });
+
         if(jsonContent.workPool > 0){ //check if the pool is empty
           jsonContent.workPool = jsonContent.workPool - 1;// take away from the pool
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
           globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
-sendMessage(recipientId, {text: "debugging::[" + jsonContent.workPool + "]::" });
+
            if(globalVolTaskArray[volIndex].length != 0) {
               var xi =  globalVolTaskArray[volIndex][0][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
               if(xi > globalBest){
@@ -203,8 +206,8 @@ sendMessage(recipientId, {text: "debugging::[" + jsonContent.workPool + "]::" })
 
               sendMessage(ids.carlId, {text: "GTA::[" + globalTaskArray + "]::" });
               sendMessage(ids.carlId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
-              globalVolTaskArray[volIndex].pop();
-              globalVolTaskArray[volIndex].push(globalTaskArray.pop());
+              globalVolTaskArray[volIndex][0].pop();
+              globalVolTaskArray[volIndex][0].push(globalTaskArray.pop());
               //Send new task
               sendMessage(recipientId, {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
               sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
