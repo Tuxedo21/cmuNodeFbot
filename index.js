@@ -114,7 +114,6 @@ function startASMessage(recipientId, text){
           sendMessage(ids.idArray[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
           //  SEND INSTRUCTIONS
             sendInstructions(globalVolTaskArray[i][0][1].toString(),ids.idArray[i]); //TODO get this from json jsonContent.tasks[i].type
-        //  sendMessage(ids.idArray[i], {text: globalVolTaskArray[i][0].toString() }); 
           }
           return true;
        }
@@ -177,17 +176,15 @@ function volunteerEventMessage(recipientId, text){
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
           globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
 
-
            if(globalVolTaskArray[volIndex].length != 0) { //globalVolTaskArray[volIndex].length != 0
              //sendMessage(recipientId, {text: "debugging " + volIndex});
 
-              var xi =  globalVolTaskArray[volIndex][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
+              var xi =  globalVolTaskArray[volIndex][0][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
 
               if(xi > globalBest){
                 globalBest = xi;
               }
-
-
+          //Dragans Cool Math
            globalAvg = ((globalAvg*(globalWeightArray.length - 1))/globalWeightArray.length) - xi/globalWeightArray.length;
            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
            var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult; //sendMessage(recipientId, {text: "::NW" + newWeight + "::LW" + globalWeightArray[volIndex] + "::CW" + curWeight });
