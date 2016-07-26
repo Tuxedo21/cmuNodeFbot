@@ -30,7 +30,7 @@ var globalPredictTime = 100;
 var globalMult = 0.3;
 
 
-getTasks("tasks.json");
+//getTasks("tasks.json");
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -80,21 +80,25 @@ function startASMessage(recipientId, text){
   text = text || "";
   text = text.toLowerCase();
   var values = text.split(" ");
-      if(values[0].toLowerCase() === 'startas' && values.length == 5){
+      if(values[0].toLowerCase() === 'startwith' && values.length == 2){
 
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
-          jsonContent.timePerTask = Number(values[1]);
-          jsonContent.numOfTask = Number(values[2]);
-          jsonContent.volunteers = Number(values[3]);
-          jsonContent.taskType = values[4];
-          jsonContent.workPool = jsonContent.numOfTask;
+
+          var taskContent = fs.readFileSync("tasks.json");
+          var jsonTaskContent = JSON.parse(taskContent);
+
+          jsonContent.workPool =   jsonContent.tasks.length;//ga
+          //jsonContent.numOfTask = Number(values[2]);//ga
+          jsonContent.volunteers = Number(values[1]);
+          //jsonContent.taskType = values[4];//ga
+          //jsonContent.workPool = jsonContent.numOfTask;
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
           sendMessage(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.numOfTask});
-          // JSON startas, 1, 120, 3, fp
-          var startWeight = 1 / Number(values[3]); // Weight/volunteers
+          // JSON startwith 3
+          var startWeight = 1 / Number(values[1]); // Weight/volunteers
 
-          for (var i = 0; i < Number(values[3]); i++) {
+          for (var i = 0; i < Number(values[1]); i++) {
             globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
             globalStartTime.push([]);
@@ -107,7 +111,7 @@ function startASMessage(recipientId, text){
           //makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
           getTasks("tasks.json");
 
-          for (var vol = 0; vol < Number(values[3]); vol++) {
+          for (var vol = 0; vol < Number(values[1]); vol++) {
               if(globalTaskArray.length > 0){
                   globalVolTaskArray[vol].push(globalTaskArray.pop());
               }
