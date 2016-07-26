@@ -179,9 +179,10 @@ function volunteerEventMessage(recipientId, text){
     if(isInArray(recipientId.toString(),arrayOfIds)){//Is he a volunteer?
          var volIndex = arrayOfIds.indexOf(recipientId);//get his id
          if(jsonContent.workPool > 0){ //check if the pool is empty
-           sendMessage(recipientId, {text: "debugging::[" + jsonContent.workPool + "]::" });
-//           jsonContent.workPool = jsonContent.workPool - 1;// take away from the pool
-//           fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
+
+           jsonContent.workPool = jsonContent.workPool - 1;// take away from the pool
+           fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
+            sendMessage(recipientId, {text: "debugging::[" + jsonContent.workPool + "]::" });
 //           globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
 //
 //            if(globalVolTaskArray[volIndex].length != 0) {
