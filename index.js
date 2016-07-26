@@ -106,7 +106,7 @@ function startASMessage(recipientId, text){
             globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nInstructions:" });
             //  SEND INSTRUCTIONS
-            sendInstructions('fp',ids.idArray[i]);
+            sendInstructions(jsonContent.tasks[i].type,ids.idArray[i]); //TODO get this from json jsonContent.tasks[i].type
           }
           //makeglobalTaskArray(Number(jsonContent.numOfTask),Number(jsonContent.timePerTask));
           getTasks("tasks.json");
