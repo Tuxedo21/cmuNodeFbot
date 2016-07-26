@@ -101,9 +101,20 @@ function startASMessage(recipientId, text){
   text = text.toLowerCase();
   var values = text.split(" ");
       if(values[0].toLowerCase() === 'startwith' && values.length == 2){  // JSON startwith 3
-          updateBotData(Number(values[1]));
+
+          //updateBotData(Number(values[1]));
+
+          var contents = fs.readFileSync("botData.json");
+          var jsonContent = JSON.parse(contents);
+          var taskContent = fs.readFileSync("tasks.json");
+          var jsonTaskContent = JSON.parse(taskContent);
+
+          jsonContent.workPool = jsonTaskContent.tasks.length;
+          jsonContent.volunteers = Number(values[1]);
+          fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
+          sendMessage(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.workPool});
+
           var startWeight = 1 / Number(values[1]); // Weight/volunteers
-          
           for (var i = 0; i < Number(values[1]); i++) {
             globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
@@ -117,7 +128,7 @@ function startASMessage(recipientId, text){
 
           for (var vol = 0; vol < Number(values[1]); vol++) {
               if(globalTaskArray.length > 0){
-                  globalVolTaskArray[vol].push(globalTaskArray.pop()); //TODO wtf!!?
+                  globalVolTaskArray[vol].push(globalTaskArray.pop());
               }
           }
           for(var i =0; i < globalVolTaskArray.length; i++){
