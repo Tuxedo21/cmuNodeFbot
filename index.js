@@ -178,9 +178,8 @@ function volunteerEventMessage(recipientId, text){
     //TODO check if he has started
     if(isInArray(recipientId.toString(),arrayOfIds)){//Is he a volunteer?
          var volIndex = arrayOfIds.indexOf(recipientId);//get his id
- sendMessage(recipientId, {text: "debugging::[" + volIndex + "]::" });
-//
-//         if(jsonContent.workPool > 0){ //check if the pool is empty
+         if(jsonContent.workPool > 0){ //check if the pool is empty
+           sendMessage(recipientId, {text: "debugging::[" + jsonContent.workPool + "]::" });
 //           jsonContent.workPool = jsonContent.workPool - 1;// take away from the pool
 //           fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
 //           globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
@@ -221,9 +220,9 @@ function volunteerEventMessage(recipientId, text){
 //          }
 //         sendMessage(recipientId, {text: "Thank you, these are the total of tasks left: " + jsonContent.workPool });
 //         sendMessage(recipientId, {text: "Vol: " + volIndex + " you ended at " +   globalDoneTime[volIndex]});
-//       } else {
-//         DoneMessage(recipientId);
-//       }
+       } else {
+         DoneMessage(recipientId);
+       }
 
       return true;
     }
