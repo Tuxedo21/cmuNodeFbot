@@ -177,8 +177,8 @@ function volunteerEventMessage(recipientId, text){
   if (values[0] === 'd' || values[0] === 'done'){
     //TODO check if he has started
     if(isInArray(recipientId.toString(),arrayOfIds)){//Is he a volunteer?
-//         var volIndex = arrayOfIds.indexOf(recipientId);//get his id
-// sendMessage(recipientId, {text: "debugging::[" + isInArray(recipientId.toString(),arrayOfIds) + "]::" });
+         var volIndex = arrayOfIds.indexOf(recipientId);//get his id
+ sendMessage(recipientId, {text: "debugging::[" + volIndex + "]::" });
 //
 //         if(jsonContent.workPool > 0){ //check if the pool is empty
 //           jsonContent.workPool = jsonContent.workPool - 1;// take away from the pool
@@ -224,7 +224,7 @@ function volunteerEventMessage(recipientId, text){
 //       } else {
 //         DoneMessage(recipientId);
 //       }
-sendMessage(recipientId, {text: "debugging::[" + "" + "]::" });
+
       return true;
     }
     return false;
