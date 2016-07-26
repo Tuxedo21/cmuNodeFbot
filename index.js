@@ -185,12 +185,12 @@ function volunteerEventMessage(recipientId, text){
            globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
            sendMessage(recipientId, {text: "debugging::[" + globalDoneTime + " || " + globalStartTime + "]::" });
 
-            if(globalVolTaskArray[volIndex].length != 0) {
+            if(globalVolTaskArray[volIndex].length != 0 && globalDoneTime[volIndex] > globalStartTime[volIndex]) {
 //               var xi =  globalVolTaskArray[volIndex][0][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
 //               if(xi > globalBest){
 //                 globalBest = xi;
  sendMessage(recipientId, {text: "debugging::[" + globalVolTaskArray + "]::" });
-               }
+  //             }
 //            //Dragans Cool Math
 //            globalAvg = ((globalAvg*(globalWeightArray.length - 1))/globalWeightArray.length) - xi/globalWeightArray.length;
 //            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
@@ -217,9 +217,9 @@ function volunteerEventMessage(recipientId, text){
 //               sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
 //               }
 //               sendMessage(ids.carlId, {text: "[" + globalTaskArray + "]"});
-//          }  else{
-//            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left for others. [" + globalVolTaskArray + "]"});
-//          }
+          }  else{
+           sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left for others. [" + globalVolTaskArray + "]"});
+         }
 //         sendMessage(recipientId, {text: "Thank you, these are the total of tasks left: " + jsonContent.workPool });
 //         sendMessage(recipientId, {text: "Vol: " + volIndex + " you ended at " +   globalDoneTime[volIndex]});
        } else {
