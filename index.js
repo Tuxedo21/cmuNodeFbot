@@ -110,7 +110,7 @@ function startASMessage(recipientId, text){
 
           for (var vol = 0; vol < Number(values[1]); vol++) {
               if(globalTaskArray.length > 0){
-                  globalVolTaskArray[vol].push(globalTaskArray.pop());
+                  globalVolTaskArray[vol][0].push(globalTaskArray.pop());
               }
           }
 
@@ -136,13 +136,13 @@ function sendInstructions(command,id){
   }
 }
 
-function makeglobalTaskArray(len,time){
-  for(var i = 0; i <  len; i++){
-    //Length of task
-    globalTaskArray.push(time);
-  }
-    sendMessage(ids.carlId, {text: "Global tasks: " + "[" + globalTaskArray + "]"});
-}
+// function makeglobalTaskArray(len,time){
+//   for(var i = 0; i <  len; i++){
+//     //Length of task
+//     globalTaskArray.push(time);
+//   }
+//     sendMessage(ids.carlId, {text: "Global tasks: " + "[" + globalTaskArray + "]"});
+// }
 
 function getTasks(jsonFile){
   var contents = fs.readFileSync(jsonFile);
@@ -192,7 +192,6 @@ function volunteerEventMessage(recipientId, text){
                 globalBest = xi;
                }
 
-
            //Dragans Cool Math
            globalAvg = ((globalAvg*(globalWeightArray.length - 1))/globalWeightArray.length) - xi/globalWeightArray.length;
            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
@@ -206,14 +205,12 @@ function volunteerEventMessage(recipientId, text){
                     globalWeightArray[i] = globalWeightArray[i] - subtract;}
               }
 
-              sendMessage(recipientId, {text: "debugging::[" + globalVolTaskArray[volIndex] + "]::" });
-              sendMessage(recipientId, {text: "debugging::[" +   globalWeightArray + "]::" });
-
-//
-//               sendMessage(ids.carlId, {text: "GTA::[" + globalTaskArray + "]::" });
-//               sendMessage(ids.carlId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
-//               globalVolTaskArray[volIndex][0].pop();
-//               globalVolTaskArray[volIndex][0].push(globalTaskArray.pop());
+              sendMessage(recipientId, {text: "old::[" + globalVolTaskArray[volIndex] + "]::" });
+              sendMessage(ids.carlId, {text: "GTA::[" + globalTaskArray + "]::" });
+              sendMessage(ids.carlId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
+              globalVolTaskArray[volIndex][0].pop();
+              globalVolTaskArray[volIndex][0].push(globalTaskArray.pop());
+                sendMessage(recipientId, {text: "new::[" + globalVolTaskArray[volIndex] + "]::" });
 //               //Send new task
 //               sendMessage(recipientId, {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
 //               sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
