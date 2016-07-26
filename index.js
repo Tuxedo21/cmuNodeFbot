@@ -92,6 +92,15 @@ function updateBotData(volunteersNum){
   return true;
 }
 
+function updateAndKickOff(until){
+  for(var i =0; i < until; i++){
+  sendMessage(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
+  sendMessage(ids.idArray[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
+  //  SEND INSTRUCTIONS
+  sendInstructions(globalVolTaskArray[i][0][1].toString(),ids.idArray[i]);
+  }
+}
+
 function startASMessage(recipientId, text){
 
   globalTaskArray = [];
@@ -103,17 +112,17 @@ function startASMessage(recipientId, text){
   var values = text.split(" ");
       if(values[0].toLowerCase() === 'startwith' && values.length == 2){  // JSON startwith 3
 
-          updateBotData(3);
+        //  updateBotData(3);
 
-          // var contents = fs.readFileSync("botData.json");
-          // var jsonContent = JSON.parse(contents);
-          // var taskContent = fs.readFileSync("tasks.json");
-          // var jsonTaskContent = JSON.parse(taskContent);
-          //
-          // jsonContent.workPool = jsonTaskContent.tasks.length;
-          // jsonContent.volunteers = Number(values[1]);
-          // fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
-          // sendMessage(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.workPool});
+          var contents = fs.readFileSync("botData.json");
+          var jsonContent = JSON.parse(contents);
+          var taskContent = fs.readFileSync("tasks.json");
+          var jsonTaskContent = JSON.parse(taskContent);
+
+          jsonContent.workPool = jsonTaskContent.tasks.length;
+          jsonContent.volunteers = Number(values[1]);
+          fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
+          sendMessage(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.workPool});
 
           var startWeight = 1 / Number(values[1]); // Weight/volunteers
           for (var i = 0; i < Number(values[1]); i++) {
@@ -132,12 +141,15 @@ function startASMessage(recipientId, text){
                   globalVolTaskArray[vol].push(globalTaskArray.pop());
               }
           }
-          for(var i =0; i < globalVolTaskArray.length; i++){
-          sendMessage(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
-          sendMessage(ids.idArray[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
-          //  SEND INSTRUCTIONS
-          sendInstructions(globalVolTaskArray[i][0][1].toString(),ids.idArray[i]);
-          }
+
+          updateAndKickOff(globalVolTaskArray.length);
+
+          // for(var i =0; i < globalVolTaskArray.length; i++){
+          // sendMessage(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
+          // sendMessage(ids.idArray[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
+          // //  SEND INSTRUCTIONS
+          // sendInstructions(globalVolTaskArray[i][0][1].toString(),ids.idArray[i]);
+          // }
           setThreasholds(startWeight);
           return true;
        }
