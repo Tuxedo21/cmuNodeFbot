@@ -210,10 +210,10 @@ function volunteerEventMessage(recipientId, text){
               globalVolTaskArray[volIndex].push(globalTaskArray.pop());
 
               //Send new task
-              sendMessage(recipientId, {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
-              sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
-                              sendMessage(recipientId, {text: "time::[" + globalVolTaskArray[i][0][0] + "]::" });
-                              sendMessage(recipientId, {text: "type::[" + globalVolTaskArray[i][0][1] + "]::" });
+              // sendMessage(recipientId, {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
+              // sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
+              //                 sendMessage(recipientId, {text: "time::[" + globalVolTaskArray[i][0][0] + "]::" });
+              //                 sendMessage(recipientId, {text: "type::[" + globalVolTaskArray[i][0][1] + "]::" });
 
 //               for(var i =0; i < globalVolTaskArray.length; i++){
 //               sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
