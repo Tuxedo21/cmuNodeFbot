@@ -222,8 +222,8 @@ function volunteerEventMessage(recipientId, text){
           }  else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left for others. [" + globalVolTaskArray + "]"});
          }
-//         sendMessage(recipientId, {text: "Thank you, these are the total of tasks left: " + jsonContent.workPool });
-//         sendMessage(recipientId, {text: "Vol: " + (volIndex + 1) + " you ended at " +   globalDoneTime[volIndex]});
+         sendMessage(recipientId, {text: "Thank you, these are the total of tasks left: " + jsonContent.workPool });
+         sendMessage(recipientId, {text: "Vol: " + (volIndex + 1) + " you ended at " +   globalDoneTime[volIndex]});
        } else {
          DoneMessage(recipientId);
        }
