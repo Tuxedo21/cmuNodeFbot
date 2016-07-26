@@ -100,8 +100,8 @@ function startASMessage(recipientId, text){
           for (var i = 0; i < Number(values[1]); i++) {
             globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
-            globalStartTime.push([]);
-            globalDoneTime.push([]);
+            globalStartTime.push(1); // start up times
+            globalDoneTime.push(1); // start up times
             globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nInstructions:" });
           }
@@ -181,7 +181,7 @@ function volunteerEventMessage(recipientId, text){
           jsonContent.workPool = jsonContent.workPool - 1;// take away from the pool
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
           globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
-          sendMessage(recipientId, {text: "debugging::[" + volIndex + "]::" });
+sendMessage(recipientId, {text: "debugging::[" + jsonContent.workPool + "]::" });
            if(globalVolTaskArray[volIndex].length != 0) {
               var xi =  globalVolTaskArray[volIndex][0][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
               if(xi > globalBest){
@@ -200,6 +200,7 @@ function volunteerEventMessage(recipientId, text){
                  if(i != volIndex){
                     globalWeightArray[i] = globalWeightArray[i] - subtract;}
               }
+
               sendMessage(ids.carlId, {text: "GTA::[" + globalTaskArray + "]::" });
               sendMessage(ids.carlId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
               globalVolTaskArray[volIndex].pop();
@@ -235,9 +236,9 @@ function volunteerEventMessage(recipientId, text){
       if(isInArray(recipientId.toString(),arrayOfIds)){
           var volIndex = arrayOfIds.indexOf(recipientId);
       //TODO start module
-      globalStartTime[volIndex] = Number(algoVE.getCurrentTime());
-      sendMessage(recipientId, {text: "Vol: " + volIndex + " you started at " + globalStartTime[volIndex]});
-      return true;
+            globalStartTime[volIndex] = Number(algoVE.getCurrentTime());
+            sendMessage(recipientId, {text: "Vol: " + (volIndex + 1) + " you started at " + globalStartTime[volIndex]});
+            return true;
     }
       return true;
 }
