@@ -25,7 +25,7 @@ var globalVolTaskArray = [];//[][] all distributed tasks a task is time
 var globalRealTimeArray = [];//[][] all distributed done tasks, a task is done time
 //Time is done in seconds
 var globalDoneTime = [];
-var globalStartTime=[];
+var globalStartTime = [];
 var globalPredictTime = 100;
 var globalMult = 0.3;
 //Threasholds
@@ -100,8 +100,8 @@ function startASMessage(recipientId, text){
           for (var i = 0; i < Number(values[1]); i++) {
             globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
-            globalStartTime.push(1); // start up times
-            globalDoneTime.push(1); // start up times
+            globalStartTime[i] = 1; // start up times
+            globalDoneTime[i] = 1; // start up times
             globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nInstructions:" });
           }
@@ -184,7 +184,7 @@ function volunteerEventMessage(recipientId, text){
            fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
            globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
                        sendMessage(recipientId, {text: "debugging::[" + globalDoneTime + " || " + globalStartTime + "]::" });
-//
+// debugging::[,1109.35,1,1 || 1,1109.3]::
 //            if(globalVolTaskArray[volIndex].length != 0) {
 //               var xi =  globalVolTaskArray[volIndex][0][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
 //               if(xi > globalBest){
