@@ -108,7 +108,7 @@ function startASMessage(recipientId, text){
                   globalVolTaskArray[vol].push(globalTaskArray.pop());
                   //  SEND INSTRUCTIONS
                 //  sendInstructions(globalVolTaskArray[i][0][1].toString(),ids.idArray[i]); //TODO get this from json jsonContent.tasks[i].type
-                  sendMessage(ids.idArray[i], {text: globalVolTaskArray[i][0].toString() }); 
+                //  sendMessage(ids.idArray[i], {text: globalVolTaskArray[i][0].toString() }); 
               }
           }
 
