@@ -214,11 +214,11 @@ function volunteerEventMessage(recipientId, text){
               //Send new task
                sendMessage(recipientId, {text: "Your task should take: " + "[" + globalVolTaskArray[volIndex][0][0] + "] minutes." });
                sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
-//
-//               for(var i =0; i < globalVolTaskArray.length; i++){
-//               sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
-//               }
-//               sendMessage(ids.carlId, {text: "[" + globalTaskArray + "]"});
+
+              for(var i =0; i < globalVolTaskArray.length; i++){
+              sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
+              }
+
           }  else{
            sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left for others. [" + globalVolTaskArray + "]"});
          }
