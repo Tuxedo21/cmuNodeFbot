@@ -191,13 +191,17 @@ function volunteerEventMessage(recipientId, text){
                 globalBest = xi;
                }
 
-               sendMessage(recipientId, {text: "debugging::[" + globalVolTaskArray[volIndex] + "]::" });
-//            //Dragans Cool Math
-//            globalAvg = ((globalAvg*(globalWeightArray.length - 1))/globalWeightArray.length) - xi/globalWeightArray.length;
-//            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
-//            var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult; //sendMessage(recipientId, {text: "::NW" + newWeight + "::LW" + globalWeightArray[volIndex] + "::CW" + curWeight });
-//            var subtract = (newWeight - globalWeightArray[volIndex])/(globalWeightArray.length - 1);
-//               globalWeightArray[volIndex] = newWeight;
+
+           //Dragans Cool Math
+           globalAvg = ((globalAvg*(globalWeightArray.length - 1))/globalWeightArray.length) - xi/globalWeightArray.length;
+           var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
+           var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult; //sendMessage(recipientId, {text: "::NW" + newWeight + "::LW" + globalWeightArray[volIndex] + "::CW" + curWeight });
+           var subtract = (newWeight - globalWeightArray[volIndex])/(globalWeightArray.length - 1);
+           globalWeightArray[volIndex] = newWeight;
+
+           sendMessage(recipientId, {text: "debugging::[" + globalVolTaskArray[volIndex] + "]::" });
+           sendMessage(recipientId, {text: "debugging::[" + newWeight + "]::" });
+//
 //
 //
 //                // mf subtract the weight of others
