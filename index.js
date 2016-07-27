@@ -294,13 +294,15 @@ function volunteerEventMessage(recipientId, text){
   function checkThreshold(){
 
     for (var i = 0; i < globalWeightArray.length; i++) {
-      if (globalWeightArray[i] < globalWarThreashold) {
-          sendMessage(ids.idArray[i], {text: "You are lagging behind"});
-      }else if (globalWeightArray[i] < globalAskThreashold) {
-         sendMessage(ids.idArray[i], {text: "Do you want help? If so do..."});
-      }else if (globalWeightArray[i] < globalSendThreashold) {
+
+       if (globalWeightArray[i] < globalSendThreashold) {
           sendMessage(ids.idArray[i], {text: "We are sending a mentor to you"});
           //sendMentor();
+      }else if (globalWeightArray[i] < globalAskThreashold) {
+         sendMessage(ids.idArray[i], {text: "Do you want help? If so do..."});
+      }
+      else if (globalWeightArray[i] < globalWarThreashold) {
+          sendMessage(ids.idArray[i], {text: "You are lagging behind"});
       }
     }
 
