@@ -297,7 +297,7 @@ function volunteerEventMessage(recipientId, text){
 
        if (globalWeightArray[i] < globalSendThreashold) {
           sendMessage(ids.idArray[i], {text: "We are sending a mentor to you"});
-          sendMentor(globalWeightArray);
+          sendMentor(globalWeightArray,i);
       }else if (globalWeightArray[i] < globalAskThreashold) {
          sendMessage(ids.idArray[i], {text: "Do you want help? If so do..."});
       }else if (globalWeightArray[i] < globalWarThreashold) {
@@ -308,10 +308,10 @@ function volunteerEventMessage(recipientId, text){
     globalWeightArray
   };
 //TODO add the guy you are going to help
-function sendMentor(weights){
+function sendMentor(weights,volNum){
   var maxWeight = Math.max.apply(Math,weights);
   var volIndex = weights.indexOf(maxWeight);
-  sendMessage(ids.idArray[volIndex], {text: "Go help this guy"});
+  sendMessage(ids.idArray[volIndex], {text: "Go help volunteer number" + volNum});
   //console.log(volIndex);
 }
 
