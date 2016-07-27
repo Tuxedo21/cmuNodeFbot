@@ -140,7 +140,6 @@ function startASMessage(recipientId, text){
             globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nInstructions:" });
           }
-
           getTasks("tasks.json");//MakesglobalTaskArray
           // for (var vol = 0; vol < Number(values[1]); vol++) {
           //     if(globalTaskArray.length > 0){
@@ -167,7 +166,6 @@ function setThreasholds(startWeight){
   globalAskThreashold = startWeight/4;
   globalSendThreashold = startWeight/8;
 }
-
 
 function sendInstructions(command,id){
   //  SEND INSTRUCTIONS
@@ -239,18 +237,21 @@ function volunteerEventMessage(recipientId, text){
            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
            var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult; //sendMessage(recipientId, {text: "::NW" + newWeight + "::LW" + globalWeightArray[volIndex] + "::CW" + curWeight });
            var subtract = (newWeight - globalWeightArray[volIndex])/(globalWeightArray.length - 1);
+           //UPDATE WEIGHTS!
            globalWeightArray[volIndex] = newWeight;
                // mf subtract the weight of others
               for (var i = 0; i < globalWeightArray.length; i++) {
                  if(i != volIndex){
                     globalWeightArray[i] = globalWeightArray[i] - subtract;}
               }
+
+              checkThreshold();
+
               //sendMessage(recipientId, {text: "old::[" + globalVolTaskArray[volIndex] + "]::" });
               sendMessage(ids.carlId, {text: "GTA::[" + globalTaskArray + "]::" });
               sendMessage(ids.carlId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
               globalVolTaskArray[volIndex].pop();
               globalVolTaskArray[volIndex].push(globalTaskArray.pop());
-              //  sendMessage(recipientId, {text: "new::[" + globalVolTaskArray[volIndex] + "]::" });
               //Send new task
                sendMessage(recipientId, {text: "Your task should take: " + "[" + globalVolTaskArray[volIndex][0][0] + "] minutes." });
                sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
@@ -289,6 +290,22 @@ function volunteerEventMessage(recipientId, text){
 }
     return false;
 }
+
+  function checkThreshold(){
+
+    for (var i = 0; i < globalWeightArray.length; i++) {
+      if (globalWeightArray[i] < globalWarThreashold) {
+          sendMessage(ids.idArray[i], {text: "You are lagging behind"});
+      }else if (globalWeightArray[i] < globalAskThreashold) {
+         sendMessage(ids.idArray[i], {text: "Do you want help? If so do..."});
+      }else if (globalWeightArray[i] < globalSendThreashold) {
+          sendMessage(ids.idArray[i], {text: "We are sending a mentor to you"});
+          //sendMentor();
+      }
+    }
+
+    globalWeightArray
+  };
 
 function isInArray(value, array) {
   return array.indexOf(value) > -1;
