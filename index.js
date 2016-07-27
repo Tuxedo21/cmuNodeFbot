@@ -156,7 +156,30 @@ function startASMessage(recipientId, text){
 
        else if (values[0].toLowerCase() === 'startcas' && values.length == 2) {
 
-           return true;
+         var contents = fs.readFileSync("botData.json");
+         var jsonContent = JSON.parse(contents);
+         var taskContent = fs.readFileSync("tasks.json");
+         var jsonTaskContent = JSON.parse(taskContent);
+
+         jsonContent.workPool = jsonTaskContent.tasks.length;
+         jsonContent.volunteers = Number(values[1]);
+         fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
+         sendMessage(recipientId, {text: "You have " + jsonContent.volunteers + " volunteers" + "\nTasks: " + jsonContent.workPool});
+
+         var startWeight = 1 / Number(values[1]); // Weight/volunteers
+         for (var i = 0; i < Number(values[1]); i++) {
+           globalWeightArray.push(startWeight);//Volunteers weight
+           globalVolTaskArray.push([]); //Start the volunteer weight array
+           globalStartTime[i] = 1; // start up times
+           globalDoneTime[i] = 1; // start up times
+           globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
+           sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nWe're doing a casual deployment." });
+         }
+
+          sendMessage(ids.carlId, {text: "BUILDING" });
+
+
+          return true;
        }
      return false;
 };
@@ -246,7 +269,6 @@ function volunteerEventMessage(recipientId, text){
               }
 
               checkThreshold();
-
               //sendMessage(recipientId, {text: "old::[" + globalVolTaskArray[volIndex] + "]::" });
               sendMessage(ids.carlId, {text: "GTA::[" + globalTaskArray + "]::" });
               sendMessage(ids.carlId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
@@ -273,6 +295,7 @@ function volunteerEventMessage(recipientId, text){
     else if (values[0] === 'h' || values[0] === 'help') {
       //TODO help module
       /* more Instructions by bot? or by human */
+      sendMentor(globalWeightArray,ids.arrayOfIds[1]);
        sendMessage(recipientId, {text: "help "});
       return true;
     }else if (values[0] === 'n' || values[0] === 'next') {
