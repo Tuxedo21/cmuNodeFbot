@@ -292,11 +292,11 @@ function volunteerEventMessage(recipientId, text){
     }
     return false;
   }
-  
+
     else if (values[0] === 'h' || values[0] === 'help') {
       //TODO help module
       /* more Instructions by bot? or by human */
-      sendMentor(globalWeightArray,ids.arrayOfIds[1]);
+    //   sendMentor(globalWeightArray,ids.arrayOfIds[1]);
        sendMessage(recipientId, {text: "help "});
       return true;
     }else if (values[0] === 'n' || values[0] === 'next') {
