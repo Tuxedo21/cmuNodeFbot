@@ -307,7 +307,6 @@ function volunteerEventMessage(recipientId, text){
 
     globalWeightArray
   };
-
 //TODO add the guy you are going to help
 function sendMentor(weights){
   var maxWeight = Math.max.apply(Math,weights);
