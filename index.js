@@ -163,8 +163,8 @@ function startASMessage(recipientId, text){
 
 function setThreasholds(startWeight){
   globalWarThreashold = startWeight/2;
-  globalAskThreashold = startWeight/4;
-  globalSendThreashold = startWeight/8;
+  globalAskThreashold = startWeight/3;
+  globalSendThreashold = startWeight/4;
 }
 
 function sendInstructions(command,id){
