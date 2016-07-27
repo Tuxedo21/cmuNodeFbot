@@ -35,8 +35,8 @@ var globalSendThreashold = 0;
 
 
 
-getTasks("tasks.json");
-
+//getTasks("tasks.json");
+//sendMentor();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
@@ -297,7 +297,7 @@ function volunteerEventMessage(recipientId, text){
 
        if (globalWeightArray[i] < globalSendThreashold) {
           sendMessage(ids.idArray[i], {text: "We are sending a mentor to you"});
-          //sendMentor();
+          sendMentor(globalWeightArray);
       }else if (globalWeightArray[i] < globalAskThreashold) {
          sendMessage(ids.idArray[i], {text: "Do you want help? If so do..."});
       }else if (globalWeightArray[i] < globalWarThreashold) {
@@ -307,6 +307,14 @@ function volunteerEventMessage(recipientId, text){
 
     globalWeightArray
   };
+
+//TODO add the guy you are going to help
+function sendMentor(weights){
+  var maxWeight = Math.max.apply(Math,weights);
+  var volIndex = weights.indexOf(maxWeight);
+  sendMessage(ids.idArray[volIndex], {text: "Go help this guy"});
+  //console.log(volIndex);
+}
 
 function isInArray(value, array) {
   return array.indexOf(value) > -1;
