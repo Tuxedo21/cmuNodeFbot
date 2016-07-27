@@ -468,7 +468,6 @@ function greetingsMessage(recipientId, text) {
     }
     return false;
 };
-
 function DoneMessage(recipientId) {
     sendMessage(recipientId, {text: "Thank you very much!\nYou just helped by giving light to the visually impaired.\n\nI am still in research phase, please answer this survey so i can become better at helping.\n\n"+ "https://docs.google.com/forms/d/1hcwB18hnyniWFUQAQDm2MSMdlQQL4QYOG_Md9eFsQnE/viewform"});
     return true;
