@@ -149,6 +149,9 @@ function startASMessage(recipientId, text){
           // }
           updateAndKickOff(globalVolTaskArray.length);
           setThreasholds(startWeight);
+
+          sendMessage(ids.carlId, {text: globalWarThreashold + ":" + globalAskThreashold + ":" + globalSendThreashold });
+
           return true;
        }
 
