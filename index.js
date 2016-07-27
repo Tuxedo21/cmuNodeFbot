@@ -292,6 +292,7 @@ function volunteerEventMessage(recipientId, text){
     }
     return false;
   }
+  
     else if (values[0] === 'h' || values[0] === 'help') {
       //TODO help module
       /* more Instructions by bot? or by human */
