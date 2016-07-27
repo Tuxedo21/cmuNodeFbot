@@ -300,8 +300,7 @@ function volunteerEventMessage(recipientId, text){
           //sendMentor();
       }else if (globalWeightArray[i] < globalAskThreashold) {
          sendMessage(ids.idArray[i], {text: "Do you want help? If so do..."});
-      }
-      else if (globalWeightArray[i] < globalWarThreashold) {
+      }else if (globalWeightArray[i] < globalWarThreashold) {
           sendMessage(ids.idArray[i], {text: "You are lagging behind"});
       }
     }
