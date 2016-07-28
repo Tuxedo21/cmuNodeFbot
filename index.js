@@ -72,6 +72,10 @@ var globalCasStart = 0;
 var globalCasCheck = 0;
 
 
+
+      setInterval( console.log, 2000, "Hello");
+
+
 //getTasks("tasks.json");
 //sendMentor();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -90,6 +94,16 @@ app.get('/webhook', function (req, res) {
     }
 });
 // handler receiving messages
+
+function coolStuff(a,b,c){
+  console.log(a);
+  console.log(b);
+  console.log(c);
+
+}
+
+setInterval( coolStuff, 2000, "Hello","sup","test");
+
 app.post('/webhook', function (req, res) {
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {
@@ -209,6 +223,7 @@ function startASMessage(recipientId, text){
           /* Every certan time ask all */
           for (var i = 0; i < 10; i++) {
                 setTimeout(function(){sendMessage(ids.carlId, {text: "BUILDING" + globalVolunteers });}, 20000);
+                setInterval( console.log, 2000, "Hello");
           }
           return true;
        }
