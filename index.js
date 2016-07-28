@@ -95,7 +95,6 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {
         var event = events[i];
         if (event.message && event.message.text) {
-
           g = g + 1 ;
         //  globalCasCheck = algoVE.getCurrentTime();
             if (!kittenMessage(event.sender.id, event.message.text) || !mapMessage(event.sender.id, event.message.text)){
@@ -112,7 +111,6 @@ app.post('/webhook', function (req, res) {
       }
       res.sendStatus(200);
   });
-
 
 function updateBotData(volunteersNum){
 
