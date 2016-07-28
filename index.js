@@ -17,6 +17,7 @@ var algoVE = require('./algorithumVE.js');
 var g = 0;
 var globalAvg = 1;
 var globalBest = 0;
+var globalDepType;
 
 var globalWeightArray = [0.25,0.25,0.25,0.25];//[]
 var globalTaskArray = [];//[] all tasks like workPool
@@ -141,21 +142,14 @@ function startASMessage(recipientId, text){
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nInstructions:" });
           }
           getTasks("tasks.json");//MakesglobalTaskArray
-          // for (var vol = 0; vol < Number(values[1]); vol++) {
-          //     if(globalTaskArray.length > 0){
-          //         globalVolTaskArray[vol].push(globalTaskArray.pop());
-          //     }
-          // }
           updateAndKickOff(globalVolTaskArray.length);
           setThreasholds(startWeight);
-
           sendMessage(ids.carlId, {text: globalWarThreashold + ":" + globalAskThreashold + ":" + globalSendThreashold });
-
           return true;
        }
 
        else if (values[0].toLowerCase() === 'startcas' && values.length == 2) {
-
+         globalDepType = true;
          var contents = fs.readFileSync("botData.json");
          var jsonContent = JSON.parse(contents);
          var taskContent = fs.readFileSync("tasks.json");
@@ -173,12 +167,10 @@ function startASMessage(recipientId, text){
            globalStartTime[i] = 1; // start up times
            globalDoneTime[i] = 1; // start up times
            globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
-           sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nWe're doing a casual deployment." });
+           sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nWe're doing a casual deployment. Over time you will be asked if you have time to do work..." });
          }
-
+          //startSending();
           sendMessage(ids.carlId, {text: "BUILDING" });
-
-
           return true;
        }
      return false;
@@ -293,20 +285,17 @@ function volunteerEventMessage(recipientId, text){
   }
 
     else if (values[0] === 'h' || values[0] === 'help') {
-      //TODO help module
-      /* more Instructions by bot? or by human
-        get the best of all to help, if no best then what?
-      */
-      //TODO
+      //TODO breaks if you do help before a task?
       if(globalVolunteers.length > 0){
       var volIndex = arrayOfIds.indexOf(recipientId);
        sendMentor(globalWeightArray,volIndex);
      }
        sendMessage(recipientId, {text: "help "});
       return true;
-    }else if (values[0] === 'n' || values[0] === 'next') {
+    }else if (globalDepType == true && (values[0] === 'a' || values[0] === 'accept') ) {
+
       //TODO next module
-      sendMessage(recipientId, {text: "next "});
+      sendMessage(recipientId, {text: "accept "});
       return true;
     }else if (values[0] === 's' || values[0] === 'start') {
       if(isInArray(recipientId.toString(),arrayOfIds)){
