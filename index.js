@@ -54,7 +54,7 @@ app.get('/webhook', function (req, res) {
 });
 
 /* Ask if Casual,   */
-//setInterval(roundRobin, (globalRoundRobinTime*60000));
+setInterval(roundRobin, (globalRoundRobinTime*60000));
 
 app.post('/webhook', function (req, res) {
     var events = req.body.entry[0].messaging;
@@ -230,12 +230,13 @@ function volunteerEventMessage(recipientId, text){
          var volIndex = arrayOfIds.indexOf(recipientId);//get his id
          if(jsonContent.workPool > 0){ //check if the pool is empty
 
-           jsonContent.workPool = jsonContent.workPool - 1;// take away from the pool
+
            fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
            globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
 
             //TODO this breaks if not done nicely
             if(globalVolTaskArray[volIndex].length != 0 && globalDoneTime[volIndex] > globalStartTime[volIndex]) {
+              jsonContent.workPool = jsonContent.workPool - 1;// take away from the pool
               globalStartTime[volIndex] = 1000000;//So you cant cheat;
                var xi =  globalVolTaskArray[volIndex][0][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
                if(xi > globalBest){
