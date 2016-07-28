@@ -200,6 +200,7 @@ function startASMessage(recipientId, text){
          jsonContent.workPool = jsonTaskContent.tasks.length;
          jsonContent.volunteers = Number(values[1]);
          jsonContent.askTime = Number(values[2]);
+         globalRoundRobinTime = Number(values[2]);
          fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
          sendMessage(recipientId, {text: "You have " + jsonContent.volunteers + " volunteers" + "\nTasks: " + jsonContent.workPool});
 
@@ -214,12 +215,6 @@ function startASMessage(recipientId, text){
          } getTasks("tasks.json");
           setTimeout(function(){startSending();}, 20000);
           globalCasStart = Number(algoVE.getCurrentTime());
-          //TODO Parallel function call??
-          /* Every certan time ask all */
-          for (var i = 0; i < 10; i++) {
-                setTimeout(function(){sendMessage(ids.carlId, {text: "BUILDING" + globalVolunteers });}, 20000);
-                setInterval( console.log, 2000, "Hello");
-          }
           return true;
        }
      return false;
