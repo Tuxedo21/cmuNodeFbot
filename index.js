@@ -267,7 +267,6 @@ function volunteerEventMessage(recipientId, text){
                  if(i != volIndex){
                     globalWeightArray[i] = globalWeightArray[i] - subtract;}
               }
-
               checkThreshold();
               //sendMessage(recipientId, {text: "old::[" + globalVolTaskArray[volIndex] + "]::" });
               sendMessage(ids.carlId, {text: "GTA::[" + globalTaskArray + "]::" });
