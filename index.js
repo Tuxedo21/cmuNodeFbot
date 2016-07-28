@@ -164,7 +164,6 @@ function startASMessage(recipientId, text){
      return false;
 };
 
-
 function oneRound(){
   for (var i = 0; i < globalVolunteers.length; i++) {
     if(globalVolTaskArray[i].length < 1){
@@ -229,7 +228,6 @@ function volunteerEventMessage(recipientId, text){
     if(isInArray(recipientId.toString(),arrayOfIds)){//Is he a volunteer?
          var volIndex = arrayOfIds.indexOf(recipientId);//get his id
          if(jsonContent.workPool > 0){ //check if the pool is empty
-
 
            fs.writeFileSync("botData.json", JSON.stringify(jsonContent)); //update the json
            globalDoneTime[volIndex] = Number(algoVE.getCurrentTime()); //get done time
