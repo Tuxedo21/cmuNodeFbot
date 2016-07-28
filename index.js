@@ -34,7 +34,7 @@ var globalWarThreashold = 0;
 var globalAskThreashold = 0;
 var globalSendThreashold = 0;
 //Casual times
-var globalRoundRobinTime = 10000000;
+var globalRoundRobinTime = 1;
 //getTasks("tasks.json");
 //sendMentor();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -54,7 +54,8 @@ app.get('/webhook', function (req, res) {
 });
 
 /* Ask if Casual,   */
-setInterval(roundRobin, (globalRoundRobinTime*60000));
+setInterval(roundRobin, (globalRoundRobinTime*60000) );
+//setInterval(console.log,60000,"hey");
 
 app.post('/webhook', function (req, res) {
     var events = req.body.entry[0].messaging;
