@@ -94,13 +94,11 @@ function updateBotData(volunteersNum){
 }
 
 function updateAndKickOff(until){
-
   for (var vol = 0; vol < until; vol++) {
       if(globalTaskArray.length > 0){
           globalVolTaskArray[vol].push(globalTaskArray.pop());
       }
   }
-
   for(var i =0; i < until; i++){
   sendMessage(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
   sendMessage(ids.idArray[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
@@ -181,8 +179,16 @@ function startASMessage(recipientId, text){
 
 function startSending(){
   for (var i = 0; i < globalVolunteers.length; i++) {
-      sendMessage(globalVolunteers[i], {text: "Task on its way: " + globalTaskArray[i] });
+        globalVolTaskArray.push(globalTaskArray.pop());
+        sendMessage(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
+        sendMessage(ids.idArray[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
+        //  SEND INSTRUCTIONS
+        sendInstructions(globalVolTaskArray[i][0][1].toString(),ids.idArray[i]);
   }
+
+
+
+
 }
 
 function setThreasholds(startWeight){
