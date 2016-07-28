@@ -295,9 +295,12 @@ function volunteerEventMessage(recipientId, text){
 
     else if (values[0] === 'h' || values[0] === 'help') {
       //TODO help module
-      /* more Instructions by bot? or by human */
+      /* more Instructions by bot? or by human
+        get the best of all to help, if no best then what?
+
+      */
       //TODO
-       sendMentor(globalWeightArray,ids.carlId);
+       sendMentor(globalWeightArray,recipientId);
        sendMessage(recipientId, {text: "help "});
       return true;
     }else if (values[0] === 'n' || values[0] === 'next') {
@@ -316,10 +319,9 @@ function volunteerEventMessage(recipientId, text){
     return false;
 }
 
+
   function checkThreshold(){
-
     for (var i = 0; i < globalWeightArray.length; i++) {
-
        if (globalWeightArray[i] < globalSendThreashold) {
           sendMessage(ids.idArray[i], {text: "We are sending a mentor to you"});
           sendMentor(globalWeightArray,i);
@@ -329,9 +331,8 @@ function volunteerEventMessage(recipientId, text){
           sendMessage(ids.idArray[i], {text: "You are lagging behind"});
       }
     }
-
-    globalWeightArray
   };
+
 //TODO add the guy you are going to help
 function sendMentor(weights,volNum){
   var maxWeight = Math.max.apply(Math,weights);
