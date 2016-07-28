@@ -179,16 +179,12 @@ function startASMessage(recipientId, text){
 
 function startSending(){
   for (var i = 0; i < globalVolunteers.length; i++) {
-        globalVolTaskArray.push(globalTaskArray.pop());
+        globalVolTaskArray[i].push(globalTaskArray.pop());
         sendMessage(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
-        sendMessage(ids.idArray[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
+        sendMessage(globalVolunteers[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
         //  SEND INSTRUCTIONS
         sendInstructions(globalVolTaskArray[i][0][1].toString(),ids.idArray[i]);
   }
-
-
-
-
 }
 
 function setThreasholds(startWeight){
