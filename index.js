@@ -307,7 +307,7 @@ function volunteerEventMessage(recipientId, text){
       if(globalVolTaskArray[volIndex].length > 0){
         globalTaskArray.push(globalVolTaskArray[volIndex].pop());
                     }
-      sendMessage(recipientId, {text: "reject "});
+      sendMessage(recipientId, {text: "reject :: " + globalVolTaskArray[volIndex]});
       /*take away from the volunteers array*/
       return true;
     }else if (values[0] === 's' || values[0] === 'start') {
