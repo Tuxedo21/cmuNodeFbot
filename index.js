@@ -293,7 +293,7 @@ function volunteerEventMessage(recipientId, text){
   var arrayOfIds = [];
   for (var i = 0; i < jsonContent.volunteers; i++) {//Get all volunteers
     arrayOfIds.push(ids.idArray[i].toString());
-  }
+   }
   if (values[0] === 'd' || values[0] === 'done'){
     //TODO check if he has started
     if(isInArray(recipientId.toString(),arrayOfIds)){//Is he a volunteer?
