@@ -68,8 +68,8 @@ var globalWarThreashold = 0;
 var globalAskThreashold = 0;
 var globalSendThreashold = 0;
 //Casual times
-var globalCasStart;
-var globalCasCheck;
+var globalCasStart = 0;
+var globalCasCheck = 0;
 
 
 //getTasks("tasks.json");
