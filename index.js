@@ -172,7 +172,7 @@ function startASMessage(recipientId, text){
           //setTimeout(function(){startSending();}, 20000);
           startSending();
           /* Every certan time ask all */
-          sendMessage(ids.carlId, {text: "BUILDING" });
+          sendMessage(ids.carlId, {text: "BUILDING" + globalVolunteers });
           return true;
        }
      return false;
