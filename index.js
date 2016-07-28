@@ -135,7 +135,7 @@ function startASMessage(recipientId, text){
           for (var i = 0; i < Number(values[1]); i++) {
             globalWeightArray.push(startWeight);//Volunteers weight
             globalVolTaskArray.push([]); //Start the volunteer weight array
-            globalStartTime[i] = 1; // start up times
+            globalStartTime[i] = 1000000; // start up times
             globalDoneTime[i] = 1; // start up times
             globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
             sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nInstructions:" });
