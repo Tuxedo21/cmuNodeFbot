@@ -297,7 +297,6 @@ function volunteerEventMessage(recipientId, text){
       //TODO help module
       /* more Instructions by bot? or by human
         get the best of all to help, if no best then what?
-
       */
       //TODO
       if(globalVolunteers.length > 0){
@@ -340,7 +339,7 @@ function volunteerEventMessage(recipientId, text){
 function sendMentor(weights,volNum){
   var maxWeight = Math.max.apply(Math,weights);
   var volIndex = weights.indexOf(maxWeight);
-  sendMessage(ids.idArray[volIndex], {text: "Go help volunteer number" + volNum});
+  sendMessage(ids.idArray[volIndex], {text: "Go help volunteer number " + (volNum + 1)});
   //console.log(volIndex);
 }
 
