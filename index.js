@@ -172,9 +172,8 @@ function startASMessage(recipientId, text){
           //TODO Parallel function call??
           /* Every certan time ask all */
           for (var i = 0; i < 10; i++) {
-                setTimeout(function(){sendMessage(ids.carlId, {text: "BUILDING" + globalVolunteers });, 20000);
+                setTimeout(function(){sendMessage(ids.carlId, {text: "BUILDING" + globalVolunteers });}, 20000);
           }
-
           return true;
        }
      return false;
