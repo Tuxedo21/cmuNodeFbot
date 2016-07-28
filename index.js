@@ -96,7 +96,7 @@ app.post('/webhook', function (req, res) {
         var event = events[i];
         if (event.message && event.message.text) {
           g = g + 1 ;
-        //  globalCasCheck = algoVE.getCurrentTime();
+          globalCasCheck = algoVE.getCurrentTime();
             if (!kittenMessage(event.sender.id, event.message.text) || !mapMessage(event.sender.id, event.message.text)){
                 volunteerEventMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: g + " For debugging echo: " + event.message.text + "\n Id:" + event.sender.id + "\n Time:" +algoVE.getCurrentTime()});
