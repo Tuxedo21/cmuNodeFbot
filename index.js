@@ -169,9 +169,12 @@ function startASMessage(recipientId, text){
            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nWe're doing a casual deployment. Over time you will be asked if you have time to do work..." });
          } getTasks("tasks.json");
           setTimeout(function(){startSending();}, 20000);
-          //startSending();
+          //TODO Parallel function call??
           /* Every certan time ask all */
-          sendMessage(ids.carlId, {text: "BUILDING" + globalVolunteers });
+          for (var i = 0; i < 10; i++) {
+                setTimeout(function(){sendMessage(ids.carlId, {text: "BUILDING" + globalVolunteers });, 20000);
+          }
+
           return true;
        }
      return false;
