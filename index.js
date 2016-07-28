@@ -68,8 +68,8 @@ var globalWarThreashold = 0;
 var globalAskThreashold = 0;
 var globalSendThreashold = 0;
 //Casual times
-var globalCasStart = 0;
-var globalCasCheck = 0;
+var globalRoundRobinTime= 1000;
+
 
 
 //getTasks("tasks.json");
@@ -91,14 +91,8 @@ app.get('/webhook', function (req, res) {
 });
 // handler receiving messages
 
-function coolStuff(a,b,c){
-  console.log(a);
-  console.log(b);
-  console.log(c);
 
-}
-
-setInterval( coolStuff, 2000, "Hello","sup","test");
+setInterval(sendMessage, globalRoundRobinTime, ids.carlId,{text:"Hello"});
 
 app.post('/webhook', function (req, res) {
     var events = req.body.entry[0].messaging;
