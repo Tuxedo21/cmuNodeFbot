@@ -89,9 +89,8 @@ app.get('/webhook', function (req, res) {
 });
 // handler receiving messages
 
-//setInterval(sendMessage, globalRoundRobinTime, ids.carlId,{text:"Hello"});
 /* Ask if Casual,   */
-setInterval(roundRobin, (globalRoundRobinTime*60000));
+//setInterval(roundRobin, (globalRoundRobinTime*60000));
 
 app.post('/webhook', function (req, res) {
     var events = req.body.entry[0].messaging;
