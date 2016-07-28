@@ -16,6 +16,38 @@ var algoVE = require('./algorithumVE.js');
 // console.log(algoVE.getCurrentTime());
 
 
+// function loopOne(){
+//   while (true) {
+//       setTimeout(function() { console.log("hi"); }, 200);
+//   }
+//
+// }
+//
+// function loopTwo(){
+//     while (true) {
+//   setTimeout(function() { console.log("hey"); }, 200);
+//   }
+// }
+//
+//
+// async.parallel([
+//     function(callback) {
+//         setTimeout(function() {
+//           loopTwo();
+//         }, 200);
+//     },
+//     function(callback) {
+//         setTimeout(function() {
+//             loopOne();
+//         }, 100);
+//     }
+// ],
+// // optional callback
+// function(err, results) {
+//     // the results array will equal ['one','two'] even though
+//     // the second function had a shorter timeout.
+// });
+
 var g = 0;
 var globalAvg = 1;
 var globalBest = 0;
@@ -35,7 +67,9 @@ var globalMult = 0.3;
 var globalWarThreashold = 0;
 var globalAskThreashold = 0;
 var globalSendThreashold = 0;
-
+//Casual times
+var globalCasStart;
+var globalCasCheck;
 
 
 //getTasks("tasks.json");
@@ -63,6 +97,7 @@ app.post('/webhook', function (req, res) {
         if (event.message && event.message.text) {
 
           g = g + 1 ;
+          globalCasCheck = algoVE.getCurrentTime();
             if (!kittenMessage(event.sender.id, event.message.text) || !mapMessage(event.sender.id, event.message.text)){
                 volunteerEventMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: g + " For debugging echo: " + event.message.text + "\n Id:" + event.sender.id + "\n Time:" +algoVE.getCurrentTime()});
@@ -70,7 +105,6 @@ app.post('/webhook', function (req, res) {
               if(event.sender.id == ids.carlId){
                  startASMessage(event.sender.id, event.message.text);
                 }
-
             }
           } else if (event.postback) {
               console.log("Postback received: " + JSON.stringify(event.postback));
@@ -149,7 +183,7 @@ function startASMessage(recipientId, text){
           return true;
        }
 
-       else if (values[0].toLowerCase() === 'startcas' && values.length == 2) {
+       else if (values[0].toLowerCase() === 'startcas' && values.length == 3) {
          globalDepType = true;
          var contents = fs.readFileSync("botData.json");
          var jsonContent = JSON.parse(contents);
@@ -158,6 +192,7 @@ function startASMessage(recipientId, text){
 
          jsonContent.workPool = jsonTaskContent.tasks.length;
          jsonContent.volunteers = Number(values[1]);
+         jsonContent.askTime = Number(values[2]);
          fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
          sendMessage(recipientId, {text: "You have " + jsonContent.volunteers + " volunteers" + "\nTasks: " + jsonContent.workPool});
 
@@ -171,6 +206,7 @@ function startASMessage(recipientId, text){
            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nWe're doing a casual deployment. Over time you will be asked if you have time to do work..." });
          } getTasks("tasks.json");
           setTimeout(function(){startSending();}, 20000);
+          globalCasStart = Number(algoVE.getCurrentTime());
           //TODO Parallel function call??
           /* Every certan time ask all */
           for (var i = 0; i < 10; i++) {
@@ -181,7 +217,17 @@ function startASMessage(recipientId, text){
      return false;
 };
 
+function checkCasTimes(){
+  var contents = fs.readFileSync("botData.json");
+  var jsonContent = JSON.parse(contents);
+  if((globalCasCheck - globalCasStart) >= jsonContent.askTime){
+      startSending();
+  }
+}
+
 function startSending(){
+  globalCasStart = algoVE.getCurrentTime();
+
   for (var i = 0; i < globalVolunteers.length; i++) {
     if(globalVolTaskArray[i].length < 1){
         globalVolTaskArray[i].push(globalTaskArray.pop());
@@ -189,7 +235,7 @@ function startSending(){
         sendMessage(globalVolunteers[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
         //  SEND INSTRUCTIONS
         sendInstructions(globalVolTaskArray[i][0][1].toString(),globalVolunteers[i]);
-        sendMessage(globalVolunteers[i], {text: "Will you do this? Write 'a' if yes, 'r' if no"});
+        sendMessage(globalVolunteers[i], {text: "Will you do this? Write 's' if yes and to start, 'r' if no"});
       }
   }
 }
@@ -314,6 +360,7 @@ function volunteerEventMessage(recipientId, text){
       return true;
     }else if (globalDepType == true && (values[0] === 'a' || values[0] === 'ask') ) {
       sendMessage(recipientId, {text: "Once you understood the steps please write 's' when you start and then 'd' when you are done. You can also write 'r' if you want to not do the task before you have written 'd'. "});
+        //TODO next module
       /*
       Get a task in the pool, and ask if he wants to do it.
       */var volIndex = arrayOfIds.indexOf(recipientId);
@@ -322,7 +369,6 @@ function volunteerEventMessage(recipientId, text){
             sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
           }
 
-      //TODO next module
       sendMessage(recipientId, {text: "ask "});
       /*When you accept you don't start but it will be added to you array*/
       return true;
