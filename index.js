@@ -5,7 +5,6 @@ var async = require('async');
 var fs = require("fs")
 var app = express();
 
-
 var Ids = require('./botIds.js');
 var ids = new Ids();
 var Data = require('./getData.js');
@@ -15,43 +14,10 @@ var algoVE = require('./algorithumVE.js');
 // console.log("Alej id: " + ids.alejId);
 // console.log(algoVE.getCurrentTime());
 
-
-// function loopOne(){
-//   while (true) {
-//       setTimeout(function() { console.log("hi"); }, 200);
-//   }
-//
-// }
-//
-// function loopTwo(){
-//     while (true) {
-//   setTimeout(function() { console.log("hey"); }, 200);
-//   }
-// }
-//
-//
-// async.parallel([
-//     function(callback) {
-//         setTimeout(function() {
-//           loopTwo();
-//         }, 200);
-//     },
-//     function(callback) {
-//         setTimeout(function() {
-//             loopOne();
-//         }, 100);
-//     }
-// ],
-// // optional callback
-// function(err, results) {
-//     // the results array will equal ['one','two'] even though
-//     // the second function had a shorter timeout.
-// });
-
 var g = 0;
 var globalAvg = 1;
 var globalBest = 0;
-var isCasual;
+var isCasual = false;
 
 var globalWeightArray = [0.25,0.25,0.25,0.25];//[]
 var globalTaskArray = [];//[] all tasks like workPool
@@ -68,8 +34,7 @@ var globalWarThreashold = 0;
 var globalAskThreashold = 0;
 var globalSendThreashold = 0;
 //Casual times
-var globalRoundRobinTime= 10000000000000;
-
+var globalRoundRobinTime = 10000000;
 //getTasks("tasks.json");
 //sendMentor();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -87,7 +52,6 @@ app.get('/webhook', function (req, res) {
         res.send('Invalid verify token');
     }
 });
-// handler receiving messages
 
 /* Ask if Casual,   */
 //setInterval(roundRobin, (globalRoundRobinTime*60000));
@@ -98,11 +62,9 @@ app.post('/webhook', function (req, res) {
         var event = events[i];
         if (event.message && event.message.text) {
           g = g + 1 ;
-          globalCasCheck = algoVE.getCurrentTime();
             if (!kittenMessage(event.sender.id, event.message.text) || !mapMessage(event.sender.id, event.message.text)){
                 volunteerEventMessage(event.sender.id, event.message.text);
                 sendMessage(event.sender.id, {text: g + " For debugging echo: " + event.message.text + "\n Id:" + event.sender.id + "\n Time:" +algoVE.getCurrentTime()});
-            //    sendMessage(ids.carlId, {text: g + " For debugging: " + globalCasCheck+ "-" + globalCasStart + " = " (globalCasCheck - globalCasStart) });
               if(event.sender.id == ids.carlId){
                  startASMessage(event.sender.id, event.message.text);
                 }
@@ -113,21 +75,6 @@ app.post('/webhook', function (req, res) {
       }
       res.sendStatus(200);
   });
-
-function updateBotData(volunteersNum){
-
-  var contents = fs.readFileSync("botData.json");
-  var jsonContent = JSON.parse(contents);
-  var taskContent = fs.readFileSync("tasks.json");
-  var jsonTaskContent = JSON.parse(taskContent);
-
-  jsonContent.workPool = jsonTaskContent.tasks.length;
-  jsonContent.volunteers = volunteersNum;
-  fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
-  sendMessage(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.workPool});
-
-  return true;
-}
 
 function updateAndKickOff(until){
   for (var vol = 0; vol < until; vol++) {
@@ -145,7 +92,7 @@ function updateAndKickOff(until){
 
 function roundRobin(){
   if(isCasual){
-    startSending();
+    oneRound();
   }
 }
 
@@ -161,8 +108,6 @@ function startASMessage(recipientId, text){
   var values = text.split(" ");
       if(values[0].toLowerCase() === 'startwith' && values.length == 2){  // JSON startwith 3
          isCasual = false;
-        //  updateBotData(3);
-
           var contents = fs.readFileSync("botData.json");
           var jsonContent = JSON.parse(contents);
           var taskContent = fs.readFileSync("tasks.json");
@@ -212,22 +157,15 @@ function startASMessage(recipientId, text){
            globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nWe're doing a casual deployment. Over time you will be asked if you have time to do work..." });
          } getTasks("tasks.json");
-          setTimeout(function(){startSending();}, 20000);
+          setTimeout(function(){oneRound();}, 20000);
           globalCasStart = Number(algoVE.getCurrentTime());
           return true;
        }
      return false;
 };
 
-function checkCasTimes(){
-  var contents = fs.readFileSync("botData.json");
-  var jsonContent = JSON.parse(contents);
-  if((globalCasCheck - globalCasStart) >= jsonContent.askTime){
-      startSending();
-  }
-}
 
-function startSending(){
+function oneRound(){
   for (var i = 0; i < globalVolunteers.length; i++) {
     if(globalVolTaskArray[i].length < 1){
         globalVolTaskArray[i].push(globalTaskArray.pop());
@@ -256,14 +194,6 @@ function sendInstructions(command,id){
     fingerprintingMessage(id);
   }
 }
-
-// function makeglobalTaskArray(len,time){
-//   for(var i = 0; i <  len; i++){
-//     //Length of task
-//     globalTaskArray.push(time);
-//   }
-//     sendMessage(ids.carlId, {text: "Global tasks: " + "[" + globalTaskArray + "]"});
-// }
 
 function getTasks(jsonFile){
   var contents = fs.readFileSync(jsonFile);
@@ -324,7 +254,6 @@ function volunteerEventMessage(recipientId, text){
                     globalWeightArray[i] = globalWeightArray[i] - subtract;}
               }
               checkThreshold();
-              //sendMessage(recipientId, {text: "old::[" + globalVolTaskArray[volIndex] + "]::" });
               sendMessage(ids.carlId, {text: "GTA::[" + globalTaskArray + "]::" });
               sendMessage(ids.carlId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
               globalVolTaskArray[volIndex].pop();
