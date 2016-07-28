@@ -18,7 +18,7 @@ var g = 0;
 var globalAvg = 1;
 var globalBest = 0;
 
-var globalWeightArray = [];//[]
+var globalWeightArray = [0.25,0.25,0.25,0.25];//[]
 var globalTaskArray = [];//[] all tasks like workPool
 var globalVolunteers = [];//[] their ids
 var globalVolTaskArray = [];//[][] all distributed tasks a task is time
@@ -296,7 +296,8 @@ function volunteerEventMessage(recipientId, text){
     else if (values[0] === 'h' || values[0] === 'help') {
       //TODO help module
       /* more Instructions by bot? or by human */
-    //   sendMentor(globalWeightArray,ids.arrayOfIds[1]);
+      //TODO
+       sendMentor(globalWeightArray,ids.carlId);
        sendMessage(recipientId, {text: "help "});
       return true;
     }else if (values[0] === 'n' || values[0] === 'next') {
