@@ -72,10 +72,6 @@ var globalCasStart = 0;
 var globalCasCheck = 0;
 
 
-
-      setInterval( console.log, 2000, "Hello");
-
-
 //getTasks("tasks.json");
 //sendMentor();
 app.use(bodyParser.urlencoded({extended: false}));
