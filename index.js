@@ -184,7 +184,7 @@ function startSending(){
         sendMessage(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
         sendMessage(globalVolunteers[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
         //  SEND INSTRUCTIONS
-        setTimeout(function(){sendInstructions(globalVolTaskArray[i][0][1].toString(),globalVolunteers[i]);},5000);
+        sendInstructions(globalVolTaskArray[i][0][1].toString(),globalVolunteers[i]);
         sendMessage(globalVolunteers[i], {text: "Will you do this? Write 'a' if yes, 'r' if no"});
       }
   }
