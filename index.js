@@ -179,11 +179,14 @@ function startASMessage(recipientId, text){
 
 function startSending(){
   for (var i = 0; i < globalVolunteers.length; i++) {
+    if(globalVolTaskArray[i].length < 1){
         globalVolTaskArray[i].push(globalTaskArray.pop());
         sendMessage(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
         sendMessage(globalVolunteers[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
         //  SEND INSTRUCTIONS
-        sendInstructions(globalVolTaskArray[i][0][1].toString(),ids.idArray[i]);
+        setTimeout(function(){sendInstructions(globalVolTaskArray[i][0][1].toString(),globalVolunteers[i]);},5000);
+        sendMessage(globalVolunteers[i], {text: "Will you do this? Write 'a' if yes, 'r' if no"});
+      }
   }
 }
 
@@ -306,10 +309,19 @@ function volunteerEventMessage(recipientId, text){
        sendMessage(recipientId, {text: "help "});
       return true;
     }else if (globalDepType == true && (values[0] === 'a' || values[0] === 'accept') ) {
-
+      sendMessage(recipientId, {text: "Once you understood the steps please write 's' when you start and then 'd' when you are done. You can also write 'r' if you want to not do the task before you have written 'd'. "});
       //TODO next module
       sendMessage(recipientId, {text: "accept "});
       /*When you accept you don't start but it will be added to you array*/
+      return true;
+    }else if (globalDepType == true && (values[0] === 'r' || values[0] === 'reject')){
+      //TODO reject module
+      var volIndex = arrayOfIds.indexOf(recipientId);
+      if(globalVolTaskArray[volIndex].length > 0){
+        globalTaskArray.push(globalVolTaskArray[volIndex].pop());
+                    }
+      sendMessage(recipientId, {text: "reject "});
+      /*take away from the volunteers array*/
       return true;
     }else if (values[0] === 's' || values[0] === 'start') {
       if(isInArray(recipientId.toString(),arrayOfIds)){
