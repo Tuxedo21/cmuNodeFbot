@@ -169,7 +169,8 @@ function startASMessage(recipientId, text){
            globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nWe're doing a casual deployment. Over time you will be asked if you have time to do work..." });
          } getTasks("tasks.json");
-          setTimeout(function(){startSending();}, 20000);
+          //setTimeout(function(){startSending();}, 20000);
+          startSending();
           /* Every certan time ask all */
           sendMessage(ids.carlId, {text: "BUILDING" });
           return true;
@@ -181,7 +182,6 @@ function startSending(){
   for (var i = 0; i < globalVolunteers.length; i++) {
       sendMessage(globalVolunteers[i], {text: "Task on its way: " + globalTaskArray[i] });
   }
-
 }
 
 function setThreasholds(startWeight){
