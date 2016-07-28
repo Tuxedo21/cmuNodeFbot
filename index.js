@@ -240,7 +240,7 @@ function volunteerEventMessage(recipientId, text){
                var xi =  globalVolTaskArray[volIndex][0][0] / (globalDoneTime[volIndex] - globalStartTime[volIndex]); //xi for weight
                if(xi > globalBest){
                 globalBest = xi;
-               }
+                }
            //Dragans Cool Math
            globalAvg = ((globalAvg*(globalWeightArray.length - 1))/globalWeightArray.length) - xi/globalWeightArray.length;
            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
