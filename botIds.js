@@ -14,6 +14,8 @@ module.exports = function Ids() {
     this.celId = 1047978891957490; //Celestial Azul pinepowertech
     //Dummy in array
     this.idArray = [
+       965219843596624,  //Saiph Norma
+       1147285151960097,  //Cole Gleason
        872644172839875,  //Benito Camelo 100002948056748
        935052293271240,  //Bjarne Thompson
        1131034940276348, //Esteban Hernández
