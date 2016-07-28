@@ -91,7 +91,6 @@ app.get('/webhook', function (req, res) {
 });
 // handler receiving messages
 
-
 setInterval(sendMessage, globalRoundRobinTime, ids.carlId,{text:"Hello"});
 
 app.post('/webhook', function (req, res) {
