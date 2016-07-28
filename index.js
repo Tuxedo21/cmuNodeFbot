@@ -289,6 +289,7 @@ function volunteerEventMessage(recipientId, text){
       if(globalVolunteers.length > 0){
       var volIndex = arrayOfIds.indexOf(recipientId);
        sendMentor(globalWeightArray,volIndex);
+       sendMessage(recipientId, {text: "We're sending help now. "});
      }
        sendMessage(recipientId, {text: "help "});
       return true;
