@@ -119,7 +119,7 @@ function startASMessage(recipientId, text){
   text = text.toLowerCase();
   var values = text.split(" ");
       if(values[0].toLowerCase() === 'startwith' && values.length == 2){  // JSON startwith 3
-
+         globalDepType = false;
         //  updateBotData(3);
 
           var contents = fs.readFileSync("botData.json");
@@ -168,13 +168,23 @@ function startASMessage(recipientId, text){
            globalDoneTime[i] = 1; // start up times
            globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
            sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nWe're doing a casual deployment. Over time you will be asked if you have time to do work..." });
-         }
-          //startSending();
+         } getTasks("tasks.json");
+          startSending();
+          /* Every certan time ask all */
           sendMessage(ids.carlId, {text: "BUILDING" });
           return true;
        }
      return false;
 };
+
+function startSending(){
+  for (var i = 0; i < globalVolunteers.length; i++) {
+
+      sendMessage(globalVolunteers[i], {text: "Task on its way: " + globalTaskArray[i] });
+
+  }
+
+}
 
 function setThreasholds(startWeight){
   globalWarThreashold = startWeight/2;
@@ -264,10 +274,12 @@ function volunteerEventMessage(recipientId, text){
               sendMessage(ids.carlId, {text: "GTA::[" + globalTaskArray + "]::" });
               sendMessage(ids.carlId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
               globalVolTaskArray[volIndex].pop();
+              if(!globalDepType){
               globalVolTaskArray[volIndex].push(globalTaskArray.pop());
               //Send new task
                sendMessage(recipientId, {text: "Your task should take: " + "[" + globalVolTaskArray[volIndex][0][0] + "] minutes." });
                sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
+                }
               for(var i =0; i < globalVolTaskArray.length; i++){
               sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
               }
@@ -283,7 +295,6 @@ function volunteerEventMessage(recipientId, text){
     }
     return false;
   }
-
     else if (values[0] === 'h' || values[0] === 'help') {
       //TODO breaks if you do help before a task?
       if(globalVolunteers.length > 0){
@@ -297,6 +308,7 @@ function volunteerEventMessage(recipientId, text){
 
       //TODO next module
       sendMessage(recipientId, {text: "accept "});
+      /*When you accept you don't start but it will be added to you array*/
       return true;
     }else if (values[0] === 's' || values[0] === 'start') {
       if(isInArray(recipientId.toString(),arrayOfIds)){
