@@ -299,8 +299,8 @@ function volunteerEventMessage(recipientId, text){
         get the best of all to help, if no best then what?
 
       */
-      //TODO 
-      if(globalVolunteers > 0){
+      //TODO
+      if(globalVolunteers.length > 0){
       var volIndex = arrayOfIds.indexOf(recipientId);
        sendMentor(globalWeightArray,volIndex);
      }
