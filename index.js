@@ -1,16 +1,13 @@
-var express = require('express');
-var bodyParser = require('body-parser');
+const http = require('http')
+const Bot = require('messenger-bot')
 var async = require('async');
 var fs = require("fs")
-var app = express();
 
 var tasks = require('./models/tasks');
 
 var Ids = require('./botIds.js');
 var ids = new Ids();
 var Data = require('./getData.js');
-var webhooks = require('./routes/webhooks');
-var messenger = require('./messenger.js');
 var globalAvg = 1;
 var globalBest = 0;
 var isCasual = false;
@@ -32,19 +29,39 @@ var globalAskThreashold = 0;
 var globalSendThreashold = 0;
 //Casual times
 var globalRoundRobinTime = 1 * MS_IN_MIN;
-//sendMentor();
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
-app.listen((process.env.PORT || 3000));
 
-// Server frontpage
-app.get('/', function (req, res) {
-    res.send('This is TestBot Server');
-});
+let bot = new Bot({
+  token: process.env.PAGE_ACCESS_TOKEN,
+  verify: 'testbot_verify_token',
+  app_secret: process.env.APP_SECRET,
+})
 
-// Facebook Webhooks
-app.get('/webhook', webhooks.verifyToken);
-app.post('/webhook', webhooks.receiveEvents);
+
+bot.on('error', (err) => {
+  console.log(err.message)
+})
+
+bot.on('message', (payload, reply) => {
+  let text = payload.message.text
+  if (text) {
+    if (!kittenMessage(payload.sender.id, text) || !mapMessage(payload.sender.id, text)){
+      volunteerEventMessage(payload.sender.id, text);
+      sendMessage(pauload.sender.id, {text: g + " For debugging echo: " + text + "\n Id:" + payload.sender.id + "\n Time:" + Date.now()});
+      if(payload.sender.id == ids.carlId){
+        startASMessage(payload.sender.id, text);
+      }
+    }
+  }
+})
+
+bot.on('postback', (payload, reply) => {
+  console.log("Postback received: " + JSON.stringify(payload.postback))
+})
+
+
+
+http.createServer(bot.middleware()).listen((process.env.PORT || 3000))
+console.log('Echo bot server running at port')
 
 /* Ask if Casual,   */
 function roundRobin(){
@@ -61,8 +78,8 @@ function updateAndKickOff(until){
       }
   }
   for(var i =0; i < until; i++){
-  messenger.send(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
-  messenger.send(ids.idArray[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
+  bot.sendMessage(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
+  bot.sendMessage(ids.idArray[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
   //  SEND INSTRUCTIONS
   sendInstructions(globalVolTaskArray[i][0][1].toString(),ids.idArray[i]);
   }
@@ -88,7 +105,7 @@ function startASMessage(recipientId, text){
           jsonContent.workPool = jsonTaskContent.tasks.length;
           jsonContent.volunteers = Number(values[1]);
           fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
-          messenger.send(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.workPool});
+          bot.sendMessage(recipientId, {text: "Volunteers: " + jsonContent.volunteers + "\nTasks: " + jsonContent.workPool});
 
           var startWeight = 1 / Number(values[1]); // Weight/volunteers
           for (var i = 0; i < Number(values[1]); i++) {
@@ -97,12 +114,12 @@ function startASMessage(recipientId, text){
             globalStartTime[i] = 1000000 * MS_IN_MIN; // start up times
             globalDoneTime[i] = 1 * MS_IN_MIN; // start up times
             globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
-            messenger.send(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nInstructions:" });
+            bot.sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nInstructions:" });
           }
           tasks.loadJSON("tasks.json", (taskArray) => {
             updateAndKickOff(taskArray.length);
             setThreasholds(startWeight);
-            messenger.send(ids.carlId, {text: globalWarThreashold + ":" + globalAskThreashold + ":" + globalSendThreashold });
+            bot.sendMessage(ids.carlId, {text: globalWarThreashold + ":" + globalAskThreashold + ":" + globalSendThreashold });
           });
           return true;
        }
@@ -120,7 +137,7 @@ function startASMessage(recipientId, text){
          // time values are specified in minutes, so convert to ms
          globalRoundRobinTime = parseInt(values[2], 10) * MS_IN_MIN;
          fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
-         messenger.send(recipientId, {text: "You have " + jsonContent.volunteers + " volunteers" + "\nTasks: " + jsonContent.workPool});
+         bot.sendMessage(recipientId, {text: "You have " + jsonContent.volunteers + " volunteers" + "\nTasks: " + jsonContent.workPool});
 
          var startWeight = 1 / Number(values[1]); // Weight/volunteers
          for (var i = 0; i < Number(values[1]); i++) {
@@ -129,7 +146,7 @@ function startASMessage(recipientId, text){
            globalStartTime[i] = 1 * MS_IN_MIN; // start up times
            globalDoneTime[i] = 1 * MS_IN_MIN; // start up times
            globalVolunteers.push(ids.idArray[i].toString());//Volunteers Ids
-           messenger.send(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nWe're doing a casual deployment. Over time you will be asked if you have time to do work..." });
+           bot.sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nWe're doing a casual deployment. Over time you will be asked if you have time to do work..." });
          }
          tasks.loadJSON("tasks.json", (tasksArray) => {
           setTimeout(oneRound, 20 * 1000);
@@ -144,11 +161,11 @@ function oneRound(){
   for (var i = 0; i < globalVolunteers.length; i++) {
     if(globalVolTaskArray[i].length < 1){
         globalVolTaskArray[i].push(tasks.pop());
-        messenger.send(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
-        messenger.send(globalVolunteers[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
+        bot.sendMessage(ids.carlId, {text: "Vol num: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
+        bot.sendMessage(globalVolunteers[i], {text: "Your task should take: " + "[" + globalVolTaskArray[i][0][0] + "] minutes." });
         //  SEND INSTRUCTIONS
         sendInstructions(globalVolTaskArray[i][0][1].toString(),globalVolunteers[i]);
-        messenger.send(globalVolunteers[i], {text: "Will you do this? Write 's' if yes and to start, 'r' if no"});
+        bot.sendMessage(globalVolunteers[i], {text: "Will you do this? Write 's' if yes and to start, 'r' if no"});
       }
   }
 }
@@ -164,9 +181,9 @@ function setThreasholds(startWeight){
        if (globalWeightArray[i] < globalSendThreashold) {
           sendMentor(globalWeightArray,i);
       } else if (globalWeightArray[i] < globalAskThreashold) {
-          messenger.send(ids.idArray[i], {text: "Do you want help? If so do..."});
+          bot.sendMessage(ids.idArray[i], {text: "Do you want help? If so do..."});
       } else if (globalWeightArray[i] < globalWarThreashold) {
-          messenger.send(ids.idArray[i], {text: "You are lagging behind"});
+          bot.sendMessage(ids.idArray[i], {text: "You are lagging behind"});
       }
     }
   };
@@ -176,9 +193,9 @@ function sendMentor(weights,volNum){
   var maxWeight = Math.max.apply(Math,weights);
   var volIndex = weights.indexOf(maxWeight);
   // send message to mentee
-  messenger.send(ids.idArray[i], {text: "We are sending a mentor to you"});
+  bot.sendMessage(ids.idArray[i], {text: "We are sending a mentor to you"});
   // send message to mentor
-  messenger.send(ids.idArray[volIndex], {text: "Go help volunteer number " + (volNum + 1)});
+  bot.sendMessage(ids.idArray[volIndex], {text: "Go help volunteer number " + (volNum + 1)});
 }
 
 function isInArray(value, array) {
@@ -241,7 +258,7 @@ function mapMessage(recipientId, text){
       }
     };
             //  print out search
-          messenger.send(recipientId, message);
+          bot.sendMessage(recipientId, message);
           return true;
        }
      return false;
@@ -276,7 +293,7 @@ function kittenMessage(recipientId, text) {
                     }
                 }
             };
-            messenger.send(recipientId, message);
+            bot.sendMessage(recipientId, message);
             return true;
         }
     }
@@ -288,13 +305,13 @@ function greetingsMessage(recipientId, text) {
     text = text.toLowerCase();
     var values = text.split(' ');
     if (values[0] === 'hello' || values[0] === 'hi' || values[0] === 'hey') {
-            messenger.send(recipientId, {text: "Greetings human, I am the luzDeploy bot. I was created by CMU's HCI team at the biglab! My job is to help you make the world a better place for the handicap. Please tell me which volunteer are you? By writing 'volunteer <number>' (for todays deployment there are only volunteers four and five)"});
+            bot.sendMessage(recipientId, {text: "Greetings human, I am the luzDeploy bot. I was created by CMU's HCI team at the biglab! My job is to help you make the world a better place for the handicap. Please tell me which volunteer are you? By writing 'volunteer <number>' (for todays deployment there are only volunteers four and five)"});
             return true;
     }
     return false;
 };
 function DoneMessage(recipientId) {
-    messenger.send(recipientId, {text: "Thank you very much!\nYou just helped by giving light to the visually impaired.\n\nI am still in research phase, please answer this survey so i can become better at helping.\n\n"+ "https://docs.google.com/forms/d/1hcwB18hnyniWFUQAQDm2MSMdlQQL4QYOG_Md9eFsQnE/viewform"});
+    bot.sendMessage(recipientId, {text: "Thank you very much!\nYou just helped by giving light to the visually impaired.\n\nI am still in research phase, please answer this survey so i can become better at helping.\n\n"+ "https://docs.google.com/forms/d/1hcwB18hnyniWFUQAQDm2MSMdlQQL4QYOG_Md9eFsQnE/viewform"});
     return true;
 };
 //WORK ON THISS!!
@@ -304,8 +321,8 @@ function fingerprintingMessage(recipientId){
 }
 function fingerprintingTextMessage(recipientId){
   var message = Data.texts().fingerprinting;
-  setTimeout(function(){messenger.send(recipientId, {text: message.fingerprinting1 });}, 2 * 1000);
-  setTimeout(function(){messenger.send(recipientId, {text: message.fingerprinting2 });}, 2 * 1000);
+  setTimeout(function(){bot.sendMessage(recipientId, {text: message.fingerprinting1 });}, 2 * 1000);
+  setTimeout(function(){bot.sendMessage(recipientId, {text: message.fingerprinting2 });}, 2 * 1000);
 }
 function fingerprintingImageMessage(recipientId){
   var linkes = Data.linkes();
@@ -330,7 +347,7 @@ function fingerprintingImageMessage(recipientId){
       }
     }
     };
-  messenger.send(recipientId, message);
+  bot.sendMessage(recipientId, message);
 }
 
 function batteryMessage(recipientId) {
@@ -339,8 +356,8 @@ function batteryMessage(recipientId) {
 };
 function batteryTextMessage(recipientId) {
     var message = Data.texts().batteryMaintenance;
-    setTimeout(function(){messenger.send(recipientId, {text: message.batteryMaintenance1 });}, 2 * 1000);
-    setTimeout(function(){messenger.send(recipientId, {text: message.batteryMaintenance2 });}, 2 * 1000);
+    setTimeout(function(){bot.sendMessage(recipientId, {text: message.batteryMaintenance1 });}, 2 * 1000);
+    setTimeout(function(){bot.sendMessage(recipientId, {text: message.batteryMaintenance2 });}, 2 * 1000);
 };
 function batteryImageMessage(recipientId) {
     var linkes = Data.linkes();
@@ -389,7 +406,7 @@ function batteryImageMessage(recipientId) {
         }
       }
       };
-    messenger.send(recipientId, message);
+    bot.sendMessage(recipientId, message);
 };
 
 function beaconMessage(recipientId){
@@ -398,8 +415,8 @@ function beaconMessage(recipientId){
 }
 function beaconTextMessage(recipientId){
   var message = Data.texts().placingBeacons;
-  setTimeout(function(){messenger.send(recipientId, {text: message.placingBeacons1 });}, 2 * 1000);
-  setTimeout(function(){messenger.send(recipientId, {text: message.placingBeacons2 });}, 2 * 1000);
+  setTimeout(function(){bot.sendMessage(recipientId, {text: message.placingBeacons1 });}, 2 * 1000);
+  setTimeout(function(){bot.sendMessage(recipientId, {text: message.placingBeacons2 });}, 2 * 1000);
 }
 function beaconImageMessage(recipientId){
   var linkes = Data.linkes();
@@ -425,7 +442,7 @@ function beaconImageMessage(recipientId){
       }
     }
     };
-  messenger.send(recipientId, message);
+  bot.sendMessage(recipientId, message);
 }
 
 function volunteerEventMessage(recipientId, text){
@@ -459,7 +476,7 @@ function volunteerEventMessage(recipientId, text){
            //Dragans Cool Math
            globalAvg = ((globalAvg*(globalWeightArray.length - 1))/globalWeightArray.length) - xi/globalWeightArray.length;
            var curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
-           var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult; //messenger.send(recipientId, {text: "::NW" + newWeight + "::LW" + globalWeightArray[volIndex] + "::CW" + curWeight });
+           var newWeight = ((globalWeightArray[volIndex])*(1 - globalMult)) + curWeight*globalMult; //bot.sendMessage(recipientId, {text: "::NW" + newWeight + "::LW" + globalWeightArray[volIndex] + "::CW" + curWeight });
            var subtract = (newWeight - globalWeightArray[volIndex])/(globalWeightArray.length - 1);
            //UPDATE WEIGHTS!
            globalWeightArray[volIndex] = newWeight;
@@ -469,41 +486,40 @@ function volunteerEventMessage(recipientId, text){
                     globalWeightArray[i] = globalWeightArray[i] - subtract;}
               }
               checkThreshold();
-              messenger.send(ids.carlId, {text: "GTA::[" + tasks.getAll() + "]::" });
-              messenger.send(ids.carlId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
+              bot.sendMessage(ids.carlId, {text: "GTA::[" + tasks.getAll() + "]::" });
+              bot.sendMessage(ids.carlId, {text: "sub: " + subtract + " GWA::[" + globalWeightArray + "]::" });
               globalVolTaskArray[volIndex].pop();
               if(!isCasual){
               globalVolTaskArray[volIndex].push(tasks.pop());
               //Send new task
-               messenger.send(recipientId, {text: "Your task should take: " + "[" + (globalVolTaskArray[volIndex][0][0] / MS_IN_MIN) + "] minutes." });
+               bot.sendMessage(recipientId, {text: "Your task should take: " + "[" + (globalVolTaskArray[volIndex][0][0] / MS_IN_MIN) + "] minutes." });
                sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
                 }
               for(var i =0; i < globalVolTaskArray.length; i++){
-              messenger.send(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
+              bot.sendMessage(ids.carlId, {text: "Vol: " + (i+1) + "[" + globalVolTaskArray[i] + "]"});
               }
           }  else{
-           messenger.send(recipientId, {text: "You don't have any more tasks. But there are still these left for others. [" + globalVolTaskArray + "]"});
+           bot.sendMessage(recipientId, {text: "You don't have any more tasks. But there are still these left for others. [" + globalVolTaskArray + "]"});
          }
-         messenger.send(recipientId, {text: "Thank you, these are the total of tasks left: " + jsonContent.workPool });
-         messenger.send(recipientId, {text: "Vol: " + (volIndex + 1) + " you ended at " +   (new Date(globalDoneTime[volIndex]}));
+         bot.sendMessage(recipientId, {text: "Thank you, these are the total of tasks left: " + jsonContent.workPool });
+         bot.sendMessage(recipientId, {text: "Vol: " + (volIndex + 1) + " you ended at " +   (new Date(globalDoneTime[volIndex]}));
        } else {
          DoneMessage(recipientId);
        }
       return true;
     }
     return false;
-  }
-    else if (values[0] === 'h' || values[0] === 'help') {
+  } else if (values[0] === 'h' || values[0] === 'help') {
       //TODO breaks if you do help before a task?
       if(globalVolunteers.length > 0){
       var volIndex = arrayOfIds.indexOf(recipientId);
        sendMentor(globalWeightArray,volIndex);
-       messenger.send(recipientId, {text: "We're sending help now. "});
+       bot.sendMessage(recipientId, {text: "We're sending help now. "});
      }
-       messenger.send(recipientId, {text: "help "});
+       bot.sendMessage(recipientId, {text: "help "});
       return true;
     }else if (isCasual == true && (values[0] === 'a' || values[0] === 'ask') ) {
-      messenger.send(recipientId, {text: "Once you understood the steps please write 's' when you start and then 'd' when you are done. You can also write 'r' if you want to not do the task before you have written 'd'. "});
+      bot.sendMessage(recipientId, {text: "Once you understood the steps please write 's' when you start and then 'd' when you are done. You can also write 'r' if you want to not do the task before you have written 'd'. "});
         //TODO next module
       /*
       Get a task in the pool, and ask if he wants to do it.
@@ -513,23 +529,23 @@ function volunteerEventMessage(recipientId, text){
             sendInstructions(globalVolTaskArray[volIndex][0][1],recipientId);
           }
 
-      messenger.send(recipientId, {text: "ask "});
+      bot.sendMessage(recipientId, {text: "ask "});
       /*When you accept you don't start but it will be added to you array*/
       return true;
-    }else if (isCasual == true && (values[0] === 'r' || values[0] === 'reject')){
+    } else if (isCasual == true && (values[0] === 'r' || values[0] === 'reject')){
       //TODO reject module
       var volIndex = arrayOfIds.indexOf(recipientId);
       if(globalVolTaskArray[volIndex].length > 0){
         tasks.add(globalVolTaskArray[volIndex].pop());
                     }
-      messenger.send(recipientId, {text: "reject :: " + globalVolTaskArray[volIndex]});
+      bot.sendMessage(recipientId, {text: "reject :: " + globalVolTaskArray[volIndex]});
       /*take away from the volunteers array*/
       return true;
     }else if (values[0] === 's' || values[0] === 'start') {
-      if(isInArray(recipientId.toString(),arrayOfIds)){
+      if (isInArray(recipientId.toString(),arrayOfIds)) {
           var volIndex = arrayOfIds.indexOf(recipientId);
             globalStartTime[volIndex] = Date.now();
-            messenger.send(recipientId, {text: "Vol: " + (volIndex + 1) + " you started at " + globalStartTime[volIndex]});
+            bot.sendMessage(recipientId, {text: "Vol: " + (volIndex + 1) + " you started at " + globalStartTime[volIndex]});
             return true;
     }
       return false;
