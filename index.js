@@ -5,8 +5,7 @@ var fs = require("fs")
 
 var tasks = require('./models/tasks');
 
-var Ids = require('./botIds.js');
-var ids = new Ids();
+var ids = require('./botIds.js');
 var Data = require('./getData.js');
 var globalAvg = 1;
 var globalBest = 0;
