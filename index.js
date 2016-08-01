@@ -5,24 +5,25 @@ const http = require('http')
 const Bot = require('messenger-bot')
 
 const tasks = require('./models/tasks')
+const volunteers = require('./models/volunteers')
 const ids = require('./botIds.js')
 const Data = require('./getData.js')
 
-var globalAvg = 1;
-var globalBest = 0;
-var isCasual = false;
+let globalAvg = 1;
+let globalBest = 0;
+let isCasual = false;
 
-var MS_IN_MIN = 60 * 1000;
+const MS_IN_MIN = 60 * 1000;
 
-var globalWeightArray = [0.25,0.25,0.25,0.25];//[]
-var globalVolunteers = [];//[] their ids
-var globalVolTaskArray = [];//[][] all distributed tasks a task is time
-var globalRealTimeArray = [];//[][] all distributed done tasks, a task is done time
+let globalWeightArray = [0.25,0.25,0.25,0.25];//[]
+let globalVolunteers = [];//[] their ids
+let globalVolTaskArray = [];//[][] all distributed tasks a task is time
+let globalRealTimeArray = [];//[][] all distributed done tasks, a task is done time
 //Time is done in milliseconds
-var globalDoneTime = [];
-var globalStartTime = [];
-var globalPredictTime = 100 * MS_IN_MIN;
-var globalMult = 0.3;
+let globalDoneTime = [];
+let globalStartTime = [];
+let globalPredictTime = 100 * MS_IN_MIN;
+let globalMult = 0.3;
 //Threasholds
 var globalWarThreashold = 0;
 var globalAskThreashold = 0;
@@ -58,8 +59,6 @@ bot.on('postback', (payload, reply) => {
   console.log("Postback received: " + JSON.stringify(payload.postback))
 })
 
-
-
 http.createServer(bot.middleware()).listen((process.env.PORT || 3000))
 console.log('Echo bot server running at port')
 
@@ -84,7 +83,6 @@ function updateAndKickOff(until){
   sendInstructions(globalVolTaskArray[i][0][1].toString(),ids.idArray[i]);
   }
 }
-
 
 function startASMessage(recipientId, text){
   tasks.clear();
@@ -202,67 +200,6 @@ function isInArray(value, array) {
   return array.indexOf(value) > -1;
 }
 
-
-// send rich message with map
-function mapMessage(recipientId, text){
-  text = text || "";
-  text = text.toLowerCase();
-  var mapURL = "https://www.google.com/maps/place/";
-  var values = text.split(',');
-      if(values[0].toLowerCase() === 'address'){
-    //https://www.google.com/maps/place/Ciprés+8,+Bosques+de+Chalco+2,+56600+Chalco+de+Díaz+Covarrubias,+Méx.,+Mexico/
-    //https://www.google.com/maps/place/407+S+Craig+St,+Pittsburgh,+PA+15213/
-          for (var i = 1; i < values.length; i++) {
-            mapURL = mapURL + values[i];
-            mapURL= mapURL.replace(/ /g,"+");
-          }
-          message = {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "generic",
-          "elements": [{
-            "title": "Is this tha place?",
-            "subtitle": "Please let me know.",
-            "item_url": mapURL,
-            "image_url": "https://lh3.googleusercontent.com/MOf9Kxxkj7GvyZlTZOnUzuYv0JAweEhlxJX6gslQvbvlhLK5_bSTK6duxY2xfbBsj43H=w300",
-            "buttons": [{
-              "type": "web_url",
-              "url": mapURL,
-              "title": "Check Web URL"
-            }, {
-              "type": "postback",
-              "title": "Yes",
-              "payload": "Payload for first bubble",
-            }, {
-              "type": "postback",
-              "title": "No",
-              "payload": "Payload for first bubble",
-            }],
-          }, {
-            "title": "touch",
-            "subtitle": "Your Hands, Now in VR",
-            "item_url": "https://www.oculus.com/en-us/touch/",
-            "image_url": "http://messengerdemo.parseapp.com/img/touch.png",
-            "buttons": [{
-              "type": "web_url",
-              "url": "https://www.oculus.com/en-us/touch/",
-              "title": "Open Web URL"
-            }, {
-              "type": "postback",
-              "title": "Call Postback",
-              "payload": "Payload for second bubble",
-            }]
-          }]
-        }
-      }
-    };
-            //  print out search
-          bot.sendMessage(recipientId, message);
-          return true;
-       }
-     return false;
-};
 // send rich message with kitten EASTEREGG
 function kittenMessage(recipientId, text) {
     text = text || "";
