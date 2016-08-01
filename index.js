@@ -1,12 +1,13 @@
+const async = require('async')
+const fs = require("fs")
 const http = require('http')
+
 const Bot = require('messenger-bot')
-var async = require('async');
-var fs = require("fs")
 
-var tasks = require('./models/tasks');
+const tasks = require('./models/tasks')
+const ids = require('./botIds.js')
+const Data = require('./getData.js')
 
-var ids = require('./botIds.js');
-var Data = require('./getData.js');
 var globalAvg = 1;
 var globalBest = 0;
 var isCasual = false;
