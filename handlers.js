@@ -44,7 +44,7 @@ const aliases = {
 	'hey': 'hello',
 }
 
-exports.dispatch = (payload, reply) => {
+module.exports.dispatch = (payload, reply) => {
     const values = payload.message.text.toLowerCase().split(' ')
     let command = values[0]
     if (command in aliases)

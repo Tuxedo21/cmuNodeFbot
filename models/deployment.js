@@ -48,4 +48,4 @@ const Deployment = bookshelf.Model.extend({
 	}
 })
 
-exports = Deployment
+module.exports = Deployment
