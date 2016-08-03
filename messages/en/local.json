@@ -1,0 +1,86 @@
+{
+  "welcome": [
+    [{
+      "type": "text",
+      "text": "Welcome to the project!"
+    }]
+  ],
+  "assistance": {
+    "requested": [
+      [{
+        "type": "text",
+        "data": "Someone needs some help with their beacon. Do you have a minute?"
+      }, {
+        "type": "button",
+        "data": "Sure!"
+      }, {
+        "type": "button",
+        "data": "No, sorry."
+      }]
+    ],
+    "required": [
+      [{
+        "type": "text",
+        "data": "Would you like some assistance with your beacon setup?"
+      }, {
+        "type": "button",
+        "data": "Yes!"
+      }, {
+        "type": "button",
+        "data": "No."
+      }]
+    ]
+  },
+  "task": {
+    "request": [
+      [{
+        "type": "text",
+        "data": "Ready to deploy another beacon?"
+      }, {
+        "type": "button",
+        "data": "Yeah!"
+      }, {
+        "type": "button",
+        "data": "Not yet."
+      }]
+    ],
+    "complete": [
+      [{
+        "type": "text",
+        "data": "You deployed a beacon. Nice!"
+      }, {
+        "type": "image",
+        "data": "https://example.com/highfive.png"
+      }]
+    ]
+  },
+  "leaderboard": {
+    "generic": [
+      [{
+        "type": "text",
+        "data": "Check out the leaderboard!"
+      }, {
+        "type": "image",
+        "data": "https://example.com/leaderboard.png"
+      }]
+    ],
+    "positive": [
+      [{
+        "type": "text",
+        "data": "You're doing well on the leaderboard!"
+      }, {
+        "type": "image",
+        "data": "https://example.com/leaderboard.png"
+      }]
+    ],
+    "negative": [
+      [{
+        "type": "text",
+        "data": "You're not doing very well on the leaderboard... set up some more beacons!"
+      }, {
+        "type": "image",
+        "data": "https://example.com/leaderboard.png"
+      }]
+    ]
+  }
+}
