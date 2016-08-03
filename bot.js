@@ -23,4 +23,4 @@ if (cli.interactive) {
   })
 }
 
-exports = bot
+module.exports = bot

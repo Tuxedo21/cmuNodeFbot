@@ -4,4 +4,4 @@ program
   .option('-i, --interactive', 'Run in command-line interactive mode')
   .parse(process.argv)
 
-exports = program
+module.exports = program
