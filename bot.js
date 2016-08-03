@@ -23,8 +23,4 @@ if (cli.interactive) {
   })
 }
 
-
-
-
-
 exports = bot

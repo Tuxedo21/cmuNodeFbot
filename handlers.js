@@ -160,7 +160,7 @@ function helpMessage(message, reply) {
    }
 }
 
-function greetingsMessage(message, reply) {
+function greetingMessage(message, reply) {
 	// TODO(cgleason): need to rewrite this message
 	let vol = volunteers.get(message.sender.id)
 	if (!vol) {
