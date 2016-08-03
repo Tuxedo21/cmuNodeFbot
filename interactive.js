@@ -20,7 +20,7 @@ class Interactive {
 	}
 
 	sendMessage(id, message) {
-    	this.interface.write(`(${id}) < ${message}`)
+    	this.interface.write(`(${id}) < ${message.text}`)
   }
 
   setPrompt() {
