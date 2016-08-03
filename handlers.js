@@ -1,5 +1,5 @@
 const bot = require('./bot.js')
-const Deployment = require('./deployment.js')
+const Deployment = require('./models/deployment.js')
 const constants = require('./constants.js')
 
 const messageHandlers = {
@@ -297,8 +297,9 @@ function startEvent(message, reply, args) {
           distributeTasks();
           setThreasholds(startWeight);
           bot.sendMessage(ids.carlId, {text: globalWarThreashold + ":" + globalAskThreashold + ":" + globalSendThreashold });
-        });
-    });
+        })
+    })
+})
 }
 
 function startCasual(message, reply, args) {
