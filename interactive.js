@@ -1,5 +1,7 @@
 const readline = require('readline')
 
+const handlers = require('./handlers')
+
 let instance = null
 
 class Interactive {
@@ -7,17 +9,22 @@ class Interactive {
 		if (!instance) {
 			instance = this
 		}
+    this.currentVolunteer = 1
 		this.interface = readline.createInterface({
 			input: process.stdin,
-    		output: process.stdout
-  		})
-  		this.currentVolunteer = 1
+    	output: process.stdout,
+  	})
+    this.setPrompt()
 
 		return instance
 	}
 
 	sendMessage(id, message) {
-    	this.interface.write("(${id}) < ${message}")
+    	this.interface.write(`(${id}) < ${message}`)
+  }
+
+  setPrompt() {
+    this.interface.setPrompt(`(${this.currentVolunteer}) > `)
   }
   	
   startListening() {
@@ -25,19 +32,20 @@ class Interactive {
   		const values = line.trim().split(' ')
   		if (values.length == 2 && values[0] == '/vol') {
   			this.currentVolunteer = parseInt(values[1], 10)
-  			this.interface.setPrompt('(${this.currentVolunteer}) > ')
-  		}
-
- 			const reply = this.sendMessage.bind(this, this.currentVolunteer)
- 			const payload = {
- 				message: {text: line.trim()}
- 			}
- 			handlers.dispatch(message, reply)
-		rl.prompt()
+        this.setPrompt()
+  		} else {
+        const reply = this.sendMessage.bind(this, this.currentVolunteer)
+        const payload = {
+          message: {text: line.trim()}
+        }
+        handlers.dispatch(payload, reply)
+      }
+		  this.interface.prompt()
 	}).on('close', () => {
  			console.log('Bot shutdown.');
  			process.exit(0);
 	})
+  this.interface.prompt()
  	}
 }
 
