@@ -1,5 +1,6 @@
 const bot = require('./bot.js')
 const Deployment = require('./models/deployment.js')
+const Volunteer = require('./models/volunteer.js')
 const constants = require('./constants.js')
 
 const messageHandlers = {
@@ -44,22 +45,57 @@ const aliases = {
 	'hey': 'hello',
 }
 
-module.exports.dispatch = (payload, reply) => {
-    const values = payload.message.text.toLowerCase().split(' ')
-    let command = values[0]
-    if (command in aliases)
-    	command = aliases[command]
+module.exports.dispatchMessage = (payload, reply) => {
+  Volunteer.where({fbid: payload.message.sender.id}).fetch().then((vol) => {
+    if (!vol) {
+      onBoardVolunteer(payload.message, reply)
+      return
+    } else {
+      payload.sender.volunteer = vol
+      
+      const values = payload.message.text.toLowerCase().split(' ')
+      let command = values[0]
+      if (command in aliases)
+        command = aliases[command]
 
-	if (command in messageHandlers) {
-		const commandHandler = messageHandlers[command]
-		if (values.length-1 != (commandHandler.requiredArgs || 0)) {
-			reply({text: "The ${command} command requires ${commandHandler.requiredArgs} arguments."})
-		} else {
-			commandHandler.handler(payload.message, reply, values.slice(1));
-		}
-	} else {
-		reply({text: "Command ${command} not found. Try one of the following: ${messageHandlers.keys()}."})
-	}
+      if (command in messageHandlers) {
+        const commandHandler = messageHandlers[command]
+        if (values.length-1 != (commandHandler.requiredArgs || 0)) {
+          reply({text: "The ${command} command requires ${commandHandler.requiredArgs} arguments."})
+        } else {
+          commandHandler.handler(payload.message, reply, values.slice(1));
+        }
+      } else {
+        reply({text: "Command ${command} not found. Try one of the following: ${messageHandlers.keys()}."})
+      }
+    }
+  })
+}
+
+module.exports.dispatchPostback = (payload, reply) => {
+  console.log("Postback received: " + JSON.stringify(payload.postback))
+}
+
+
+function onBoardVolunteer(message, reply) {
+  Deployment.fetchAll().then(function(deployments) {
+    if (deployments.count() == 0) {
+      reply({text: `Hi! ${message.sender.profile.first_name}, I am the luzDeploy bot. 
+        We don't have any deployments right now, so please check back later!`})
+    } else {
+      const response = {
+          "attachment":{
+            "type":"template",
+            "payload":{
+              "template_type": "button",
+              "text": `Hi! ${message.sender.profile.first_name}, I am the luzDeploy bot. Which deployment would you like to join?`,
+              "buttons": deployments.map((d) => ({type:"postback", title: d.get('name'), payload: `JOIN_DEPLOYMENT_${d.get('deployid')}`}))
+            }
+          }
+      }
+      reply(response)
+    }
+  })
 }
 
 function kittenMessage(message, reply) {
@@ -162,10 +198,7 @@ function helpMessage(message, reply) {
 
 function greetingMessage(message, reply) {
 	// TODO(cgleason): need to rewrite this message
-	let vol = volunteers.get(message.sender.id)
 	if (!vol) {
-    	reply({text: "Greetings human, I am the luzDeploy bot. I was created by CMU's HCI team at the biglab! My job is to help you make the world a better place for the handicap. Please tell me which volunteer are you? By writing 'volunteer <number>' (for todays deployment there are only volunteers four and five)"})
-    	volunteers.new(messenger.sender.id, 1.0);
 	} else {
 		reply({text: "Hi!"})
 	}

@@ -17,10 +17,15 @@ if (cli.interactive) {
     console.log(err.message)
   })
 
-  bot.on('message', handlers.disptach)
-  bot.on('postback', (payload, reply) => {
-    console.log("Postback received: " + JSON.stringify(payload.postback))
+  bot.on('message', (payload, reply) => {
+    bot.getProfile(payload.sender.id, (err, profile) => {
+      if (err) throw err
+      payload.message.sender.profile = profile
+      handlers.disptachMessage(payload, reply)  
+    })
   })
+
+  bot.on('postback', handlers.disptachPostback)
 }
 
 module.exports = bot

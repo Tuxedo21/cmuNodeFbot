@@ -1,6 +1,7 @@
-const Deployment = require('./deployment')
-const Task = require('./task')
+const bookshelf = require('../bookshelf')
 
+require('./deployment')
+require('./task')
 const Volunteer = bookshelf.Model.extend({
 	tableName: 'volunteers',
 	// fbid
@@ -9,10 +10,10 @@ const Volunteer = bookshelf.Model.extend({
 	// currentTask
 	// deployment
 	currentTask: function() {
-		return this.hasOne(Task)
+		return this.hasOne('Task')
 	},
 	deployment: function() {
-		return this.belongsTo(Deployment)
+		return this.belongsTo('Deployment')
 	},
 	assignTask: function(task) {
 		task.assignedVolunteer = this
@@ -26,4 +27,4 @@ const Volunteer = bookshelf.Model.extend({
 	}
 })
 
-module.exports = Volunteer
+module.exports = bookshelf.model('Volunteer', Volunteer)

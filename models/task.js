@@ -1,22 +1,21 @@
-var fs = require("fs");
-var Ids = require('../botIds.js');
-var ids = new Ids();
-const Deployment = require('./deployment')
-const Volunteer = require('./volunteer')
+var fs = require("fs")
+var Ids = require('../botIds.js')
+require('./deployment')
+require('./volunteer')
 const bot = require('../bot.js')
 const bookshelf = require('../bookshelf')
 
 const Task = bookshelf.Model.extend({
   tableName: 'tasks',
   deployment: function() {
-    return this.belongsTo(Deployment)
+    return this.belongsTo('Deployment')
   },
   assignedVolunteer: function() {
-    return this.belongsTo(Volunteer)
+    return this.belongsTo('Volunteer')
   }
 })
 
-exports = Task
+module.exports = bookshelf.model('Task', Task)
 
 let loadJSON = (jsonFile, callback) => {
 	fs.readFile(jsonFile, (contents) => {

@@ -1,5 +1,7 @@
 const bookshelf = require('../bookshelf')
 
+require('./volunteer')
+require('./task')
 const Deployment = bookshelf.Model.extend({
 	//averageWeight: 1,
 	//bestWeight: 0,
@@ -48,4 +50,4 @@ const Deployment = bookshelf.Model.extend({
 	}
 })
 
-module.exports = Deployment
+module.exports = bookshelf.model('Deployment', Deployment)
