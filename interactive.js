@@ -41,6 +41,8 @@ class Interactive {
   }
   	
   startListening() {
+    console.log(`Welcome to the interactive test mode. You are currently impersonating volunteer ${this.currentVolunteer}.
+You can switch volunteer ids with the command '/vol <id>'.`)
   	this.interface.on('line', (line) => {
   		const values = line.trim().split(' ')
       const reply = this.sendMessage.bind(this, this.currentVolunteer)
@@ -69,7 +71,7 @@ class Interactive {
         handlers.dispatchMessage(payload, reply)
       }
 	}).on('close', () => {
- 			console.log('Bot shutdown.');
+ 			console.log('\nBot shutdown.');
  			process.exit(0);
 	})
   this.interface.prompt()
