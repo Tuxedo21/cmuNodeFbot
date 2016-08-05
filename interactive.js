@@ -49,22 +49,32 @@ You can switch volunteer ids with the command '/vol <id>'.`)
   		if (values.length == 2 && values[0] == '/vol') {
   			this.currentVolunteer = parseInt(values[1], 10)
         this.setPrompt()
+        this.interface.prompt()
       } else if (values.length == 2 && values[0] == '/but') {
         const buttonIndex = parseInt(values[1], 10)
         if (buttonIndex < this.buttons.length) {
-          const payload = {postback: this.buttons[buttonIndex].payload}
+          const payload = {
+            sender: {
+            id: this.currentVolunteer,
+            profile: {
+              first_name: "John",
+              last_name: "Smith"
+            }
+          },
+          postback: this.buttons[buttonIndex].payload
+        }
           handlers.dispatchPostback(payload, reply)
         }
   		} else {
         const payload = {
+          sender: {
+            id: this.currentVolunteer,
+            profile: {
+              first_name: "John",
+              last_name: "Smith"
+            }
+          },
           message: {
-            sender: {
-              id: this.currentVolunteer,
-              profile: {
-                first_name: "John",
-                last_name: "Smith"
-              }
-            },
             text: line.trim()
           }
         }

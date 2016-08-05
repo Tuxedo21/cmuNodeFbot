@@ -4,6 +4,7 @@ require('./deployment')
 require('./task')
 const Volunteer = bookshelf.Model.extend({
 	tableName: 'volunteers',
+	idAttribute: 'fbid',
 	// fbid
 	// name
 	// weight

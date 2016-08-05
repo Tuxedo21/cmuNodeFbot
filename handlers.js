@@ -45,42 +45,70 @@ const aliases = {
 	'hey': 'hello',
 }
 
-module.exports.dispatchMessage = (payload, reply) => {
-  Volunteer.where({fbid: payload.message.sender.id}).fetch().then((vol) => {
+function findVolunteer(payload, reply, callback) {
+  Volunteer.where({fbid: payload.sender.id}).fetch().then((vol) => {
     if (!vol) {
-      onBoardVolunteer(payload.message, reply)
-      return
+      onBoardVolunteer(payload, reply)
     } else {
-      payload.sender.volunteer = vol
-      
-      const values = payload.message.text.toLowerCase().split(' ')
-      let command = values[0]
-      if (command in aliases)
-        command = aliases[command]
-
-      if (command in messageHandlers) {
-        const commandHandler = messageHandlers[command]
-        if (values.length-1 != (commandHandler.requiredArgs || 0)) {
-          reply({text: "The ${command} command requires ${commandHandler.requiredArgs} arguments."})
-        } else {
-          commandHandler.handler(payload.message, reply, values.slice(1));
-        }
-      } else {
-        reply({text: "Command ${command} not found. Try one of the following: ${messageHandlers.keys()}."})
-      }
+      callback(vol)
     }
   })
 }
 
+module.exports.dispatchMessage = (payload, reply) => {
+  findVolunteer(payload, reply, function(vol) {
+    payload.sender.volunteer = vol
+    const values = payload.message.text.toLowerCase().split(' ')
+    let command = values[0]
+    if (command in aliases)
+      command = aliases[command]
+
+    if (command in messageHandlers) {
+      const commandHandler = messageHandlers[command]
+      if (values.length-1 != (commandHandler.requiredArgs || 0)) {
+        reply({text: `The ${command} command requires ${commandHandler.requiredArgs} arguments.`})
+      } else {
+        commandHandler.handler(payload, reply, values.slice(1));
+      }
+    } else {
+      reply({text: `Command ${command} not found. Try one of the following: ${Object.keys(messageHandlers)}.`})
+    }
+  })
+}
+
+const postbackHandlers = {
+  'JOIN_DEPLOYMENT': {
+    handler: joinDeployment,
+    volRequired: false,
+  },
+}
+
 module.exports.dispatchPostback = (payload, reply) => {
-  console.log("Postback received: " + JSON.stringify(payload.postback))
+  const strs = Object.keys(postbackHandlers)
+  let result = null
+  for (let i = 0; i < strs.length; i++) {
+    if (payload.postback.startsWith(strs[i])) {
+      result = strs[i]
+      break
+    }
+  }
+  if (!result) throw new Error(`invalid postback: ${payload.postback}`)
+  const found = postbackHandlers[result]
+  if (found.volRequired) {
+    findVolunteer(payload, reply, (vol) => {
+      payload.sender.volunteer = vol
+      found.handler(payload, reply)
+    })
+  } else {
+    found.handler(payload, reply)
+  }
 }
 
 
-function onBoardVolunteer(message, reply) {
+function onBoardVolunteer(payload, reply) {
   Deployment.fetchAll().then(function(deployments) {
     if (deployments.count() == 0) {
-      reply({text: `Hi! ${message.sender.profile.first_name}, I am the luzDeploy bot. 
+      reply({text: `Hi! ${payload.sender.profile.first_name}, I am the luzDeploy bot. 
         We don't have any deployments right now, so please check back later!`})
     } else {
       const response = {
@@ -88,12 +116,38 @@ function onBoardVolunteer(message, reply) {
             "type":"template",
             "payload":{
               "template_type": "button",
-              "text": `Hi! ${message.sender.profile.first_name}, I am the luzDeploy bot. Which deployment would you like to join?`,
-              "buttons": deployments.map((d) => ({type:"postback", title: d.get('name'), payload: `JOIN_DEPLOYMENT_${d.get('deployid')}`}))
+              "text": `Hi! ${payload.sender.profile.first_name}, I am the luzDeploy bot. Which deployment would you like to join?`,
+              "buttons": deployments.map((d) => ({type:"postback", title: d.get('name'), payload: `JOIN_DEPLOYMENT_${d.get('id')}`}))
             }
           }
       }
       reply(response)
+    }
+  })
+}
+
+function joinDeployment(payload, reply) {
+  Volunteer.where({fbid: payload.sender.id}).fetch().then((vol) => {
+    if (vol && vol.related('deployment')) {
+      reply({text: `You are already in a deployment (${deployment.name}). You must leave that first.`})
+    } else {
+      const deployId = parseInt(payload.postback.substr('JOIN_DEPLOYMENT_'.length), 10)
+      Deployment.where({id: deployId}).fetch().then((deployment) => {
+        if (!deployment) throw new Error(`invalid deployment id: ${deployId}`)
+        const attrs = {
+          fbid: payload.sender.id,
+          deployment: deployId,
+        }
+        let method = {method: 'insert'}
+        if (vol)
+          method = {method: 'update'}
+        new Volunteer().save({
+          fbid: payload.sender.id,
+          deployment: deployment.get('id')
+        }, method).then(function(vol) {
+          reply({text: `Great! Welcome to the ${deployment.get('name')} deployment!`})
+        })
+      })
     }
   })
 }
@@ -197,11 +251,7 @@ function helpMessage(message, reply) {
 }
 
 function greetingMessage(message, reply) {
-	// TODO(cgleason): need to rewrite this message
-	if (!vol) {
-	} else {
-		reply({text: "Hi!"})
-	}
+	reply({text: "Hi!"})
 };
 
 function fingerprintingMessage(vol) {
