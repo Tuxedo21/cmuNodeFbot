@@ -3,11 +3,12 @@ const Bot = require('messenger-bot')
 const cli = require('./cli')
 const handlers = require('./handlers')
 
-let bot = null
 if (cli.interactive) {
-  bot = require('./interactive')
+  let bot = require('./interactive').instance
+  module.exports.sendMessage = bot.sendMessage.bind(bot)
+  module.exports.startListening = bot.startListening.bind(bot)
 } else {
-  bot = new Bot({
+  let bot = new Bot({
     token: process.env.PAGE_ACCESS_TOKEN,
     verify: 'testbot_verify_token',
     app_secret: process.env.APP_SECRET,
@@ -26,6 +27,7 @@ if (cli.interactive) {
   })
 
   bot.on('postback', handlers.disptachPostback)
-}
 
-module.exports = bot
+  module.exports.sendMessage = bot.sendMessage.bind(bot)
+  module.exports.startListening = bot.startListening.bind(bot)
+}

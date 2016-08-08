@@ -88,5 +88,5 @@ You can switch volunteer ids with the command '/vol <id>'.`)
  	}
 }
 
-module.exports = new Interactive()
+module.exports.instance = new Interactive()
 

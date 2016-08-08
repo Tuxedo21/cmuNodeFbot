@@ -2,8 +2,9 @@ var fs = require("fs")
 var Ids = require('../botIds.js')
 require('./deployment')
 require('./volunteer')
-const bot = require('../bot.js')
 const bookshelf = require('../bookshelf')
+
+const _ = require('lodash')
 
 const Task = bookshelf.Model.extend({
   tableName: 'tasks',
@@ -11,16 +12,22 @@ const Task = bookshelf.Model.extend({
     return this.belongsTo('Deployment')
   },
   assignedVolunteer: function() {
-    return this.belongsTo('Volunteer')
+    return this.belongsTo('Volunteer', 'volunteer_fbid')
   },
-  dependancies: function() {
-    return this.belongsToMany('Task', 'dependancies', 'parenttask', 'childtask')
+  dependencies: function() {
+    return this.belongsToMany('Task', 'dependencies', 'parent', 'child')
   },
-  start: function(callback) {
-      this.save({startTime: Date.now()}).then(callback)
+  start: function() {
+      return this.save({startTime: new Date()})
   },
-  hasOutstandingDependancies: function() {
-    return this.related('dependancies').filter((t) => !t.completed).length
+  virtuals: {
+    hasOutstandingDependancies: function() {
+    return this.related('dependencies').filter((t) => !t.completed).length
+    },
+    estimatedTimeMin: function() {
+      const int = _.defaults(this.get('estimatedTime'), {hours: 0, minutes: 0, seconds: 0})
+      return int.hours * 60 + int.minutes + int.seconds / 60
+    }
   }
 })
 
@@ -40,7 +47,7 @@ let loadJSON = (jsonFile, callback) => {
         });
   		})
 
-  		bot.sendMessage(ids.carlId, {text: "Global tasks: " + "[" + getAllTasks() + "]"});
+  		//bot.sendMessage(ids.carlId, {text: "Global tasks: " + "[" + getAllTasks() + "]"});
   		console.log(getAllTasks());
   		callback(getAllTasks());
   });

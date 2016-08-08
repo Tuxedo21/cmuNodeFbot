@@ -1,4 +1,6 @@
 const bookshelf = require('../bookshelf')
+const bot = require('../bot')
+const handlers = require('../handlers')
 
 require('./deployment')
 require('./task')
@@ -17,14 +19,18 @@ const Volunteer = bookshelf.Model.extend({
 		return this.belongsTo('Deployment')
 	},
 	assignTask: function(task) {
-		task.assignedVolunteer = this
-  		this.currentTask = task
-  		bot.sendMessage(ids.carlId, {text: "Vol id: ${vol.id} task: ${JSON.stringify(t)}"})
-  		bot.sendMessage(this.id, {text: "Your task should take ${t.time} minutes."})
-  		handlers.sendInstructions(this.currentTask.type, this)
+  		return Promise.all([
+  			this.save({currentTask: task.id}),
+  			task.save({volunteer_fbid: this.id})
+  		])
+  		.then(() => {
+  			//bot.sendMessage(ids.carlId, {text: "Vol id: ${vol.id} task: ${JSON.stringify(t)}"})
+  			this.sendMessage({text: `Your task should take ${task.estimatedTimeMin} minutes.`})
+  			handlers.sendInstructions(this.currentTask.type, this)
+  		})
 	},
 	sendMessage: function(message) {
-		bot.sendMessage(this.fbid, message)
+		bot.sendMessage(this.get('fbid'), message)
 	}
 })
 

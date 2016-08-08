@@ -1,4 +1,3 @@
-const bot = require('./bot.js')
 const Deployment = require('./models/deployment.js')
 const Volunteer = require('./models/volunteer.js')
 const constants = require('./constants.js')
@@ -46,7 +45,7 @@ const aliases = {
 }
 
 function findVolunteer(payload, reply, callback) {
-  Volunteer.where({fbid: payload.sender.id}).fetch().then((vol) => {
+  Volunteer.where({fbid: payload.sender.id}).fetch({withRelated: ['deployment', 'currentTask']}).then((vol) => {
     if (!vol) {
       onBoardVolunteer(payload, reply)
     } else {
@@ -171,28 +170,29 @@ function startMessage(payload, reply) {
     return
   } else if (task.get('startTime')) {
     reply({text: 'This task has already been started!'})
+    return
   } else {
-    task.start((model) => {
+    task.start().then((model) => {
       reply({text: `Task started at ${task.get('startTime')}.`})
     })
   }
 }
 
 function askMessage(payload, reply) {
-	// TOOD(cgleason): respond with error if not casual
   // Get a task in the pool, and ask if he wants to do it.
   const vol = payload.sender.volunteer
   const deployment = vol.related('deployment')
-  if (deployment.get('type') == 'event') {
+  if (!deployment.isCasual) {
     reply({text: 'Sorry, you can\'t ask for a task in this deployment.'})
     return
   }
   if (vol.get('currentTask')) {
     reply({text: 'You already have a task! Finish that first.'})
+    return
   }
   vol.related('deployment').getTaskPool().then(pool => {
-    if (pool.count() > 0) {
-      v.assignTask(pool.pop())
+    if (pool.length > 0) {
+      vol.assignTask(pool.pop())
     } else {
       reply({text: 'There are no tasks available right now.'})
     }
@@ -242,9 +242,9 @@ function doneMessage(message, reply, args) {
             if (v.weight < Deployment.sendThreshold) {
     			sendMentor(v)
   			} else if (v.weight < Deployment.askThreshold) {
-    			bot.sendMessage(v.id, {text: "Do you want help? If so do..."})
+    			v.sendMessage({text: "Do you want help? If so do..."})
   			} else if (v.weight < Deployment.warnThreshold) {
-    			bot.sendMessage(v.id, {text: "You are lagging behind"})
+    			v.sendMessage({text: "You are lagging behind"})
   			}
         }
     })
@@ -273,8 +273,8 @@ function greetingMessage(message, reply) {
 };
 
 function fingerprintingMessage(vol) {
-	setTimeout(bot.sendMessage, 2 * 1000, vol.id, {text: Data.texts().fingerprinting.fingerprinting1})
-	setTimeout(bot.sendMessage, 2 * 1000, vol.id, {text: Data.texts().fingerprinting.fingerprinting2})
+	setTimeout(vol.sendMessage, 2 * 1000, {text: Data.texts().fingerprinting.fingerprinting1})
+	setTimeout(vol.sendMessage, 2 * 1000, {text: Data.texts().fingerprinting.fingerprinting2})
 	const imageMesage = {
     	"attachment": {
       		"type": "image",
@@ -283,13 +283,13 @@ function fingerprintingMessage(vol) {
 			},
     	}
 	}
-  setTimeout(bot.sendMessage, 9 * 1000, vol.id, imageMessage)
+  setTimeout(vol.sendMessage, 9 * 1000, imageMessage)
 }
 
 function batteryMessage(vol) {
     const m = Data.texts().batteryMaintenance
-    setTimeout(bot.sendMessage, 2 * 1000, vol.id, {text: m.batteryMaintenance1})
-    setTimeout(bot.sendMessage, 2 * 1000, vol.id, {text: m.batteryMaintenance2})
+    setTimeout(vol.sendMessage, 2 * 1000, {text: m.batteryMaintenance1})
+    setTimeout(vol.sendMessage, 2 * 1000, {text: m.batteryMaintenance2})
     const lnks = Data.linkes().batteryManagementLinks
     const sideImageUrl = lnks.batterySides
     const explodeImageUrl = lnks.batteryExplode
@@ -334,13 +334,13 @@ function batteryMessage(vol) {
         	}
       	}
     }
-    setTimeout(bot.sendMessage, 9 * 1000, vol.id, imageMessage)
+    setTimeout(vol.sendMessage, 9 * 1000, imageMessage)
   }
 
 function beaconMessage(vol) {
 	const m = Data.texts().placingBeacons
-  	setTimeout(bot.sendMessage, 2 * 1000, vol.id, {text: m.placingBeacons1 });
-  	setTimeout(bot.sendMessage, 2 * 1000, vol.id, {text: m.placingBeacons2 });
+  	setTimeout(vol.sendMessage, 2 * 1000, {text: m.placingBeacons1 });
+  	setTimeout(vol.sendMessage, 2 * 1000, {text: m.placingBeacons2 });
   	const imageMessage = {
     	"attachment": {
       		"type": "template",
@@ -360,10 +360,10 @@ function beaconMessage(vol) {
       		}
     	}
     }
-    setTimeout(bot.sendMessage, 9 * 1000, vol.id, imageMessage)
+    setTimeout(vol.sendMessage, 9 * 1000, imageMessage)
 }
 
-function sendInstructions(command, vol) {
+module.exports.sendInstructions = function(command, vol) {
 	if (command === 'bm') {
     	batteryMessage(vol)
   	} else if (command === 'bd') {
@@ -371,8 +371,8 @@ function sendInstructions(command, vol) {
   	} else if (command === 'fp') {
    		fingerprintingMessage(vol)
   	}
-    if (isCasual) {
-      bot.sendMessage(vol.id, {text: "Once you understood the steps please write 's' when you start and then 'd' when you are done. You can also write 'r' if you want to not do the task before you have written 'd'. "})
+    if (vol.related('deployment').isCasual) {
+      vol.sendMessage({text: "Once you understood the steps please write 's' when you start and then 'd' when you are done. You can also write 'r' if you want to not do the task before you have written 'd'. "})
     }
 }
 
@@ -397,7 +397,7 @@ function startEvent(message, reply, args) {
         tasks.loadJSON("tasks.json", (taskArray) => {
           distributeTasks();
           setThreasholds(startWeight);
-          bot.sendMessage(ids.carlId, {text: globalWarThreashold + ":" + globalAskThreashold + ":" + globalSendThreashold });
+          //bot.sendMessage(ids.carlId, {text: globalWarThreashold + ":" + globalAskThreashold + ":" + globalSendThreashold });
         })
     })
 })
@@ -419,7 +419,7 @@ function startCasual(message, reply, args) {
          // time values are specified in minutes, so convert to ms
          Deployment.roundRobinTime = parseInt(values[2], 10) * constants.MS_IN_MIN;
          fs.writeFileSync("botData.json", JSON.stringify(jsonContent));
-         bot.sendMessage(recipientId, {text: "You have " + jsonContent.volunteers + " volunteers" + "\nTasks: " + jsonContent.workPool});
+         //bot.sendMessage(recipientId, {text: "You have " + jsonContent.volunteers + " volunteers" + "\nTasks: " + jsonContent.workPool});
 
          var startWeight = 1 / Number(values[1]); // Weight/volunteers
          for (var i = 0; i < Number(values[1]); i++) {
@@ -427,7 +427,7 @@ function startCasual(message, reply, args) {
            globalStartTime[i] = 1 * constants.MS_IN_MIN; // start up times
            globalDoneTime[i] = 1 * constants.MS_IN_MIN; // start up times
            volunteers.push(ids.idArray[i].toString());//Volunteers Ids
-           bot.sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nWe're doing a casual deployment. Over time you will be asked if you have time to do work..." });
+           //bot.sendMessage(ids.idArray[i], {text: "Hello volunteer: " + (i +1) + "\nWeight: " + globalWeightArray[i] + "\nWe're doing a casual deployment. Over time you will be asked if you have time to do work..." });
          }
          tasks.loadJSON("tasks.json", (tasksArray) => {
           setTimeout(oneRound, 20 * 1000);

@@ -1,4 +1,5 @@
 const bookshelf = require('../bookshelf')
+const _ = require('lodash')
 
 require('./volunteer')
 require('./task')
@@ -15,10 +16,10 @@ const Deployment = bookshelf.Model.extend({
 	//weightMultiplier
 	tableName: 'deployments',
 	volunteers: function() {
-		this.hasMany('Volunteer')
+		return this.hasMany('Volunteer')
 	},
 	tasks: function() {
-		this.hasMany('Task')
+		return this.hasMany('Task')
 	},
 	distributeTasks: function() {
 		return this.getTaskPool().then(pool => {
@@ -44,12 +45,12 @@ const Deployment = bookshelf.Model.extend({
   		mentor.sendMessage({text: "Go help volunteer number ${mentee.name}"})
 	},
 	getTaskPool: function() {
-    	return bookshelf.model('Task').where({completed: false}).fetch({withRelated: 'dependancies'})
+    	return bookshelf.model('Task').where({completed: false}).fetchAll({withRelated: 'dependencies'})
     		.then((tasks) => {
     			const freeTasks = tasks.filter((t) => {
-    				return !task.get('assignedVolunteer') && 
-    					!task.get('completed') && 
-    					!task.hasOutstandingDependancies()
+    				return !t.get('assignedVolunteer') && 
+    					!t.get('completed') && 
+    					!t.hasOutstandingDependancies
     			})
     			return freeTasks
     		})
@@ -58,6 +59,10 @@ const Deployment = bookshelf.Model.extend({
 		startWeight: function() {
 			return 1 / this.related('volunteers').count()
 		},
+		isCasual: function() {
+			const type = this.get('type')
+				return type == 'casual' || type == 'semiCasual'
+		}
 	}
 })
 
