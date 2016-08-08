@@ -12,6 +12,15 @@ const Task = bookshelf.Model.extend({
   },
   assignedVolunteer: function() {
     return this.belongsTo('Volunteer')
+  },
+  dependancies: function() {
+    return this.belongsToMany('Task', 'dependancies', 'parenttask', 'childtask')
+  },
+  start: function(callback) {
+      this.save({startTime: Date.now()}).then(callback)
+  },
+  hasOutstandingDependancies: function() {
+    return this.related('dependancies').filter((t) => !t.completed).length
   }
 })
 

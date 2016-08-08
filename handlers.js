@@ -152,7 +152,7 @@ function joinDeployment(payload, reply) {
   })
 }
 
-function kittenMessage(message, reply) {
+function kittenMessage(payload, reply) {
     reply({
         "attachment": {
             "type": "image",
@@ -163,22 +163,40 @@ function kittenMessage(message, reply) {
     })
 }
 
-function startMessage(message, reply) {
-	const vol = volunteers.find(message.sender.id)
-	if (vol) {
-		vol.currentTask.startTime= Date.now();
-		// TODO(cgleason): move this reply into a "start task" function?
-		reply({text: "Task started at ${vol.currentTask.started}."})
-    }
+function startMessage(payload, reply) {
+  const vol = payload.sender.volunteer
+	const task = vol.related('currentTask')
+  if (!task) {
+    reply({text: 'You don\'t have a task!'})
+    return
+  } else if (task.get('startTime')) {
+    reply({text: 'This task has already been started!'})
+  } else {
+    task.start((model) => {
+      reply({text: `Task started at ${task.get('startTime')}.`})
+    })
+  }
 }
 
-function askMessage(message, reply) {
+function askMessage(payload, reply) {
 	// TOOD(cgleason): respond with error if not casual
-    // Get a task in the pool, and ask if he wants to do it.
-    if(tasks.count() > 0){
-    	const vol = volunteers.find(message.sender.id)
-    	assignTask(vol, tasks.pop())
+  // Get a task in the pool, and ask if he wants to do it.
+  const vol = payload.sender.volunteer
+  const deployment = vol.related('deployment')
+  if (deployment.get('type') == 'event') {
+    reply({text: 'Sorry, you can\'t ask for a task in this deployment.'})
+    return
+  }
+  if (vol.get('currentTask')) {
+    reply({text: 'You already have a task! Finish that first.'})
+  }
+  vol.related('deployment').getTaskPool().then(pool => {
+    if (pool.count() > 0) {
+      v.assignTask(pool.pop())
+    } else {
+      reply({text: 'There are no tasks available right now.'})
     }
+  })
 }
 
 function rejectMessage(message, reply) {

@@ -21,15 +21,15 @@ const Deployment = bookshelf.Model.extend({
 		this.hasMany('Task')
 	},
 	distributeTasks: function() {
-		const workPool = this.related('tasks').filter((t) => !t.assignedVolunteer)
-
-		this.related('volunteers')
-			.filter((v) => !v.currentTask)
-			.forEach((v) => {
-    			if (workPool.length > 0) {
-     				v.assignTask(tasks.pop())
+		return this.getTaskPool().then(pool => {
+			this.related('volunteers')
+				.filter((v) => !v.currentTask)
+				.forEach((v) => {
+    				if (pool.length > 0) {
+     					v.assignTask(pool.pop())
     			}
 			})
+		})
 	},
 	sendMentor: function(mentee) {
 		let vols = this.related('volunteers').splice(0)
@@ -43,6 +43,17 @@ const Deployment = bookshelf.Model.extend({
   		// send message to mentor
   		mentor.sendMessage({text: "Go help volunteer number ${mentee.name}"})
 	},
+	getTaskPool: function() {
+    	return bookshelf.model('Task').where({completed: false}).fetch({withRelated: 'dependancies'})
+    		.then((tasks) => {
+    			const freeTasks = tasks.filter((t) => {
+    				return !task.get('assignedVolunteer') && 
+    					!task.get('completed') && 
+    					!task.hasOutstandingDependancies()
+    			})
+    			return freeTasks
+    		})
+  	},
 	virtuals: {
 		startWeight: function() {
 			return 1 / this.related('volunteers').count()
