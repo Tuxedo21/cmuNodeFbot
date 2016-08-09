@@ -29,6 +29,13 @@ const Volunteer = bookshelf.Model.extend({
   			handlers.sendInstructions(this.currentTask.type, this)
   		})
 	},
+	unassignTask: function() {
+		const task = this.related('currentTask')
+		return Promise.all([
+			this.save({currentTask: null}),
+			task.save({volunteer_fbid: null, startTime: null}, {patch: true})
+		])
+	},
 	sendMessage: function(message) {
 		bot.sendMessage(this.get('fbid'), message)
 	}

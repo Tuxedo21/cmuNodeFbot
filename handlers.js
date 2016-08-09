@@ -199,13 +199,18 @@ function askMessage(payload, reply) {
   })
 }
 
-function rejectMessage(message, reply) {
-	// TOOD(cgleason): respond with error if not casual
-    const vol = volunteers.find(message.sender.id)
-    vol.currentTask.assignedVolunteer = null
-    tasks.add(vol.currentTask)
-    vol.currentTask = null
-    reply({text: "Task rejected."})
+function rejectMessage(payload, reply) {
+  const vol = payload.sender.volunteer
+  const deployment = vol.related('deployment')
+  if (!deployment.isCasual) {
+    reply({text: 'Sorry, you can\'t reject a task in this deployment.'})
+    return
+  }
+  if (!vol.get('currentTask')) {
+    reply({text: 'You don\'t have a task.'})
+    return
+  }
+  vol.unassignTask().then(() => reply({text: "Task rejected."}))
 }
 
 function doneMessage(message, reply, args) {
