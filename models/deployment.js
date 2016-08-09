@@ -33,16 +33,16 @@ const Deployment = bookshelf.Model.extend({
 		})
 	},
 	sendMentor: function(mentee) {
-		let vols = this.related('volunteers').splice(0)
-		const i = vols.find(mentee)
-		vols.splice(i, 1)
-		const mentor = vols.reduce((prev, current) => {
-			return (prev.weight > current.weight) ? prev : current
-		})
-  		// send message to mentee
-  		mentee.sendMessage({text: "We are sending a mentor to you"})
-  		// send message to mentor
-  		mentor.sendMessage({text: "Go help volunteer number ${mentee.name}"})
+		this.related('volunteers').fetch().then((vols) => {
+			vols.remove(mentee)
+			const mentor = vols.reduce((prev, current) => {
+				return (prev.weight > current.weight) ? prev : current
+			})
+  			// send message to mentee
+  			mentee.sendMessage({text: "We are sending a mentor to you"})
+  			// send message to mentor
+  			mentor.sendMessage({text: `Go help volunteers ${mentee.get('name')}`})
+  		})
 	},
 	getTaskPool: function() {
     	return bookshelf.model('Task').where({completed: false}).fetchAll({withRelated: 'dependencies'})
@@ -68,18 +68,23 @@ const Deployment = bookshelf.Model.extend({
        		})
   		})
   	},
-  	finish: function () {
-  		this.load(['volunteers']).then((d) => {
+  	start: function() {
+  		return this.related('volunteers').fetchAll().then((volunteers) => {
+  			const updates = volunteers.map((v) => v.save({weight: 1/volunteers.length}))
+  			updates.push(this.save({startTime: new Date()}))
+  			return Promise.all(updates)
+  		})
+  	},
+  	finish: function() {
+  		return this.load(['volunteers']).then((d) => {
   			d.related('volunteers').forEach((v) => {
   				// TODO(cgleason): make survey into a button
 	  			v.sendMessage({text: "Thank you very much!\nYou just helped by giving light to the visually impaired.\n\nI am still in research phase, please answer this survey so I can become better at helping.\n\nhttps://docs.google.com/forms/d/1hcwB18hnyniWFUQAQDm2MSMdlQQL4QYOG_Md9eFsQnE/viewform"})
   			})
+  			return this.save({doneTime: new Date()})
   		})
   	},
 	virtuals: {
-		startWeight: function() {
-			return 1 / this.related('volunteers').count()
-		},
 		isCasual: function() {
 			const type = this.get('type')
 				return type == 'casual' || type == 'semiCasual'

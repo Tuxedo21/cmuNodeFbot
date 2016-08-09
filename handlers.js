@@ -103,7 +103,6 @@ module.exports.dispatchPostback = (payload, reply) => {
   }
 }
 
-
 function onBoardVolunteer(payload, reply) {
   Deployment.fetchAll().then(function(deployments) {
     if (deployments.count() == 0) {
@@ -127,22 +126,21 @@ function onBoardVolunteer(payload, reply) {
 
 function joinDeployment(payload, reply) {
   Volunteer.where({fbid: payload.sender.id}).fetch().then((vol) => {
-    if (vol && vol.related('deployment')) {
+    if (vol) {
+      
       reply({text: `You are already in a deployment (${deployment.name}). You must leave that first.`})
     } else {
       const deployId = parseInt(payload.postback.substr('JOIN_DEPLOYMENT_'.length), 10)
       Deployment.where({id: deployId}).fetch().then((deployment) => {
         if (!deployment) throw new Error(`invalid deployment id: ${deployId}`)
-        const attrs = {
-          fbid: payload.sender.id,
-          deployment: deployId,
-        }
         let method = {method: 'insert'}
         if (vol)
           method = {method: 'update'}
         new Volunteer().save({
           fbid: payload.sender.id,
-          deployment: deployment.get('id')
+          deployment_id: deployment.get('id'),
+          first_name: payload.sender.profile.first_name,
+          last_name: payload.sender.profile.last_name
         }, method).then(function(vol) {
           reply({text: `Great! Welcome to the ${deployment.get('name')} deployment!`})
         })
@@ -262,10 +260,9 @@ function doneMessage(payload, reply) {
   })
 }
 
-function helpMessage(message, reply) {
-    if(volunteers.count() > 1) {
-   		sendMentor(message.sender.id);
-   }
+function helpMessage(payload  , reply) {
+  const vol = payload.sender.volunteer
+  vol.related('deployment').sendMentor(vol)
 }
 
 function greetingMessage(message, reply) {

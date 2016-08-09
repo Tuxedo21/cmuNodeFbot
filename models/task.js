@@ -30,6 +30,9 @@ const Task = bookshelf.Model.extend({
     estimatedTimeMin: function() {
       const int = _.defaults(this.get('estimatedTime'), {hours: 0, minutes: 0, seconds: 0})
       return int.hours * 60 + int.minutes + int.seconds / 60
+    },
+    estimatedTimeSec: function() {
+      return this.estimatedTimeMin * 60
     }
   }
 })
