@@ -242,20 +242,12 @@ function doneMessage(payload, reply) {
     if (v.id != vol.id)
       return v.save({weight: v.get('weight') - subtract}, {patch: true})
     else
-      return v.save({weight: newWeight, currentTask: null}, {patch: true})
-      // check thresholds
-      //      if (v.weight < Deployment.sendThreshold) {
-    	//		sendMentor(v)
-  		//	} else if (v.weight < Deployment.askThreshold) {
-    	//		v.sendMessage({text: "Do you want help? If so do..."})
-  		//	} else if (v.weight < Deployment.warnThreshold) {
-    	//		v.sendMessage({text: "You are lagging behind"})
-  		//	}
-       // }
+        return v.save({weight: newWeight, currentTask: null}, {patch: true})
   })
   updates.push(deployment.save({bestweight: bestWeight, avgweight: avgWeight}, {patch: true}))
   updates.push(task.finish())
   Promise.all(updates)
+  .then(deployment.checkThresholds)
   .then(deployment.getTaskPool).then((pool) => {
     reply({text: `Thanks! You ended at ${task.get('doneTime')}.`})
     if (pool.length > 0) {

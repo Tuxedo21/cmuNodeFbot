@@ -55,6 +55,19 @@ const Deployment = bookshelf.Model.extend({
     			return freeTasks
     		})
   	},
+  	checkThresholds: function() {
+  		return this.related('volunteers').fetchAll().then((volunteers) => {
+  			volunteers.forEach((v) => {
+      			if (v.get('weight') < this.get('sendhelpthreshold')) {
+    				this.sendMentor(v)
+  				} else if (v.get('weight') < this.get('askthreshold')) {
+    				v.sendMessage({text: "Do you want help? If so do..."})
+  				} else if (v.get('weight') < this.get('warningthreshold')) {
+    				v.sendMessage({text: "You are lagging behind"})
+  				}
+       		})
+  		})
+  	},
   	finish: function () {
   		this.load(['volunteers']).then((d) => {
   			d.related('volunteers').forEach((v) => {
