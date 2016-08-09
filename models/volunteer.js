@@ -20,14 +20,21 @@ const Volunteer = bookshelf.Model.extend({
 	},
 	assignTask: function(task) {
   		return Promise.all([
-  			this.save({currentTask: task.id}),
-  			task.save({volunteer_fbid: this.id})
+  			this.save({currentTask: task.id}, {patch: true}),
+  			task.save({volunteer_fbid: this.id}, {patch: true})
   		])
   		.then(() => {
   			//bot.sendMessage(ids.carlId, {text: "Vol id: ${vol.id} task: ${JSON.stringify(t)}"})
   			this.sendMessage({text: `Your task should take ${task.estimatedTimeMin} minutes.`})
-  			handlers.sendInstructions(this.currentTask.type, this)
-  		})
+        	const instructions = task.get('instructions')
+        	let currWait = 0
+	       	const msgFn = this.sendMessage.bind(this)
+        	instructions.forEach((i) => {
+          		currWait = currWait + i.wait
+          		setTimeout(msgFn, currWait*1000, i.message)
+        	})
+        	setTimeout(msgFn, (currWait+1)*1000, {text: "Once you understood the steps please write 's' when you start and then 'd' when you are done. You can also write 'r' if you want to not do the task before you have written 'd'. "})
+      	})
 	},
 	rejectTask: function() {
 		const task = this.related('currentTask')

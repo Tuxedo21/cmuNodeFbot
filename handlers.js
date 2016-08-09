@@ -24,14 +24,6 @@ const messageHandlers = {
 	'help': {
 		handler: helpMessage,
 	},
-	'startwith': {
-		handler: startEvent,
-		requiredArgs: 1,
-	},
-	'startcas': {
-		handler: startCasual,
-		requiredArgs: 2,
-	},
 }
 
 const aliases = {
@@ -102,7 +94,7 @@ module.exports.dispatchPostback = (payload, reply) => {
     found.handler(payload, reply)
   }
 }
-
+  
 function onBoardVolunteer(payload, reply) {
   Deployment.fetchAll().then(function(deployments) {
     if (deployments.count() == 0) {
@@ -267,110 +259,6 @@ function helpMessage(payload  , reply) {
 
 function greetingMessage(message, reply) {
 	reply({text: "Hi!"})
-}
-
-function fingerprintingMessage(vol) {
-	setTimeout(vol.sendMessage, 2 * 1000, {text: Data.texts().fingerprinting.fingerprinting1})
-	setTimeout(vol.sendMessage, 2 * 1000, {text: Data.texts().fingerprinting.fingerprinting2})
-	const imageMesage = {
-    	"attachment": {
-      		"type": "image",
-      		"payload": {
-       			"url": Data.linkes().fingerprintingLinks.redImage,
-			},
-    	}
-	}
-  setTimeout(vol.sendMessage, 9 * 1000, imageMessage)
-}
-
-function batteryMessage(vol) {
-    const m = Data.texts().batteryMaintenance
-    setTimeout(vol.sendMessage, 2 * 1000, {text: m.batteryMaintenance1})
-    setTimeout(vol.sendMessage, 2 * 1000, {text: m.batteryMaintenance2})
-    const lnks = Data.linkes().batteryManagementLinks
-    const sideImageUrl = lnks.batterySides
-    const explodeImageUrl = lnks.batteryExplode
-    const nailImageUrl = lnks.batteryManagementLinks
-
-    const imageMessage = {
-        "attachment": {
-        	"type": "template",
-        	"payload": {
-          		"template_type": "generic",
-          		"elements": [{
-          			"title": "How to open a beacon.",
-            		"subtitle": "Please try this way. People tend to not read instructions.",
-            		"item_url": nailImageUrl,
-            		"image_url": nailImageUrl,
-            		"buttons": [{
-              			"type": "web_url",
-              			"url": imageUrl.toString(),
-              			"title": "Open Web URL"
-            		}]
-          		}, {
-            		"title": "Battery sides",
-            		"subtitle": "Here you can see how the battery should be placed.",
-            		"item_url": sideImageUrl,
-            		"image_url": sideImageUrl,
-            		"buttons": [{
-              			"type": "web_url",
-              			"url": sideImageUrl,
-              			"title": "Open Web URL"
-            		}]
-          		},{
-            		"title": "Battery exploded",
-            		"subtitle": "Here you can see all the parts of the beacon.",
-            		"item_url": explodeImageUrl,
-            		"image_url": explodeImageUrl,
-            		"buttons": [{
-              			"type": "web_url",
-             			"url": explodeImageUrl,
-              			"title": "Open Web URL"
-            		}]
-          		}]
-        	}
-      	}
-    }
-    setTimeout(vol.sendMessage, 9 * 1000, imageMessage)
-  }
-
-function beaconMessage(vol) {
-	const m = Data.texts().placingBeacons
-  	setTimeout(vol.sendMessage, 2 * 1000, {text: m.placingBeacons1 });
-  	setTimeout(vol.sendMessage, 2 * 1000, {text: m.placingBeacons2 });
-  	const imageMessage = {
-    	"attachment": {
-      		"type": "template",
-      		"payload": {
-        		"template_type": "generic",
-        		"elements": [{
-          			"title": "Map",
-          			"subtitle": "Here you can see your deployment map.",
-          			"item_url":  Data.linkes().placingBeaconsLinks.blueImage,
-         			"image_url":  Data.linkes().placingBeaconsLinks.blueImage,
-          			"buttons": [{
-            			"type": "web_url",
-            			"url": blueImage,
-            			"title": "Open Web URL"
-          			}]
-        		}]
-      		}
-    	}
-    }
-    setTimeout(vol.sendMessage, 9 * 1000, imageMessage)
-}
-
-module.exports.sendInstructions = function(command, vol) {
-	if (command === 'bm') {
-    	batteryMessage(vol)
-  	} else if (command === 'bd') {
-    	beaconMessage(vol)
-  	} else if (command === 'fp') {
-   		fingerprintingMessage(vol)
-  	}
-    if (vol.related('deployment').isCasual) {
-      vol.sendMessage({text: "Once you understood the steps please write 's' when you start and then 'd' when you are done. You can also write 'r' if you want to not do the task before you have written 'd'. "})
-    }
 }
 
 function startEvent(message, reply, args) {

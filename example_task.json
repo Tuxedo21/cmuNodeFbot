@@ -1,0 +1,36 @@
+[
+	{
+		"wait": 2,
+		"message": {
+			"text": "You will be placing beacons. Go to the supply station that is marked with a red square on the map. Once there grab a batch of beacons. Then go to the position that is marked with a blue circle on the map with the same number as the first beacon."
+		}
+	},
+	{
+		"wait": 2,
+		"message": {
+			"text": "Please place the beacon at about 10 ft of height on the wall. Repeat this for each other beacon. Once done with this batch write “Done”."
+		}
+	},
+	{
+		"wait": 9,
+		"message": {
+    		"attachment": {
+      			"type": "template",
+      			"payload": {
+        			"template_type": "generic",
+        			"elements": [{
+          				"title": "Map",
+          				"subtitle": "Here you can see your deployment map.",
+          				"item_url":  "http://i.onionstatic.com/avclub/5115/11/16x9/960.jpg",
+         				"image_url":  "http://i.onionstatic.com/avclub/5115/11/16x9/960.jpg",
+          				"buttons": [{
+            				"type": "web_url",
+            				"url": "http://i.onionstatic.com/avclub/5115/11/16x9/960.jpg",
+            				"title": "Open Web URL"
+          				}]
+        			}]
+      			}
+    		}
+    	}
+	}
+]
