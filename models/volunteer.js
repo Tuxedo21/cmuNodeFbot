@@ -13,7 +13,7 @@ const Volunteer = bookshelf.Model.extend({
 	// currentTask
 	// deployment
 	currentTask: function() {
-		return this.hasOne('Task')
+		return this.belongsTo('Task', 'currentTask')
 	},
 	deployment: function() {
 		return this.belongsTo('Deployment')
@@ -29,7 +29,7 @@ const Volunteer = bookshelf.Model.extend({
   			handlers.sendInstructions(this.currentTask.type, this)
   		})
 	},
-	unassignTask: function() {
+	rejectTask: function() {
 		const task = this.related('currentTask')
 		return Promise.all([
 			this.save({currentTask: null}),

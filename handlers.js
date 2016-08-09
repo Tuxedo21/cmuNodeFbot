@@ -164,18 +164,19 @@ function kittenMessage(payload, reply) {
 
 function startMessage(payload, reply) {
   const vol = payload.sender.volunteer
-	const task = vol.related('currentTask')
-  if (!task) {
-    reply({text: 'You don\'t have a task!'})
-    return
-  } else if (task.get('startTime')) {
-    reply({text: 'This task has already been started!'})
-    return
-  } else {
-    task.start().then((model) => {
-      reply({text: `Task started at ${task.get('startTime')}.`})
-    })
-  }
+	vol.related('currentTask').fetch().then((task) => {
+    if (!task) {
+      reply({text: 'You don\'t have a task!'})
+      return
+    } else if (task.get('startTime')) {
+      reply({text: 'This task has already been started!'})
+      return
+    } else {
+      task.start().then((model) => {
+        reply({text: `Task started at ${task.get('startTime')}.`})
+      })
+    }
+  })
 }
 
 function askMessage(payload, reply) {
@@ -210,61 +211,63 @@ function rejectMessage(payload, reply) {
     reply({text: 'You don\'t have a task.'})
     return
   }
-  vol.unassignTask().then(() => reply({text: "Task rejected."}))
+  vol.rejectTask().then(() => reply({text: "Task rejected."}))
 }
 
-function doneMessage(message, reply, args) {
-	let vol = volunteers.get(message.sender.id)
-  	const task = vol.currentTask;
-    if (!task || !task.startTime) {
-    	reply({text: "You don't have an active task."})
-        return
-    }
-   	task.completeTime = Date.now()
-    reply({text: "Thanks! You ended at ${new Date(globalDoneTime[volIndex]}."})
+function doneMessage(payload, reply) {
+  const vol = payload.sender.volunteer
+  const task = vol.related('currentTask')
+  if (!task || !task.get('startTime')) {
+    reply({text: "You don't have an active task."})
+    return
+  }
 
-    vol.currentTask = null
-
-    // TODO (cgleason): double check this math works with ms conversion
-    const xi =  task.time / (task.completeTime - task.startTime) //xi for weight
-    if (xi > globalBest) {
-        globalBest = xi
-    }
+  const deployment = vol.related('deployment')
+  // TODO (cgleason): double check this math works with ms conversion
+  const xi =  task.estimatedTimeSec / task.elapsedTime
+  let bestWeight = deployment.get('bestweight')
+  if (xi > bestWeight) {
+    bestWeight = xi
+  }
             
-    // Dragans Cool Math
-    globalAvg = ((globalAvg*(volunteers.count() - 1))/volunteers.count()) - xi/volunteers.count();
-    const curWeight = (xi - (globalAvg/2)) / (globalBest - (globalAvg/2));
-    const newWeight = ((vol.weight)*(1 - globalMult)) + curWeight*globalMult;
-    const subtract = (newWeight - vol.weight)/(volunteers.count() - 1);
+  // Dragans Cool Math
+  const nVol = deployment.related('volunteers').count()
+  const avgWeight = ((deployment.get('avgweight')*(nVol - 1))/nVol) - xi/nVol
+  const currWeight = (xi - (avgWeight/2)) / (bestWeight - (avgWeight/2));
+  const newWeight = ((vol.get('weight'))*(1 - deployment.get('weightmultiplier'))) + currWeight*deployment.get('weightmultiplier');
+  const subtract = (newWeight - vol.get('weight'))/(nVol - 1);
             
-    //UPDATE WEIGHTS!
-    vol.weight = newWeight
-    // mf subtract the weight of others
-    volunteers.getAll().forEach((v) => {
-        if (v != vol) {
-           	v.weight = v.weight - subtract
-            // check thresholds
-            if (v.weight < Deployment.sendThreshold) {
-    			sendMentor(v)
-  			} else if (v.weight < Deployment.askThreshold) {
-    			v.sendMessage({text: "Do you want help? If so do..."})
-  			} else if (v.weight < Deployment.warnThreshold) {
-    			v.sendMessage({text: "You are lagging behind"})
-  			}
-        }
-    })
-    // if there are more takss, assign one (not in casual mode)
-    if (tasks.count() > 0) {
-        if (!isCasual) {
-        	assignTask(vol, tasks.pop())
-        } else {
-       		reply({text: "You don't have any more tasks, but there are still some left for others."});
-        }
+  //UPDATE WEIGHTS!
+  const updates = deployment.related('volunteers').map((v) => {
+    if (v.id != vol.id)
+      return v.save({weight: v.get('weight') - subtract}, {patch: true})
+    else
+      return v.save({weight: newWeight, currentTask: null}, {patch: true})
+      // check thresholds
+      //      if (v.weight < Deployment.sendThreshold) {
+    	//		sendMentor(v)
+  		//	} else if (v.weight < Deployment.askThreshold) {
+    	//		v.sendMessage({text: "Do you want help? If so do..."})
+  		//	} else if (v.weight < Deployment.warnThreshold) {
+    	//		v.sendMessage({text: "You are lagging behind"})
+  		//	}
+       // }
+  })
+  updates.push(deployment.save({bestweight: bestWeight, avgweight: avgWeight}, {patch: true}))
+  updates.push(task.finish())
+  Promise.all(updates)
+  .then(deployment.getTaskPool).then((pool) => {
+    reply({text: `Thanks! You ended at ${task.get('doneTime')}.`})
+    if (pool.length > 0) {
+      if (deployment.isCasual) {
+        vol.assignTask(pool.pop())
+      } else {
+        reply({text: "You don't have any more tasks, but there are still some left for others."});
+      }
     } else {
-    	// TODO(cgleason): what is logic for when the survey is sent?
-    	// TODO(cgleason): make survey into a button
-    	reply({text: "Thank you very much!\nYou just helped by giving light to the visually impaired.\n\nI am still in research phase, please answer this survey so I can become better at helping.\n\nhttps://docs.google.com/forms/d/1hcwB18hnyniWFUQAQDm2MSMdlQQL4QYOG_Md9eFsQnE/viewform"})
+      deployment.finish()
     }
+  })
 }
 
 function helpMessage(message, reply) {
@@ -275,7 +278,7 @@ function helpMessage(message, reply) {
 
 function greetingMessage(message, reply) {
 	reply({text: "Hi!"})
-};
+}
 
 function fingerprintingMessage(vol) {
 	setTimeout(vol.sendMessage, 2 * 1000, {text: Data.texts().fingerprinting.fingerprinting1})

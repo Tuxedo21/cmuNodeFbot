@@ -20,6 +20,9 @@ const Task = bookshelf.Model.extend({
   start: function() {
       return this.save({startTime: new Date()})
   },
+  finish: function() {
+      return this.save({completed: true, doneTime: new Date()}, {patch: true})
+  },
   virtuals: {
     hasOutstandingDependancies: function() {
     return this.related('dependencies').filter((t) => !t.completed).length

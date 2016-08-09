@@ -55,6 +55,14 @@ const Deployment = bookshelf.Model.extend({
     			return freeTasks
     		})
   	},
+  	finish: function () {
+  		this.load(['volunteers']).then((d) => {
+  			d.related('volunteers').forEach((v) => {
+  				// TODO(cgleason): make survey into a button
+	  			v.sendMessage({text: "Thank you very much!\nYou just helped by giving light to the visually impaired.\n\nI am still in research phase, please answer this survey so I can become better at helping.\n\nhttps://docs.google.com/forms/d/1hcwB18hnyniWFUQAQDm2MSMdlQQL4QYOG_Md9eFsQnE/viewform"})
+  			})
+  		})
+  	},
 	virtuals: {
 		startWeight: function() {
 			return 1 / this.related('volunteers').count()
