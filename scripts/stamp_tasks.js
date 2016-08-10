@@ -91,6 +91,20 @@ function batteryMessage(vol) {
   setTimeout(vol.sendMessage, 9 * 1000, imageMessage)
 }
 
+const text = {
+    "batteryMaintenance": {"batteryMaintenance1":  "Your task will be beacon maintenance. Please go to the location of beacon number X as seen on the map. Once there you will find a beacon take it down and open it as described with the images below.",
+                           "batteryMaintenance2":  "Measure the voltage of the battery by placing the battery in between the multimeter's probes. As shown in the image below. If the battery level is less than 2.8 volts or no battery is found place a new battery as shown in the image below.",
+                           "batteryMaintenance3":  " If no beacon is found send “MISSING”."},
+
+    "placingBeacons": {"placingBeacons1" : "You will be placing beacons. Go to the supply station that is marked with a red square on the map. Once there grab a batch of beacons. Then go to the position that is marked with a blue circle on the map with the same number as the first beacon.",
+                       "placingBeacons2" :  "Please place the beacon at about 10 ft of height on the wall. Repeat this for each other beacon. Once done with this batch write “Done”."
+                    },
+
+    "fingerprinting": {"fingerprinting1" : "You will be collecting data to help navigate the blind. Please go the location of X as shown on the map. Place you back against the wall so that you are facing the direction towards location Y.",
+                       "fingerprinting2" : "Once you click on the link provided below an app will spawn on your phone. Press the start button and, once the countdown reaches zero take a step towards location Y.  Repeat these two operations until you have arrived at location Y. Now click on the following link."
+                     }
+}
+
 
 module.exports.sendInstructions = function(command, vol) {
 	if (command === 'bm') {

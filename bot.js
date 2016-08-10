@@ -1,14 +1,15 @@
 const Bot = require('messenger-bot')
+const http = require('http')
 
 const cli = require('./cli')
 const handlers = require('./handlers')
 
+let bot = null
 if (cli.interactive) {
-  let bot = require('./interactive').instance
+  bot = require('./interactive').instance
   module.exports.sendMessage = bot.sendMessage.bind(bot)
-  module.exports.startListening = bot.startListening.bind(bot)
 } else {
-  let bot = new Bot({
+  bot = new Bot({
     token: process.env.PAGE_ACCESS_TOKEN,
     verify: 'testbot_verify_token',
     app_secret: process.env.APP_SECRET,
@@ -25,9 +26,15 @@ if (cli.interactive) {
       handlers.disptachMessage(payload, reply)  
     })
   })
-
-  bot.on('postback', handlers.disptachPostback)
+  bot.on('postback', handlers.dispatchPostback)
 
   module.exports.sendMessage = bot.sendMessage.bind(bot)
-  module.exports.startListening = bot.startListening.bind(bot)
+  bot.startListening = function() {
+    const port = process.env.PORT || 3000
+    http.createServer(bot.middleware()).listen(port, () => {
+        console.log(`Echo bot server running at port ${port}.`)
+    })
+  }
 }
+
+bot.startListening()

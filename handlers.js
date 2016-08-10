@@ -26,6 +26,13 @@ const messageHandlers = {
 	},
 }
 
+const postbackHandlers = {
+  'JOIN_DEPLOYMENT': {
+    handler: joinDeployment,
+    volRequired: false,
+  },
+}
+
 const aliases = {
 	'd': 'done',
 	'r': 'reject',
@@ -36,18 +43,13 @@ const aliases = {
 	'hey': 'hello',
 }
 
-function findVolunteer(payload, reply, callback) {
-  Volunteer.where({fbid: payload.sender.id}).fetch({withRelated: ['deployment']}).then((vol) => {
+module.exports.dispatchMessage = (payload, reply) => {
+  Volunteer.where({fbid: payload.sender.id}).fetch()
+  .then((vol) => {
     if (!vol) {
       onBoardVolunteer(payload, reply)
-    } else {
-      callback(vol)
+      return
     }
-  })
-}
-
-module.exports.dispatchMessage = (payload, reply) => {
-  findVolunteer(payload, reply, function(vol) {
     payload.sender.volunteer = vol
     const values = payload.message.text.toLowerCase().split(' ')
     let command = values[0]
@@ -67,13 +69,6 @@ module.exports.dispatchMessage = (payload, reply) => {
   })
 }
 
-const postbackHandlers = {
-  'JOIN_DEPLOYMENT': {
-    handler: joinDeployment,
-    volRequired: false,
-  },
-}
-
 module.exports.dispatchPostback = (payload, reply) => {
   const strs = Object.keys(postbackHandlers)
   let result = null
@@ -86,7 +81,8 @@ module.exports.dispatchPostback = (payload, reply) => {
   if (!result) throw new Error(`invalid postback: ${payload.postback}`)
   const found = postbackHandlers[result]
   if (found.volRequired) {
-    findVolunteer(payload, reply, (vol) => {
+    Volunteer.where({fbid: payload.sender.id}).fetch()
+    .then(() => {
       payload.sender.volunteer = vol
       found.handler(payload, reply)
     })
@@ -94,7 +90,16 @@ module.exports.dispatchPostback = (payload, reply) => {
     found.handler(payload, reply)
   }
 }
-  
+
+function greetingMessage(message, reply) {
+  reply({text: "Hi!"})
+}
+
+function helpMessage(payload  , reply) {
+  const vol = payload.sender.volunteer
+  vol.related('deployment').fetch().then(d => d.sendMentor(vol))
+}
+ 
 function onBoardVolunteer(payload, reply) {
   Deployment.fetchAll().then(function(deployments) {
     if (deployments.count() == 0) {
@@ -117,10 +122,9 @@ function onBoardVolunteer(payload, reply) {
 }
 
 function joinDeployment(payload, reply) {
-  Volunteer.where({fbid: payload.sender.id}).fetch().then((vol) => {
-    if (vol) {
-      
-      reply({text: `You are already in a deployment (${deployment.name}). You must leave that first.`})
+  Volunteer.where({fbid: payload.sender.id}).fetch({withRelated: ['deployment']}).then((vol) => {
+    if (vol && vol.related('deployment')) {
+      reply({text: `You are already in a deployment (${vol.related('deployment').get('name')}). You must leave that first.`})
     } else {
       const deployId = parseInt(payload.postback.substr('JOIN_DEPLOYMENT_'.length), 10)
       Deployment.where({id: deployId}).fetch().then((deployment) => {
@@ -172,7 +176,7 @@ function startMessage(payload, reply) {
 function askMessage(payload, reply) {
   // Get a task in the pool, and ask if he wants to do it.
   const vol = payload.sender.volunteer
-  const deployment = vol.related('deployment')
+  vol.related('deployment').fetch().then(deployment => {
   if (!deployment.isCasual) {
     reply({text: 'Sorry, you can\'t ask for a task in this deployment.'})
     return
@@ -188,75 +192,70 @@ function askMessage(payload, reply) {
       reply({text: 'There are no tasks available right now.'})
     }
   })
+})
 }
 
 function rejectMessage(payload, reply) {
   const vol = payload.sender.volunteer
-  const deployment = vol.related('deployment')
-  if (!deployment.isCasual) {
-    reply({text: 'Sorry, you can\'t reject a task in this deployment.'})
-    return
-  }
-  if (!vol.get('currentTask')) {
-    reply({text: 'You don\'t have a task.'})
-    return
-  }
-  vol.rejectTask().then(() => reply({text: "Task rejected."}))
+  vol.related('deployment').fetch().then(deployment => {
+    if (!deployment.isCasual) {
+      reply({text: 'Sorry, you can\'t reject a task in this deployment.'})
+      return
+    }
+    if (!vol.get('currentTask')) {
+      reply({text: 'You don\'t have a task.'})
+      return
+    }
+    vol.rejectTask().then(() => reply({text: "Task rejected."}))
+  })
 }
 
 function doneMessage(payload, reply) {
   const vol = payload.sender.volunteer
-  const task = vol.related('currentTask')
-  if (!task || !task.get('startTime')) {
-    reply({text: "You don't have an active task."})
-    return
-  }
-
-  const deployment = vol.related('deployment')
-  // TODO (cgleason): double check this math works with ms conversion
-  const xi =  task.estimatedTimeSec / task.elapsedTime
-  let bestWeight = deployment.get('bestWeight')
-  if (xi > bestWeight) {
-    bestWeight = xi
-  }
-            
-  // Dragans Cool Math
-  const nVol = deployment.related('volunteers').count()
-  const avgWeight = ((deployment.get('avgWeight')*(nVol - 1))/nVol) - xi/nVol
-  const currWeight = (xi - (avgWeight/2)) / (bestWeight - (avgWeight/2));
-  const newWeight = ((vol.get('weight'))*(1 - deployment.get('weightMultiplier'))) + currWeight*deployment.get('weightMultiplier');
-  const subtract = (newWeight - vol.get('weight'))/(nVol - 1);
-            
-  //UPDATE WEIGHTS!
-  const updates = deployment.related('volunteers').map((v) => {
-    if (v.id != vol.id)
-      return v.save({weight: v.get('weight') - subtract}, {patch: true})
-    else
-        return v.save({weight: newWeight, currentTask: null}, {patch: true})
-  })
-  updates.push(deployment.save({bestweight: bestWeight, avgweight: avgWeight}, {patch: true}))
-  updates.push(task.finish())
-  Promise.all(updates)
-  .then(deployment.checkThresholds)
-  .then(deployment.getTaskPool).then((pool) => {
-    reply({text: `Thanks! You ended at ${task.get('doneTime')}.`})
-    if (pool.length > 0) {
-      if (deployment.isCasual) {
-        vol.assignTask(pool.pop())
-      } else {
-        reply({text: "You don't have any more tasks, but there are still some left for others."});
-      }
-    } else {
-      deployment.finish()
+  vol.load(['deployment', 'currentTask']).then(vol => {
+    const task = vol.related('currentTask')
+    if (!task || !task.get('startTime')) {
+      reply({text: "You don't have an active task."})
+      return
     }
+
+    const deployment = vol.related('deployment')
+    // TODO (cgleason): double check this math works with ms conversion
+    const xi =  task.estimatedTimeSec / task.elapsedTime
+    let bestWeight = deployment.get('bestWeight')
+    if (xi > bestWeight) {
+      bestWeight = xi
+    }
+            
+    // Dragans Cool Math
+    const nVol = deployment.related('volunteers').count()
+    const avgWeight = ((deployment.get('avgWeight')*(nVol - 1))/nVol) - xi/nVol
+    const currWeight = (xi - (avgWeight/2)) / (bestWeight - (avgWeight/2));
+    const newWeight = ((vol.get('weight'))*(1 - deployment.get('weightMultiplier'))) + currWeight*deployment.get('weightMultiplier');
+    const subtract = (newWeight - vol.get('weight'))/(nVol - 1);
+            
+    //UPDATE WEIGHTS!
+    const updates = deployment.related('volunteers').map((v) => {
+      if (v.id != vol.id)
+        return v.save({weight: v.get('weight') - subtract}, {patch: true})
+      else
+          return v.save({weight: newWeight, currentTask: null}, {patch: true})
+    })
+    updates.push(deployment.save({bestweight: bestWeight, avgweight: avgWeight}, {patch: true}))
+    updates.push(task.finish())
+    return Promise.all(updates)
+    .then(deployment.checkThresholds)
+    .then(deployment.getTaskPool).then((pool) => {
+      reply({text: `Thanks! You ended at ${task.get('doneTime')}.`})
+      if (pool.length > 0) {
+        if (deployment.isCasual) {
+          vol.assignTask(pool.pop())
+        } else {
+          reply({text: "You don't have any more tasks, but there are still some left for others."});
+        }
+      } else {
+        deployment.finish()
+      }
   })
-}
-
-function helpMessage(payload  , reply) {
-  const vol = payload.sender.volunteer
-  vol.related('deployment').sendMentor(vol)
-}
-
-function greetingMessage(message, reply) {
-	reply({text: "Hi!"})
+  })
 }
