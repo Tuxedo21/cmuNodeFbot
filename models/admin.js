@@ -1,10 +1,9 @@
-require('./deployment')
-require('./volunteer')
 const bookshelf = require('../bookshelf')
 
-const _ = require('lodash')
-
-const Admin = bookshelf.Model.extend({
+require('./deployment')
+require('./volunteer')
+require('./base-model')
+const Admin = bookshelf.model('BaseModel').extend({
   tableName: 'admins',
   idAttribute: 'fbid',
   deployments: function() {

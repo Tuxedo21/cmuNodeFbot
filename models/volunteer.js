@@ -4,7 +4,8 @@ const handlers = require('../handlers')
 
 require('./deployment')
 require('./task')
-const Volunteer = bookshelf.Model.extend({
+require('./base-model')
+const Volunteer = bookshelf.model('BaseModel').extend({
 	tableName: 'volunteers',
 	idAttribute: 'fbid',
 	// fbid
@@ -45,6 +46,11 @@ const Volunteer = bookshelf.Model.extend({
 	},
 	sendMessage: function(message) {
 		bot.sendMessage(this.get('fbid'), message)
+	},
+	virtuals: {
+		name: function() {
+			return `this.get('firstName') this.get('lastName')`
+		}
 	}
 })
 

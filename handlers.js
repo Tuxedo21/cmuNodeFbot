@@ -215,16 +215,16 @@ function doneMessage(payload, reply) {
   const deployment = vol.related('deployment')
   // TODO (cgleason): double check this math works with ms conversion
   const xi =  task.estimatedTimeSec / task.elapsedTime
-  let bestWeight = deployment.get('bestweight')
+  let bestWeight = deployment.get('bestWeight')
   if (xi > bestWeight) {
     bestWeight = xi
   }
             
   // Dragans Cool Math
   const nVol = deployment.related('volunteers').count()
-  const avgWeight = ((deployment.get('avgweight')*(nVol - 1))/nVol) - xi/nVol
+  const avgWeight = ((deployment.get('avgWeight')*(nVol - 1))/nVol) - xi/nVol
   const currWeight = (xi - (avgWeight/2)) / (bestWeight - (avgWeight/2));
-  const newWeight = ((vol.get('weight'))*(1 - deployment.get('weightmultiplier'))) + currWeight*deployment.get('weightmultiplier');
+  const newWeight = ((vol.get('weight'))*(1 - deployment.get('weightMultiplier'))) + currWeight*deployment.get('weightMultiplier');
   const subtract = (newWeight - vol.get('weight'))/(nVol - 1);
             
   //UPDATE WEIGHTS!

@@ -3,7 +3,8 @@ const _ = require('lodash')
 
 require('./volunteer')
 require('./task')
-const Deployment = bookshelf.Model.extend({
+require('./base-model')
+const Deployment = bookshelf.model('BaseModel').extend({
 	//averageWeight: 1,
 	//bestWeight: 0,
 	//warnThreshold: 1/2, // TODO (cgleason): fix these thresholds
@@ -41,7 +42,7 @@ const Deployment = bookshelf.Model.extend({
   			// send message to mentee
   			mentee.sendMessage({text: "We are sending a mentor to you"})
   			// send message to mentor
-  			mentor.sendMessage({text: `Go help volunteers ${mentee.get('name')}`})
+  			mentor.sendMessage({text: `Go help volunteers ${mentee.name}`})
   		})
 	},
 	getTaskPool: function() {
@@ -58,11 +59,11 @@ const Deployment = bookshelf.Model.extend({
   	checkThresholds: function() {
   		return this.related('volunteers').fetchAll().then((volunteers) => {
   			volunteers.forEach((v) => {
-      			if (v.get('weight') < this.get('sendhelpthreshold')) {
+      			if (v.get('weight') < this.get('sendHelpThreshold')) {
     				this.sendMentor(v)
-  				} else if (v.get('weight') < this.get('askthreshold')) {
+  				} else if (v.get('weight') < this.get('askThreshold')) {
     				v.sendMessage({text: "Do you want help? If so do..."})
-  				} else if (v.get('weight') < this.get('warningthreshold')) {
+  				} else if (v.get('weight') < this.get('warningThreshold')) {
     				v.sendMessage({text: "You are lagging behind"})
   				}
        		})

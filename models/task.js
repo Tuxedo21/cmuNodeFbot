@@ -1,12 +1,11 @@
-var fs = require("fs")
-var Ids = require('../botIds.js')
+const request = require('request')
+
+const bookshelf = require('../bookshelf')
 require('./deployment')
 require('./volunteer')
-const bookshelf = require('../bookshelf')
+require('./base-model')
 
-const _ = require('lodash')
-
-const Task = bookshelf.Model.extend({
+const Task = bookshelf.model('BaseModel').extend({
   tableName: 'tasks',
   deployment: function() {
     return this.belongsTo('Deployment')
@@ -22,6 +21,12 @@ const Task = bookshelf.Model.extend({
   },
   finish: function() {
       return this.save({completed: true, doneTime: new Date()}, {patch: true})
+      .then(() => {
+        const webhook = this.get('completedWebhook')
+        if (webhook) {
+          request.post({url: webhook, data: this.serialize({shallow: true})})
+        }
+      })
   },
   virtuals: {
     hasOutstandingDependancies: function() {
@@ -39,23 +44,12 @@ const Task = bookshelf.Model.extend({
 
 module.exports = bookshelf.model('Task', Task)
 
-let loadJSON = (jsonFile, callback) => {
-	fs.readFile(jsonFile, (contents) => {
-  		var jsonContent = JSON.parse(contents);
-  		jsonContent.tasks.forEach((task) => {
-    		console.log(task.time + " " + task.type);
-    		addTask({
-          time: task.time,
-          startTime: null,
-          endTime: null,
-          type: task.type,
-          assignedVolunteer: null,
-        });
-  		})
+// task types:
+// positioning beacons
+// positioning checking
+// fingerprint checking
+// fingerprinting
 
-  		//bot.sendMessage(ids.carlId, {text: "Global tasks: " + "[" + getAllTasks() + "]"});
-  		console.log(getAllTasks());
-  		callback(getAllTasks());
-  });
-
-}
+// later moment:
+// sweeping
+// battery replacement
