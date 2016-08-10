@@ -14,7 +14,7 @@ const Volunteer = bookshelf.model('BaseModel').extend({
 	// currentTask
 	// deployment
 	currentTask: function() {
-		return this.belongsTo('Task', 'currentTask')
+		return this.belongsTo('Task', 'current_task')
 	},
 	deployment: function() {
 		return this.belongsTo('Deployment')
@@ -38,11 +38,15 @@ const Volunteer = bookshelf.model('BaseModel').extend({
       	})
 	},
 	rejectTask: function() {
-		const task = this.related('currentTask')
-		return Promise.all([
-			this.save({currentTask: null}),
-			task.save({volunteer_fbid: null, startTime: null}, {patch: true})
-		])
+		console.log(this)
+		console.log(this.related('currentTask'))
+		return this.related('currentTask').fetch()
+		.then((task) => {
+			return Promise.all([
+				this.save({currentTask: null}),
+				task.save({volunteer_fbid: null, startTime: null}, {patch: true})
+			])
+		})
 	},
 	sendMessage: function(message) {
 		bot.sendMessage(this.get('fbid'), message)

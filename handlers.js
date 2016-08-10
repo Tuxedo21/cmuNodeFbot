@@ -37,7 +37,7 @@ const aliases = {
 }
 
 function findVolunteer(payload, reply, callback) {
-  Volunteer.where({fbid: payload.sender.id}).fetch({withRelated: ['deployment', 'currentTask']}).then((vol) => {
+  Volunteer.where({fbid: payload.sender.id}).fetch({withRelated: ['deployment']}).then((vol) => {
     if (!vol) {
       onBoardVolunteer(payload, reply)
     } else {

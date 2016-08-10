@@ -1,4 +1,5 @@
 const request = require('request')
+const _ = require('lodash')
 
 const bookshelf = require('../bookshelf')
 require('./deployment')
@@ -30,7 +31,7 @@ const Task = bookshelf.model('BaseModel').extend({
   },
   virtuals: {
     hasOutstandingDependancies: function() {
-    return this.related('dependencies').filter((t) => !t.completed).length
+      return this.related('dependencies').filter((t) => !t.completed).length
     },
     estimatedTimeMin: function() {
       const int = _.defaults(this.get('estimatedTime'), {hours: 0, minutes: 0, seconds: 0})
